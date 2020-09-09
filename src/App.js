@@ -6,7 +6,7 @@ import { AppMenu } from "./AppMenu";
 import { AppProfile } from "./AppProfile";
 import { Route } from "react-router-dom";
 import { Dashboard } from "./Components/Dashboard";
-import { TreeTablePageDemo } from "./Components/Students";
+import { Students } from "./Components/Students";
 //import 'primereact/resources/themes/nova-light/theme.css';
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
@@ -86,26 +86,25 @@ class App extends Component {
     this.menu = [
       {
         label: "Teacher Dashboard",
-        icon: "bars",
+        icon: "pi pi-home",
         command: () => {
           window.location = "#/";
         }
       },
       {
         label: "Student Dashboard",
-        icon: "pi pi-fw pi-cog",
+        icon: "pi pi-fw pi-users",
         command: () => {
           window.location = "#/students";
         }
       },
       {
         label: "Marks Entry",
-        icon: "expandright"
+        icon: "pi pi-user-edit"
       },
       {
         label: "Statistics",
-        icon: "pi pi-fw pi-globe",
-        badge: "9"
+        icon: "pi pi-fw pi-chart-bar",
       },
       {
         label: "Anything Else",
@@ -116,7 +115,7 @@ class App extends Component {
       },
       {
         label: "Log Out",
-        icon: "pi pi-fw pi-question",
+        icon: "pi pi-fw pi-sign-out",
         command: () => {
           window.location = "#/documentation";
         }
@@ -190,7 +189,7 @@ class App extends Component {
 
         <div className="layout-main">
           <Route path="/" exact component={Dashboard} />
-          <Route path="/students" component={TreeTablePageDemo} />
+          <Route path="/students" component={Students} />
         </div>
 
         <AppFooter />

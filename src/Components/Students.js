@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
 
-export class TreeTablePageDemo extends Component {
+export class Students extends Component {
   constructor(props) {
     super(props);
     this.state = {
