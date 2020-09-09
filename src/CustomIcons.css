@@ -1,0 +1,33 @@
+.bars {
+  background: url("https://img.icons8.com/ios/40/000000/squared-menu.png");
+  height: 40px;
+  width: 40px;
+  display: inline-block;
+  /* Other styles here */
+}
+.expand {
+  background: url("https://img.icons8.com/windows/20/000000/expand-arrow.png");
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+}
+.expandright {
+  background: url(https://img.icons8.com/windows/20/000000/forward.png);
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+}
+
+.search {
+  background: url(https://img.icons8.com/windows/20/000000/search.png);
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+}
+
+.menubar {
+  background: url("https://img.icons8.com/windows/40/000000/menu.png");
+  height: 40px;
+  width: 40px;
+  display: inline-block;
+}
