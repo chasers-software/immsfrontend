@@ -16,7 +16,6 @@ import "./CustomIcons.css";
 import "./Layout/layout.scss";
 import "./Login/Login";
 //import { Login } from "./Login/Login";
-//import './App.scss';
 
 class App extends Component {
   constructor() {
