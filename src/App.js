@@ -16,6 +16,8 @@ import "./CustomIcons.css";
 import "./Layout/layout.scss";
 import "./Login/Login";
 //import { Login } from "./Login/Login";
+import tulogo from "./images/tulogo.png";
+import { EditableTable } from "./Components/Table";
 
 class App extends Component {
   constructor() {
@@ -181,7 +183,7 @@ class App extends Component {
             <img
               alt="Logo"
               width="50px"
-              src="https://etarkeshwor.com/wp-content/uploads/2018/12/tu-logo-.jpg"
+              src={tulogo}
             />
           </div>
           <AppProfile />
@@ -191,6 +193,7 @@ class App extends Component {
         <div className="layout-main">
           <Route path="/" exact component={Dashboard} />
           <Route path="/students" component={Students} />
+          <Route path="/marksentry" component={EditableTable}/>
         </div>
 
         <AppFooter />

@@ -1,6 +1,6 @@
 import React from 'react'
 import "./Login.scss";
-
+import tulogo from "../images/tulogo.png";
 
 export class Login extends React.Component{
     render() {
@@ -8,7 +8,7 @@ export class Login extends React.Component{
           <div class="login-page">
             <div class="form">
                 <img
-              src="https://etarkeshwor.com/wp-content/uploads/2018/12/tu-logo-.jpg"
+              src={tulogo}
               width="60px" alt="TU Logo"/>
               <h2>IMMS x DBMS</h2>
               <form class="register-form">

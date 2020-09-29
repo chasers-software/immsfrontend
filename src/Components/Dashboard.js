@@ -1,7 +1,10 @@
 import React, { Component } from "react";
-import { Panel } from "primereact/panel";
+//import { Panel } from "primereact/panel";
 //import { Checkbox } from "primereact/checkbox";
-import { Button } from "primereact/button";
+//import { Button } from "primereact/button";
+//import { DataTableFilterDemo } from "./Table";
+import {  EditableTable } from "./Table";
+//import { TableView } from "./Table";
 //import { Dropdown } from "primereact/dropdown";
 //import { InputText } from "primereact/inputtext";
 //import { Chart } from "primereact/chart";
@@ -16,29 +19,14 @@ export class Dashboard extends Component {
   render() {
     return (
       <div className="p-grid p-fluid dashboard">
-        <div className="p-col-12 p-lg-4">
-          <div className="card summary p-p-2 p-shadow-6">
-            <span className="title">Admin</span>
-            <span className="detail">No of Admin</span>
-            <span className="count visitors">1</span>
-          </div>
-        </div>
-        <div className="p-col-12 p-lg-4">
-          <div className="card summary p-p-2 p-shadow-6">
-            <span className="title">Teachers</span>
-            <span className="detail">Number of Teachers</span>
-            <span className="count purchases">40</span>
-          </div>
-        </div>
-        <div className="p-col-12 p-lg-4">
-          <div className="card summary p-p-2 p-shadow-6">
-            <span className="title">Total Students</span>
-            <span className="detail">Students in Pulchowk Campus</span>
-            <span className="count revenue">1700</span>
-          </div>
+
+        <div className="p-col-8 p-lg-12 p-p-2 p-ml-2 p-mt-4 p-shadow-8 ">
+          <EditableTable/>
         </div>
 
-        <div className="p-col-8 p-lg-12 p-p-2 p-ml-2 p-mt-4 p-shadow-8 p-mb-4 contacts">
+        
+
+     { /*  <div className="p-col-8 p-lg-12 p-p-2 p-ml-2 p-mt-4 p-shadow-8 p-mb-4 contacts">
           <Panel header="Contacts">
             <ul>
               <li>
@@ -159,6 +147,7 @@ export class Dashboard extends Component {
             </ul>
           </Panel>
         </div>
+    */}
       </div>
     );
   }

@@ -1,0 +1,19 @@
+{
+  "data": [
+    {
+      "code": "Volkswagen",
+      "name": 2012,
+      "quantity": "White",
+      "price": "dsad231ff"
+    },
+    { "code": "Audi", "name": 2011, "quantity": "Black", "price": "gwregre345" },
+    { "code": "Renault", "name": 2005, "quantity": "Gray", "price": "h354htr" },
+    { "code": "BMW", "name": 2003, "quantity": "Blue", "price": "j6w54qgh" },
+    { "code": "Mercedes", "name": 1995, "quantity": "White", "price": "hrtwy34" },
+    { "code": "Volvo", "name": 2005, "quantity": "Black", "price": "jejtyj" },
+    { "code": "Honda", "name": 2012, "quantity": "Yellow", "price": "g43gr" },
+    { "code": "Jaguar", "name": 2013, "quantity": "White", "price": "greg34" },
+    { "code": "Ford", "name": 2000, "quantity": "Black", "price": "h54hw5" },
+    { "code": "Fiat", "name": 2013, "quantity": "Red", "price": "245t2s" }
+  ]
+}
