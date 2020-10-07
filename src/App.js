@@ -18,6 +18,8 @@ import "./Login/Login";
 //import { Login } from "./Login/Login";
 import tulogo from "./images/tulogo.png";
 import { EditableTable } from "./Components/Table";
+import "primereact/resources/themes/saga-green/theme.css";
+
 
 class App extends Component {
   constructor() {
