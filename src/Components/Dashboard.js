@@ -3,8 +3,9 @@ import React, { Component } from "react";
 //import { Checkbox } from "primereact/checkbox";
 //import { Button } from "primereact/button";
 //import { DataTableFilterDemo } from "./Table";
-import {  EditableTable } from "./Table";
-import { ViewTable } from "./ViewTable";
+//import {  EditableTable } from "./Table";
+import { MainDashTeacher } from "./TeacherMain";
+//import { ViewTable } from "./ViewTable";
 //import { TableView } from "./Table";
 //import { Dropdown } from "primereact/dropdown";
 //import { InputText } from "primereact/inputtext";
@@ -20,8 +21,10 @@ export class Dashboard extends Component {
   render() {
     return (
       <div className="p-grid p-fluid dashboard">
-        <ViewTable/>
-          <EditableTable/>
+
+        <MainDashTeacher/>
+       {/* <ViewTable/>
+          <EditableTable/>*/}
 
      { /*  <div className="p-col-8 p-lg-12 p-p-2 p-ml-2 p-mt-4 p-shadow-8 p-mb-4 contacts">
           <Panel header="Contacts">

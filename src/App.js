@@ -19,6 +19,7 @@ import "./Login/Login";
 import tulogo from "./images/tulogo.png";
 import { EditableTable } from "./Components/Table";
 import "primereact/resources/themes/saga-green/theme.css";
+//import { MainDashTeacher } from "./Components/TeacherMain";
 
 
 class App extends Component {
@@ -198,7 +199,7 @@ class App extends Component {
           <Route path="/marksentry" component={EditableTable}/>
         </div>
 
-        <AppFooter />
+        
 
         <div className="layout-mask"></div>
       </div>
