@@ -5,13 +5,24 @@ import App from "./App";
 
 import { HashRouter } from "react-router-dom";
 import ScrollToTop from "./ScrollToTop";
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+
+import authReducer from './store/reducers/auth';
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const rootReducer = combineReducers({
+    auth: authReducer
+});
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 
 ReactDOM.render(
-  <HashRouter>
-    <ScrollToTop>
-      <App></App>
-    </ScrollToTop>
-  </HashRouter>,
+  <Provider store={store}>
+    <HashRouter><ScrollToTop>
+      <App/>
+   </ScrollToTop></HashRouter>
+ </Provider>,
   document.getElementById("root")
 );
 

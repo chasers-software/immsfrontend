@@ -1,16 +1,16 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
 .login-page {
-     background: #ffffff; /* fallback for old browsers */
+  // background: #ffffff; /* fallback for old browsers */
   font-family: "Roboto", sans-serif;
     
-  width: 360px;
+  width: auto;
   padding: 8% 0 0;
   margin: auto;
   
 }
 .form {
-    border-radius: 14px;
+  border-radius: 14px;
   position: relative;
   z-index: 1;
   background: #FFFFFF;

@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import classNames from "classnames";
+import { connect } from 'react-redux';
+import * as actions from './store/actions/auth';
 import { AppTopbar } from "./AppTopbar";
-import { AppFooter } from "./AppFooter";
+// import { AppFooter } from "./AppFooter";
 import { AppMenu } from "./AppMenu";
 import { AppProfile } from "./AppProfile";
 import { Route } from "react-router-dom";
@@ -15,7 +17,7 @@ import "@fortawesome/free-solid-svg-icons";
 import "./CustomIcons.css";
 import "./Layout/layout.scss";
 import "./Login/Login";
-//import { Login } from "./Login/Login";
+import Login from "./Login/Login";
 import tulogo from "./images/tulogo.png";
 import { EditableTable } from "./Components/Table";
 import "primereact/resources/themes/saga-green/theme.css";
@@ -39,6 +41,11 @@ class App extends Component {
     this.onSidebarClick = this.onSidebarClick.bind(this);
     this.onMenuItemClick = this.onMenuItemClick.bind(this);
     this.createMenu();
+  }
+
+  componentDidMount(){
+    // this.props.onTryAutoSignup();
+    // console.log("in main page",this.props);
   }
 
   onWrapperClick(event) {
@@ -157,54 +164,71 @@ class App extends Component {
   }
 
   render() {
-    
+    // return <Login/>;
+    if (!this.props.isAuthenticated){
+      return <Login/>
+    }
+    else {
+      console.log("logged in")
+      const wrapperClass = classNames("layout-wrapper", {
+        "layout-overlay": this.state.layoutMode === "overlay",
+        "layout-static": this.state.layoutMode === "static",
+        "layout-static-sidebar-inactive":
+          this.state.staticMenuInactive && this.state.layoutMode === "static",
+        "layout-overlay-sidebar-active":
+          this.state.overlayMenuActive && this.state.layoutMode === "overlay",
+        "layout-mobile-sidebar-active": this.state.mobileMenuActive
+      });
 
-    const wrapperClass = classNames("layout-wrapper", {
-      "layout-overlay": this.state.layoutMode === "overlay",
-      "layout-static": this.state.layoutMode === "static",
-      "layout-static-sidebar-inactive":
-        this.state.staticMenuInactive && this.state.layoutMode === "static",
-      "layout-overlay-sidebar-active":
-        this.state.overlayMenuActive && this.state.layoutMode === "overlay",
-      "layout-mobile-sidebar-active": this.state.mobileMenuActive
-    });
+      const sidebarClassName = classNames("layout-sidebar", {
+        "layout-sidebar-light": this.state.layoutColorMode === "light"
+      });
 
-    const sidebarClassName = classNames("layout-sidebar", {
-      "layout-sidebar-light": this.state.layoutColorMode === "light"
-    });
+      return (
+        <div className={wrapperClass} onClick={this.onWrapperClick}>
+          <AppTopbar onToggleMenu={this.onToggleMenu} />
 
-    return (
-      <div className={wrapperClass} onClick={this.onWrapperClick}>
-        <AppTopbar onToggleMenu={this.onToggleMenu} />
-
-        <div
-          ref={(el) => (this.sidebar = el)}
-          className={sidebarClassName}
-          onClick={this.onSidebarClick}
-        >
-          <div className="layout-logo">
-            <img
-              alt="Logo"
-              width="50px"
-              src={tulogo}
-            />
+          <div
+            ref={(el) => (this.sidebar = el)}
+            className={sidebarClassName}
+            onClick={this.onSidebarClick}
+          >
+            <div className="layout-logo">
+              <img
+                alt="Logo"
+                width="50px"
+                src={tulogo}
+              />
+            </div>
+            <AppProfile />
+            <AppMenu model={this.menu} onMenuItemClick={this.onMenuItemClick} />
           </div>
-          <AppProfile />
-          <AppMenu model={this.menu} onMenuItemClick={this.onMenuItemClick} />
+
+          <div className="layout-main">
+            <Route path="/" exact component={Dashboard} />
+            <Route path="/students" component={Students} />
+            <Route path="/marksentry" component={EditableTable}/>
+          </div>
+
+          <div className="layout-mask"></div>
         </div>
-
-        <div className="layout-main">
-          <Route path="/" exact component={Dashboard} />
-          <Route path="/students" component={Students} />
-          <Route path="/marksentry" component={EditableTable}/>
-        </div>
-
-        
-
-        <div className="layout-mask"></div>
-      </div>
-    );
+      );
+    }
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+      role: state.auth.role,
+      isAuthenticated: state.auth.token !== null
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+      onTryAutoSignup: () => dispatch( actions.authCheckState() )
+  };
+};
+
+export default connect( mapStateToProps, mapDispatchToProps )( App );
+// export default App;
