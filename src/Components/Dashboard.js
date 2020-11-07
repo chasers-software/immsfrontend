@@ -4,7 +4,7 @@ import React, { Component } from "react";
 //import { Button } from "primereact/button";
 //import { DataTableFilterDemo } from "./Table";
 //import {  EditableTable } from "./Table";
-import { MainDashTeacher } from "./TeacherMain";
+import { MainDashTeacher } from "../pages/teacher/TeacherMain";
 //import { ViewTable } from "./ViewTable";
 //import { TableView } from "./Table";
 //import { Dropdown } from "primereact/dropdown";

@@ -1,6 +1,9 @@
 import React from "react";
+import { connect } from 'react-redux';
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
+import { Toast } from 'primereact/toast';
+import * as actions from '../../store/actions/teacher';
 import "primeflex/primeflex.css";
 
 const footer = (<span><Button label="View"/></span>);
@@ -13,7 +16,13 @@ const CourseCard = (props) => {
           </Card>
 }
 
-export class MainDashTeacher extends React.Component {
+class MainDashTeacher extends React.Component {
+  componentDidMount(){
+    if (this.props.infoBox) {
+      this.toast.show({severity: 'info', summary: this.props.infoBox.summary, detail: this.props.infoBox.detail})
+    }
+    this.props.setInfoBoxNULL();
+  }
   render() {
       // const header = (
       //   <img
@@ -31,10 +40,10 @@ export class MainDashTeacher extends React.Component {
         { title:"PUC CT652", subTitle:"Database Management System",section:"074BCT"},
         { title:"PUC CT652", subTitle:"Database Management System",section:"074BCT"},
         { title:"PUC CT652", subTitle:"Database Management System",section:"074BCT"},
-        { title:"PUC CT652", subTitle:"Database Management System",section:"074BCT"},
       ]
     return (<>
         <h3>Choose your subject and see Student details.</h3>
+        <Toast ref={(el) => this.toast = el} />
       <div className="p-lg-12 p-d-flex p-flex-column p-flex-lg-row">
         {assignedCourses.map((data, index) => {
                               return <CourseCard key={index} title={data.title} subTitle={data.subTitle} section={data.section}/>})}
@@ -81,6 +90,18 @@ export class MainDashTeacher extends React.Component {
       </>
     );
   }
-}
+};
 
-;
+const mapStateToProps = state => {
+  return {
+      infoBox: state.teacher.infoBox
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+      setInfoBoxNULL: () => dispatch( actions.setInfoBox(null) )
+  };
+};
+
+export default connect( mapStateToProps, mapDispatchToProps )( MainDashTeacher );

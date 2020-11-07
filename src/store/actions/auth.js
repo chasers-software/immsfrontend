@@ -51,7 +51,7 @@ export const auth = (username, password) => {
             username: username,
             password: password,
         }; */
-        dispatch(authSuccess("test", "test", "test"));
+        dispatch(authSuccess("test", "test", "teacher"));
         // fetch(uris.LOGIN, {
         //     method: 'POST',
         //     headers: {

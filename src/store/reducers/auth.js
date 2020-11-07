@@ -10,7 +10,7 @@ const initialState = {
 };
 
 const authStart = ( state, action ) => {
-    return { state, error: null, loading: true };
+    return { ...state, error: null, loading: true };
 };
 
 const authSuccess = (state, action) => {
@@ -31,15 +31,15 @@ const authSuccess = (state, action) => {
 };
 
 const authFail = (state, action) => {
-    return { state, error: action.error, loading: false };
+    return { ...state, error: action.error, loading: false };
 };
 
 const authLogout = (state, action) => {
-    return { state, token: null, username: null, role: null };
+    return {...initialState};
 };
 
 const setAuthRedirectPath = (state, action) => {
-    return { state, authRedirectPath: action.path }
+    return { ...state, authRedirectPath: action.path }
 };
 
 const reducer = ( state = initialState, action ) => {
