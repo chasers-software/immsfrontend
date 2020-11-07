@@ -1,7 +1,7 @@
 // import axios from 'axios';
 // import request from 'request-promise';
 import * as actionTypes from './actionTypes';
-// import * as uris from '../uris';
+import * as uris from '../uris';
 
 export const authStart = () => {
     return {
@@ -47,33 +47,33 @@ export const checkAuthTimeout = (expirationTime) => {
 export const auth = (username, password) => {
     return dispatch => {
         dispatch(authStart());
-        /* const authData = {
+        const authData = {
             username: username,
             password: password,
-        }; */
-        dispatch(authSuccess("test", "test", "teacher"));
-        // fetch(uris.LOGIN, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(authData)
-        // })
-        //     .then(res => res.json())
-        //     .then(res => {
-        //         console.log("got ",res);
-        //         //const expirationDate = new Date(new Date().getTime() + res.data.expiresIn * 1000);
-                // localStorage.setItem('token', res.data.idToken);
-                // //localStorage.setItem('expirationDate', expirationDate);
-                // localStorage.setItem('id', res.data.user._id);
-                // localStorage.setItem('role', res.data.user.role);
-                // dispatch(authSuccess(res.data.idToken, res.data.localId));
-                // dispatch(checkAuthTimeout(res.data.expiresIn));
-                // dispatch(setAuthRedirectPath()); TODO: check and set path
-        //     })
-        //     .catch(err => {
-        //         dispatch(authFail(err));
-        // });
+        };
+        // dispatch(authSuccess("test", "test", "teacher"));
+        fetch(uris.LOGIN, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(authData)
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.log("got ",res);
+                const expirationDate = new Date().getTime() + res.expires * 1000;
+                localStorage.setItem('token', res.data.token);
+                localStorage.setItem('expirationDate', expirationDate);
+                localStorage.setItem('id', res.data.user._id);
+                localStorage.setItem('role', res.data.user.role);
+                dispatch(authSuccess(res.data.token, res.data.user.username, res.data.user.role));
+                dispatch(checkAuthTimeout(res.expires));
+                // dispatch(setAuthRedirect()); // TODO: check and set path
+            })
+            .catch(err => {
+                dispatch(authFail(err));
+        });
         /*axios.post(url, authData)
             .then(res => {
                 console.log(res);
@@ -112,10 +112,10 @@ export const auth = (username, password) => {
     };
 };
 
-export const setAuthRedirectPath = (path) => {
+export const setAuthRedirect = (value) => {
     return {
-        type: actionTypes.SET_AUTH_REDIRECT_PATH,
-        path: path
+        type: actionTypes.SET_AUTH_REDIRECT,
+        value: value
     };
 };
 

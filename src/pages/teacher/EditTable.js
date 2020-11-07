@@ -16,8 +16,7 @@ class DataTableEdit extends Component {
         super();
         this.state = { data: [{"RollNo":"001", "Name":"Ashique Barma", "Assessment":10, "Practical":45},
                             {"RollNo":"001", "Name":"Ashique Barma", "Assessment":10, "Practical":45},
-                            {"RollNo":"001", "Name":"Ashique Barma", "Assessment":10, "Practical":45}],
-                        returnBack: false}
+                            {"RollNo":"001", "Name":"Ashique Barma", "Assessment":10, "Practical":45}]}
         this.toast = null;
     }
 

@@ -45,12 +45,12 @@ export class AppProfile extends Component {
               <span className="menuitem-badge">2</span>
             </button>
           </li>
-          <li>
+          {/* <li>
             <button className="p-link">
               <i className="pi pi-fw pi-power-off" />
               <span>Logout</span>
             </button>
-          </li>
+          </li> */}
         </ul>
       </div>
     );

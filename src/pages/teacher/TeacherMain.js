@@ -1,20 +1,14 @@
 import React from "react";
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 import { Toast } from 'primereact/toast';
 import * as actions from '../../store/actions/teacher';
+import {setAuthRedirect} from '../../store/actions/auth';
 import "primeflex/primeflex.css";
 
-const footer = (<span><Button label="View"/></span>);
-
-const CourseCard = (props) => {
-  return <Card title={props.title} subTitle={props.subTitle}
-            style={{ width: "20em" }} className="p-shadow-8 p-mb-2 p-mr-3" footer={footer}>
-            <span className="p-tag p-badge-secondary p-tag-rounded">{props.section}</span>
-            <p className="p-m-0" style={{ lineHeight: "1.5" }}></p>
-          </Card>
-}
+// const footer = (<Button style={{width: "100%"}} label="View"/>);
 
 class MainDashTeacher extends React.Component {
   componentDidMount(){
@@ -23,6 +17,12 @@ class MainDashTeacher extends React.Component {
     }
     this.props.setInfoBoxNULL();
   }
+
+  onCardSelectHandler(data){
+    this.props.selectCard(data.batch+data.subCode+data.group, data.sem, data.group);
+    this.props.setRedirect();
+  }
+
   render() {
       // const header = (
       //   <img
@@ -35,18 +35,32 @@ class MainDashTeacher extends React.Component {
       //     }
       //   />
       // );
-      let assignedCourses = [
-        { title:"PUC CT652", subTitle:"Database Management System",section:"074BCT"},
-        { title:"PUC CT652", subTitle:"Database Management System",section:"074BCT"},
-        { title:"PUC CT652", subTitle:"Database Management System",section:"074BCT"},
-        { title:"PUC CT652", subTitle:"Database Management System",section:"074BCT"},
-      ]
+      // {
+      //   "batch": "073BCE",
+      //   "subCode": "SH603",
+      //   "group": "AB",
+      //   "subName": "Numerical Methods",
+      //   "sem": "3/1",
+      //   "sems": "III/I"
+      // }
+      // let assignedCourses = [
+      //   { title:"PUC CT652", subTitle:"Database Management System",section:"074BCT"},
+      //   { title:"PUC CT652", subTitle:"Database Management System",section:"074BCT"},
+      //   { title:"PUC CT652", subTitle:"Database Management System",section:"074BCT"},
+      //   { title:"PUC CT652", subTitle:"Database Management System",section:"074BCT"},
+      // ]
     return (<>
         <h3>Choose your subject and see Student details.</h3>
         <Toast ref={(el) => this.toast = el} />
       <div className="p-lg-12 p-d-flex p-flex-column p-flex-lg-row">
-        {assignedCourses.map((data, index) => {
-                              return <CourseCard key={index} title={data.title} subTitle={data.subTitle} section={data.section}/>})}
+        {this.props.classes.map((data, index) => {
+                              return (<Card key={index} title={data.subCode} subTitle={data.subName} style={{ width: "20em" }}
+                                          className="p-shadow-8 p-mb-2 p-mr-3" footer={<Button style={{width: "100%"}} label="View"
+                                          onClick={() => this.onCardSelectHandler(data)}/>}>
+                                        <span style={{margin: "0 1em 0 0"}} className="p-tag p-badge-secondary p-tag-rounded">{data.batch}</span>
+                                        <span className="p-tag p-badge-secondary p-tag-rounded">{data.group}</span>
+                                        <p className="p-m-0" style={{ lineHeight: "1.5" }}></p>
+                                      </Card>)})}
         {/* {{{<CourseCard title="PUC CT652" subTitle="Database Management System" section="074BCT"/>
         <Card
           title="PUC CT652"
@@ -87,6 +101,7 @@ class MainDashTeacher extends React.Component {
         </Card>}}} */}
        
       </div>
+      {this.props.redirect}
       </>
     );
   }
@@ -94,13 +109,17 @@ class MainDashTeacher extends React.Component {
 
 const mapStateToProps = state => {
   return {
-      infoBox: state.teacher.infoBox
+    classes: state.teacher.classes,
+    infoBox: state.teacher.infoBox,
+    redirect: state.auth.redirect 
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-      setInfoBoxNULL: () => dispatch( actions.setInfoBox(null) )
+    selectCard: (Class, sem, group) => dispatch(actions.setActiveClass(Class, sem, group)),
+    setInfoBoxNULL: () => dispatch( actions.setInfoBox(null) ),
+    setRedirect: () => dispatch(setAuthRedirect(<Redirect to='/marksview'/>))
   };
 };
 
