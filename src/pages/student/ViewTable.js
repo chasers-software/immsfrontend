@@ -4,27 +4,27 @@ import { Redirect } from 'react-router-dom';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
-// import {setAuthRedirect} from '../../store/actions/auth';
+import {setAuthRedirect} from '../../store/actions/auth';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import * as uris from '../../store/uris';
-import * as actions from '../../store/actions/teacher';
+import * as actions from '../../store/actions/student';
 import './DataTable.css';
 
 class DataTableView extends Component {
     componentDidMount() {
-        if (!this.props.activeClass)  this.props.setInfoBox({summary:"Info Message", detail: 'No Active Class Selected!!!'});
+        if (!this.props.activeSem)  this.props.setInfoBox({summary:"Info Message", detail: 'No Active Semester Selected!!!'});
         // this.props.setRedirectNULL();
         let i;
-        for(i=0;i<this.props.classStudentValues.length;i++){
-            if ((this.props.classStudentValues[i].classId === this.props.activeClass) &&
-                (this.props.classStudentValues[i].sem === this.props.activeSem) &&
-                (this.props.classStudentValues[i].group === this.props.activeGroup)){
+        /* for(i=0;i<this.props.semSubjectValues.length;i++){
+            if ((this.props.semSubjectValues[i].classId === this.props.activeClass) &&
+                (this.props.semSubjectValues[i].sem === this.props.activeSem) &&
+                (this.props.semSubjectValues[i].group === this.props.activeGroup)){
                 this.props.setActiveStudentIndex(i);
                 break;
             }
         }
         //fetch(`http://localhost:3000/api/record/class?class=${this.props.tutorClass}&subjectCode=${this.props.subjectCode}&sem=1`)
-        if (i === this.props.classStudentValues.length && this.props.activeClass !== null){
+        if (i === this.props.semSubjectValues.length && this.props.activeClass !== null){
             // let dat = this.props.classes.find((cls) => this.props.activeClass === cls.batch+cls.subCode+cls.group);
             // let sem = ((parseInt(this.props.activeSem[0])-1)*2+parseInt(this.props.activeSem[2])).toString();
             fetch(uris.FETCH_CLASS_STUDENT_lIST+'073BCESH603CD', { // TODO: change the hardcoded student list fetch, this.props.activeClass
@@ -34,15 +34,15 @@ class DataTableView extends Component {
                 }})
                 .then(res => res.json())
                 .then(res => {
-                    this.props.setClassStudentValues({classId:this.props.activeClass, sem: this.props.activeSem, group: this.props.activeGroup, data: res.data, fm: res.fm});
-                    this.props.setActiveStudentIndex(this.props.classStudentValues.length-1);
+                    this.props.setsemSubjectValues({classId:this.props.activeClass, sem: this.props.activeSem, group: this.props.activeGroup, data: res.data, fm: res.fm});
+                    this.props.setActiveStudentIndex(this.props.semSubjectValues.length-1);
                 })
                 .catch(err => console.log(err));
-        }
+        } */
     }
 
     render() {
-        let recordDatas = this.props.classStudentValues[this.props.classIndex];
+        let recordDatas = this.props.semSubjectValues[this.props.semIndex];
         return (
             <Fragment>
                 {this.props.infoBox ? <Redirect to='/'/> : null}
@@ -55,8 +55,8 @@ class DataTableView extends Component {
                         <div className="card">
                             <h3>Marks Summary View : Assessment and Practical Marks are NOT Editable</h3>
                             <DataTable value={recordDatas.data} header="Data">
-                                <Column field="username" header="RollNo"></Column>
-                                <Column field="name" header="Name"></Column>
+                                <Column field="username" header="Subject Code"></Column>
+                                <Column field="name" header="Subject Name"></Column>
                                 <Column field="test" header="Assessment"></Column>
                                 <Column field="practical" header="Practical"></Column>
                             </DataTable>
@@ -71,21 +71,19 @@ class DataTableView extends Component {
 
 const mapStateToProps = state => {
     return {
-        activeClass: state.teacher.activeClass,
-        classStudentValues: state.teacher.classStudentValues,
-        classIndex: state.teacher.activeClassStudentValuesIndex,
-        activeSem: state.teacher.activeSem,
-        activeGroup: state.teacher.activeGroup,
-        loading: state.teacher.loading,
-        infoBox: state.teacher.infoBox
+        activeSem: state.student.activeSem,
+        semSubjectValues: state.student.semSubjectValues,
+        semIndex: state.student.activeSemSubjectValuesIndex,
+        loading: state.student.loading,
+        infoBox: state.student.infoBox
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         // setRedirectNULL: () => dispatch(setAuthRedirect(null)),
-        setClassStudentValues: (values) => dispatch(actions.setClassStudentValues(values)),
-        setActiveStudentIndex: (value) => dispatch(actions.setActiveStudentIndex(value)),
+        setSemSubjectValues: (values) => dispatch(actions.setSemSubjectValues(values)),
+        setActiveSemIndex: (value) => dispatch(actions.setActiveSemIndex(value)),
         setInfoBox: (value) => dispatch( actions.setInfoBox(value) )
     };
 };

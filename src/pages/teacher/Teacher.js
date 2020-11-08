@@ -39,8 +39,7 @@ class Teacher extends Component{
 const mapStateToProps = state => {
     return {
         token: state.auth.token,
-        username: state.auth.username,
-        classes: state.teacher.classes
+        username: state.auth.username
     }
 };
 

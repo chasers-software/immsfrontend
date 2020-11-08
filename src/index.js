@@ -11,11 +11,13 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 
 import authReducer from './store/reducers/auth';
 import teacherReducer from './store/reducers/teacher';
+import studentReducer from './store/reducers/student';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const rootReducer = combineReducers({
     auth: authReducer,
     teacher: teacherReducer,
+    student: studentReducer
 });
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 
