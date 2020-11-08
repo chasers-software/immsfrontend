@@ -6,6 +6,7 @@ import { Button } from "primereact/button";
 import { Toast } from 'primereact/toast';
 import * as actions from '../../store/actions/teacher';
 import {setAuthRedirect} from '../../store/actions/auth';
+import { ProgressSpinner } from 'primereact/progressspinner';
 import "primeflex/primeflex.css";
 
 // const footer = (<Button style={{width: "100%"}} label="View"/>);
@@ -52,55 +53,56 @@ class MainDashTeacher extends React.Component {
     return (<>
         <h3>Choose your subject and see Student details.</h3>
         <Toast ref={(el) => this.toast = el} />
-      <div className="p-lg-12 p-d-flex p-flex-column p-flex-lg-row">
-        {this.props.classes.map((data, index) => {
-                              return (<Card key={index} title={data.subCode} subTitle={data.subName} style={{ width: "20em" }}
-                                          className="p-shadow-8 p-mb-2 p-mr-3" footer={<Button style={{width: "100%"}} label="View"
-                                          onClick={() => this.onCardSelectHandler(data)}/>}>
-                                        <span style={{margin: "0 1em 0 0"}} className="p-tag p-badge-secondary p-tag-rounded">{data.batch}</span>
-                                        <span className="p-tag p-badge-secondary p-tag-rounded">{data.group}</span>
-                                        <p className="p-m-0" style={{ lineHeight: "1.5" }}></p>
-                                      </Card>)})}
-        {/* {{{<CourseCard title="PUC CT652" subTitle="Database Management System" section="074BCT"/>
-        <Card
-          title="PUC CT652"
-          subTitle="Database Management System"
-          style={{ width: "20em" }}
-          className="p-mb-2 p-mr-3"
-          footer={footer}
-        >
+        {this.props.loading ? <div style={{paddingTop: '50px'}}><ProgressSpinner style={{width: '100%'}}/></div> : 
+          <div className="p-lg-12 p-d-flex p-flex-column p-flex-lg-row">
+          {this.props.classes.map((data, index) => {
+                                return (<Card key={index} title={data.subCode} subTitle={data.subName} style={{ width: "20em" }}
+                                            className="p-shadow-8 p-mb-2 p-mr-3" footer={<Button style={{width: "100%"}} label="View"
+                                            onClick={() => this.onCardSelectHandler(data)}/>}>
+                                          <span style={{margin: "0 1em 0 0"}} className="p-tag p-badge-secondary p-tag-rounded">{data.batch}</span>
+                                          <span className="p-tag p-badge-secondary p-tag-rounded">{data.group}</span>
+                                          <p className="p-m-0" style={{ lineHeight: "1.5" }}></p>
+                                        </Card>)})}
+          {/* {{{<CourseCard title="PUC CT652" subTitle="Database Management System" section="074BCT"/>
+          <Card
+            title="PUC CT652"
+            subTitle="Database Management System"
+            style={{ width: "20em" }}
+            className="p-mb-2 p-mr-3"
+            footer={footer}
+          >
+
+
+            <span className="p-tag p-badge-secondary p-tag-rounded">074BCT</span>
+          
+            <p className="p-m-0" style={{ lineHeight: "1.5" }}></p>
+          </Card>
+          <Card
+            title="PUC CT652"
+            subTitle="Database Management System"
+            style={{ width: "20em" }}
+            className="p-mb-2 p-mr-3"
+            footer={footer}
+          >
+
+
+            <span className="p-tag p-badge-secondary p-tag-rounded">074BCT</span>
+            <p className="p-m-0" style={{ lineHeight: "1.5" }}></p>
+          </Card>
+          <Card
+            title="PUC CT652"
+            subTitle="Database Management System"
+            style={{ width: "20em" }}
+            className="p-mb-2 p-mr-3"
+            footer={footer}
+          >
           
 
-          <span className="p-tag p-badge-secondary p-tag-rounded">074BCT</span>
-        
-          <p className="p-m-0" style={{ lineHeight: "1.5" }}></p>
-        </Card>
-        <Card
-          title="PUC CT652"
-          subTitle="Database Management System"
-          style={{ width: "20em" }}
-          className="p-mb-2 p-mr-3"
-          footer={footer}
-        >
-          
+            <span className="p-tag p-badge-secondary p-tag-rounded">074BCT</span>
+            <p className="p-m-0" style={{ lineHeight: "1.5" }}></p>
+          </Card>}}} */}
 
-          <span className="p-tag p-badge-secondary p-tag-rounded">074BCT</span>
-          <p className="p-m-0" style={{ lineHeight: "1.5" }}></p>
-        </Card>
-        <Card
-          title="PUC CT652"
-          subTitle="Database Management System"
-          style={{ width: "20em" }}
-          className="p-mb-2 p-mr-3"
-          footer={footer}
-        >
-         
-
-          <span className="p-tag p-badge-secondary p-tag-rounded">074BCT</span>
-          <p className="p-m-0" style={{ lineHeight: "1.5" }}></p>
-        </Card>}}} */}
-       
-      </div>
+        </div>}
       {this.props.redirect}
       </>
     );
@@ -111,7 +113,8 @@ const mapStateToProps = state => {
   return {
     classes: state.teacher.classes,
     infoBox: state.teacher.infoBox,
-    redirect: state.auth.redirect 
+    redirect: state.auth.redirect,
+    loading: state.teacher.loading    
   };
 };
 

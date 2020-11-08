@@ -43,3 +43,10 @@ export const setClassStudentValues = (value) => {
         value: value
     }
 };
+
+export const updateClassStudentValues = (value) => {
+    return {
+        type: actionTypes.UPDATE_TEACHER_CLASS_STUDENT_VALUES,
+        value: value
+    }
+};

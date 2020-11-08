@@ -1,9 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
 import {setAuthRedirect} from '../../store/actions/auth';
+import { ProgressSpinner } from 'primereact/progressspinner';
 import * as uris from '../../store/uris';
 import * as actions from '../../store/actions/teacher';
 import './DataTable.css';
@@ -16,6 +18,7 @@ class DataTableView extends Component {
         }
     }
     componentDidMount() {
+        if (!this.props.activeClass)  this.props.setInfoBox({summary:"Info Message", detail: 'No Active Class Selected!!!'});
         this.props.setRedirectNULL();
         this.fetchProductData('data');
         let i;
@@ -55,21 +58,25 @@ class DataTableView extends Component {
         let recordDatas = this.props.classStudentValues[this.props.classIndex];
         return (
             <Fragment>
-                {recordDatas ? (
-                <div className="datatable-editing">
-                <Toast ref={(el) => this.toast = el} />
-
-                <div className="card">
-                    <h3>Marks Summary View : Assessment and Practical Marks are NOT Editable</h3>
-                    <DataTable value={recordDatas.data} header="Data">
-                        <Column field="username" header="RollNo"></Column>
-                        <Column field="name" header="Name"></Column>
-                        <Column field="test" header="Assessment"></Column>
-                        <Column field="practical" header="Practical"></Column>
-                    </DataTable>
-                </div>
-                </div>
-            ) : null}
+                {this.props.infoBox ? <Redirect to='/'/> : null}
+                {this.props.loading ? <div style={{paddingTop: '50px'}}><ProgressSpinner style={{width: '100%'}}/></div> :
+                <Fragment>
+                    {recordDatas ? (
+                        <div className="datatable-editing">
+                        <Toast ref={(el) => this.toast = el} />
+                        
+                        <div className="card">
+                            <h3>Marks Summary View : Assessment and Practical Marks are NOT Editable</h3>
+                            <DataTable value={recordDatas.data} header="Data">
+                                <Column field="username" header="RollNo"></Column>
+                                <Column field="name" header="Name"></Column>
+                                <Column field="test" header="Assessment"></Column>
+                                <Column field="practical" header="Practical"></Column>
+                            </DataTable>
+                        </div>
+                        </div>
+                    ) : null}
+                </Fragment>}
             </Fragment>
         );
     }
@@ -81,7 +88,9 @@ const mapStateToProps = state => {
         classStudentValues: state.teacher.classStudentValues,
         classIndex: state.teacher.activeClassStudentValuesIndex,
         activeSem: state.teacher.activeSem,
-        activeGroup: state.teacher.activeGroup,        
+        activeGroup: state.teacher.activeGroup,
+        loading: state.teacher.loading,
+        infoBox: state.teacher.infoBox
     };
 };
 
@@ -89,7 +98,8 @@ const mapDispatchToProps = dispatch => {
     return {
         setRedirectNULL: () => dispatch(setAuthRedirect(null)),
         setClassStudentValues: (values) => dispatch(actions.setClassStudentValues(values)),
-        setActiveStudentIndex: (value) => dispatch(actions.setActiveStudentIndex(value))
+        setActiveStudentIndex: (value) => dispatch(actions.setActiveStudentIndex(value)),
+        setInfoBox: (value) => dispatch( actions.setInfoBox(value) )
     };
 };
   

@@ -8,11 +8,11 @@ const initialState = {
     activeClassStudentValuesIndex: null,
     classes: [],
     classStudentValues: [],
-    loading: false
+    loading: true
 };
 
 const setTeacherClasses = (state, action) => {
-    return {...state, classes: action.value}
+    return {...state, classes: action.value, loading: false}
 };
 
 const setTeacherInfoBox = (state, action) => {
@@ -24,7 +24,7 @@ const resetStates = (state, action) => {
 };
 
 const setActiveClass = (state, action) => {
-    return {...state, activeClass: action.Class, activeSem: action.sem, activeGroup: action.group, loading: false};
+    return {...state, activeClass: action.Class, activeSem: action.sem, activeGroup: action.group, loading: true};
 };
 
 const setActiveClassStudentIndex = (state, action) => {
@@ -39,6 +39,12 @@ const setClassStudentValues = (state, action) => {
     }
 };
 
+const updateClassStudentValues = (state, action) => {
+    let tempClass = [...state.classStudentValues];
+    tempClass[state.activeClassStudentValuesIndex].data = action.value
+    return {...state, classStudentValues: tempClass}
+};
+
 const reducer = (state = initialState, action) => {
     switch ( action.type ) {
         case actionTypes.SET_TEACHER_CLASSES: return setTeacherClasses(state, action);
@@ -46,6 +52,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.RESET_TEACHER_DEFAULTS: return resetStates(state, action);
         case actionTypes.SET_TEACHER_ACTIVE_CLASS: return setActiveClass(state, action);
         case actionTypes.SET_TEACHER_CLASS_STUDENT_VALUES: return setClassStudentValues(state, action);
+        case actionTypes.UPDATE_TEACHER_CLASS_STUDENT_VALUES: return updateClassStudentValues(state, action);
         case actionTypes.SET_TEACHER_ACTIVE_CLASS_STUDENT_VALUE_INDEX: return setActiveClassStudentIndex(state, action);
         default:
             return state;

@@ -6,7 +6,7 @@ import { InputText } from 'primereact/inputtext';
 import { Toast } from 'primereact/toast';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/teacher';
-// import { Button } from 'primereact/button';
+import { Button } from 'primereact/button';
 import './DataTable.css';
 import { isInt } from '@fullcalendar/core';
 
@@ -18,11 +18,17 @@ class DataTableEdit extends Component {
                             {"RollNo":"001", "Name":"Ashique Barma", "Assessment":10, "Practical":45},
                             {"RollNo":"001", "Name":"Ashique Barma", "Assessment":10, "Practical":45}]}
         this.toast = null;
+        this.onMarksSubmitHandler = this.onMarksSubmitHandler.bind(this);
     }
 
     componentDidMount(){
-        this.props.setInfoBox({summary:"Info Message", detail: 'No Active Course Selected!!!'}); // TODO: set condition for returning
+        if (!this.props.activeClass) {
+            this.props.setInfoBox({summary:"Info Message", detail: 'No Active Class Selected!!!'});
+        } else {
+            this.setState({data: this.props.classStudentValues[this.props.classIndex].data});
+        }        
     }
+
     onEditorValueChange(stateItem, props, value) {
         let updatedProducts = [...props.value];
         let update = false;
@@ -32,9 +38,9 @@ class DataTableEdit extends Component {
             return
         }
         switch (props.field){
-            case "Assessment": update = (parseInt(value) >=0 && parseInt(value) <= 20);
+            case "test": update = (parseInt(value) >=0 && parseInt(value) <= 20);
                 break;
-            case "Practical": update = (parseInt(value) >=0 && parseInt(value) <= 50);
+            case "practical": update = (parseInt(value) >=0 && parseInt(value) <= 50);
                 break;
             default: update = false;
         }
@@ -49,11 +55,21 @@ class DataTableEdit extends Component {
     }
 
     AssessmentEditor(stateItem, props) {
-        return this.inputTextEditor(stateItem, props, 'Assessment');
+        return this.inputTextEditor(stateItem, props, 'test');
     }
 
     PracticalEditor(stateItem, props) {
-        return this.inputTextEditor(stateItem, props, 'Practical');
+        return this.inputTextEditor(stateItem, props, 'practical');
+    }
+
+    onMarksSubmitHandler(event){
+        event.preventDefault();
+        // let tempData = {...this.props.classStudentValues[this.props.classIndex]};
+        // tempData.sem = (parseInt(this.props.activeSem[0])-1)*2+parseInt(this.props.activeSem[2]);
+        // let temo = {classId:tempData.classId, sem:tempData.sem, datas: tempData.data};
+        // this.props.submitMarks(tempData);
+        // console.log(tempData)
+        this.props.updateValues(this.state.data);
     }
 
     render() {
@@ -63,11 +79,14 @@ class DataTableEdit extends Component {
                 {this.props.infoBox ? <Redirect to='/'/> : null}
                 <div className="card">
                     <h3>Marks Editing View : Assessment and Practical Marks are Editable</h3>
+                    <div style={{padding: "10px 0", display: "flex", justifyContent: "flex-end"}}>
+                        <Button label="Confirm & Submit" onClick={this.onMarksSubmitHandler}/>
+                    </div>
                     <DataTable value={this.state.data} editMode="cell" className="editable-cells-table" header="Data">
-                        <Column field="RollNo" header="RollNo"></Column>
-                        <Column field="Name" header="Name"></Column>
-                        <Column field="Assessment" header="Assessment" editor={(props) => this.AssessmentEditor('data', props)}></Column>
-                        <Column field="Practical" header="Practical" editor={(props) => this.PracticalEditor('data', props)}></Column>
+                        <Column field="username" header="RollNo"></Column>
+                        <Column field="name" header="Name"></Column>
+                        <Column field="test" header="Assessment" editor={(props) => this.AssessmentEditor('data', props)}></Column>
+                        <Column field="practical" header="Practical" editor={(props) => this.PracticalEditor('data', props)}></Column>
                     </DataTable>
                 </div>
             </div>
@@ -77,13 +96,17 @@ class DataTableEdit extends Component {
 
 const mapStateToProps = state => {
     return {
-        infoBox: state.teacher.infoBox
+        infoBox: state.teacher.infoBox,
+        classStudentValues: state.teacher.classStudentValues,
+        classIndex: state.teacher.activeClassStudentValuesIndex,
+        activeClass: state.teacher.activeClass,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        setInfoBox: (value) => dispatch( actions.setInfoBox(value) )
+        setInfoBox: (value) => dispatch( actions.setInfoBox(value) ),
+        updateValues: (value) => dispatch(actions.updateClassStudentValues(value))
     };
 };
   
