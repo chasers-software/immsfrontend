@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 import classNames from "classnames";
 
-export class AppProfile extends Component {
+class AppProfile extends Component {
   constructor() {
     super();
     this.state = {
@@ -25,7 +26,7 @@ export class AppProfile extends Component {
           />
         </div>
         <button className="p-link layout-profile-link" onClick={this.onClick}>
-          <span className="username">Dr. Aman Shakya </span>
+          <span className="username">{this.props.username}</span>
         </button>
         <ul
           className={classNames({
@@ -56,3 +57,11 @@ export class AppProfile extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+      username: state.auth.username,
+  };
+};
+
+export default connect( mapStateToProps, null )(AppProfile);

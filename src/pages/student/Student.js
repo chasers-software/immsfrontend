@@ -11,9 +11,9 @@ class Student extends Component{
 	// 	super();
 	// }
 	componentDidMount(){
-        this.props.resetTeacherState();
-        this.props.setSems({value: 1}, {value: 2}, {value: 3}, {value: 4},
-                            {value: 5}, {value: 6}, {value: 7}, {value: 8})
+        this.props.resetStudentState();
+        this.props.setSems([{value: 1}, {value: 2}, {value: 3}, {value: 4},
+                            {value: 5}, {value: 6}, {value: 7}, {value: 8}])
         // fetch(uris.FETCH_CLASS_LIST+this.props.username, {
         //     method: 'GET',
         //     headers: {
@@ -45,7 +45,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSetSem: (values) => dispatch(actions.setSems(values)),
+        setSems: (values) => dispatch(actions.setSems(values)),
         resetStudentState: () => dispatch(actions.resetStudentState())
     }
 };

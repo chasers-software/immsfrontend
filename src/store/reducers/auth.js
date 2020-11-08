@@ -24,9 +24,9 @@ const authSuccess = (state, action) => {
     //  } );
     return {
         ...state,
-        token:action.token,
-        username:action.username,
-        role:action.role
+        token: action.token,
+        username: action.username,
+        role: action.role
     }
 };
 

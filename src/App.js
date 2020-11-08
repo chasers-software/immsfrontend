@@ -6,8 +6,9 @@ import { AppTopbar } from "./AppTopbar";
 import { Route, Redirect } from "react-router-dom";
 // import { AppFooter } from "./AppFooter";
 import { AppMenu } from "./AppMenu";
-import { AppProfile } from "./AppProfile";
+import AppProfile from "./AppProfile";
 import Teacher from './pages/teacher/Teacher';
+import Student from './pages/student/Student';
 // import { MainDashTeacher } from "./pages/teacher/TeacherMain";
 // import { Students } from "./Components/Students";
 // import { DataTableEdit } from "./pages/teacher/EditTable";
@@ -143,7 +144,7 @@ class App extends Component {
       this.menu = [
         {
           label: "Student Dashboard",
-          icon: "pi pi-home",
+          icon: "pi pi-fw pi-home",
           command: () => {
             window.location = "#/";
           }
@@ -152,7 +153,7 @@ class App extends Component {
           label: "Subject Marks",
           icon: "pi pi-fw pi-users",
           command: () => {
-            window.location = "#/studentMarksView";
+            window.location = "#/marksview";
           }
         },
         {
@@ -216,6 +217,17 @@ class App extends Component {
         "layout-sidebar-light": this.state.layoutColorMode === "light"
       });
 
+      let renderComponent = null
+      switch (this.props.role){
+        case 'admin': renderComponent = null;
+          break;
+        case 'teacher': renderComponent = <Teacher/>;
+          break;
+        case 'student': renderComponent = <Student/>;
+          break;
+        default: renderComponent = null;
+      }
+
       return (
         <div className={wrapperClass} onClick={this.onWrapperClick}>
           <AppTopbar onToggleMenu={this.onToggleMenu} />
@@ -229,7 +241,7 @@ class App extends Component {
           </div>
 
           <Route path="/logout" exact component={LogOut}/>
-          <Teacher/>
+          {renderComponent}
           <Redirect to='/'/>
 
           <div className="layout-mask"></div>

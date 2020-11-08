@@ -12,22 +12,24 @@ import "primeflex/primeflex.css";
 // const footer = (<Button style={{width: "100%"}} label="View"/>);
 
 class MainDashStudent extends React.Component {
-    constructor(){
-        super();
-        this.state = {
-            redirect: null
-        }
-    }
+  constructor(){
+      super();
+      this.state = {
+          redirect: null
+      }
+  }
+
   componentDidMount(){
     if (this.props.infoBox) {
+			console.log('here')
       this.toast.show({severity: 'info', summary: this.props.infoBox.summary, detail: this.props.infoBox.detail})
     }
     this.props.setInfoBoxNULL();
   }
 
   onCardSelectHandler(data){
-    this.props.selectCard(data.batch+data.subCode+data.group, data.sem, data.group);
-    this.setState({redirect: <Redirect to='/marksview'/>})
+		this.setState({redirect: <Redirect to='/marksview'/>});
+		this.props.selectCard(0);
     // this.props.setRedirect();
   }
 
@@ -55,7 +57,7 @@ class MainDashStudent extends React.Component {
 const mapStateToProps = state => {
   return {
     sems: state.student.sems,
-    infoBox: state.teacher.infoBox,
+    infoBox: state.student.infoBox,
     redirect: state.auth.redirect,
     loading: state.student.loading    
   };

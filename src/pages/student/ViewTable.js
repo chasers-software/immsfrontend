@@ -4,18 +4,18 @@ import { Redirect } from 'react-router-dom';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
-import {setAuthRedirect} from '../../store/actions/auth';
+// import {setAuthRedirect} from '../../store/actions/auth';
 import { ProgressSpinner } from 'primereact/progressspinner';
-import * as uris from '../../store/uris';
+// import * as uris from '../../store/uris';
 import * as actions from '../../store/actions/student';
-import './DataTable.css';
+// import './DataTable.css';
 
 class DataTableView extends Component {
     componentDidMount() {
-        if (!this.props.activeSem)  this.props.setInfoBox({summary:"Info Message", detail: 'No Active Semester Selected!!!'});
+        if (this.props.activeSem === null)  this.props.setInfoBox({summary:"Info Message", detail: 'No Active Semester Selected!!!'});
         // this.props.setRedirectNULL();
-        let i;
-        /* for(i=0;i<this.props.semSubjectValues.length;i++){
+        /* let i;
+        for(i=0;i<this.props.semSubjectValues.length;i++){
             if ((this.props.semSubjectValues[i].classId === this.props.activeClass) &&
                 (this.props.semSubjectValues[i].sem === this.props.activeSem) &&
                 (this.props.semSubjectValues[i].group === this.props.activeGroup)){
@@ -39,6 +39,8 @@ class DataTableView extends Component {
                 })
                 .catch(err => console.log(err));
         } */
+        this.props.setSemSubjectValues([{username: "Xpeedy123", name:"Ultravoilet", test: "20", practical: "50"}]);
+        this.props.setActiveSemIndex(0);
     }
 
     render() {
@@ -54,7 +56,7 @@ class DataTableView extends Component {
                         
                         <div className="card">
                             <h3>Marks Summary View : Assessment and Practical Marks are NOT Editable</h3>
-                            <DataTable value={recordDatas.data} header="Data">
+                            <DataTable value={recordDatas} header="Data">
                                 <Column field="username" header="Subject Code"></Column>
                                 <Column field="name" header="Subject Name"></Column>
                                 <Column field="test" header="Assessment"></Column>
