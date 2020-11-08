@@ -1,4 +1,5 @@
 const baseURI = 'https://immsnode.herokuapp.com';
+// const baseURI2 = 'https://still-wildwood-37648.herokuapp.com/';
 export const LOGIN = baseURI+'/api/users/login';
 export const ASSIGN_TEACHER = baseURI+'/api/users/assignTeacher';
 export const ADD_TEACHER = baseURI+"/api/classes/addTeacher";

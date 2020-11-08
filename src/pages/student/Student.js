@@ -24,6 +24,20 @@ class Student extends Component{
         //     .then(res => res.json())
         //     .then(res => this.props.onSetClass(res.data))
         //     .catch(err => console.log("Teacher err", err))
+        /* componentDidMount(){
+            fetch(uris.STUDENT_MARKS+this.props.username+"?fields=s1,s2,s3,s4,s5,s6,s7,s8", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+this.props.token
+                }
+            })
+                .then(res => res.json())
+                .then(res => {
+                    console.log("Here data:",res.data);
+                    this.props.onFetched(res.data)})
+                .catch(err => console.log("Student err", err))
+        } */
 	}
 	
 	render(){

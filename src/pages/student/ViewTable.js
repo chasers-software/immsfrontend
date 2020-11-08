@@ -39,7 +39,12 @@ class DataTableView extends Component {
                 })
                 .catch(err => console.log(err));
         } */
-        this.props.setSemSubjectValues([{username: "Xpeedy123", name:"Ultravoilet", test: "20", practical: "50"}]);
+        this.props.setSemSubjectValues([{username: "SH401", name:"Engineering Mathematics", test: "20", practical: "50"},
+                                        {username: "CT401", name:"Computer Programming", test: "20", practical: "50"},
+                                        {username: "ME401", name:"Engineering Drawing", test: "20", practical: "50"},
+                                        {username: "SH402", name:"Engineering Physics", test: "20", practical: "50"},
+                                        {username: "CE401", name:"Applied Mechanics", test: "20", practical: "50"},
+                                        {username: "EE401", name:"Basic Electrical Engineering", test: "20", practical: "50"}]);
         this.props.setActiveSemIndex(0);
     }
 
