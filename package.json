@@ -18,7 +18,7 @@
     "classnames": "2.2.6",
     "evergreen-ui": "^5.0.6",
     "node-sass": "4.14.1",
-    "primeflex": "2.0.0",
+    "primeflex": "^2.0.0",
     "primeicons": "4.0.0",
     "primereact": "5.0.0-rc.1",
     "react": "^16.13.1",
