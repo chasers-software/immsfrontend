@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
-// import {setAuthRedirect} from '../../store/actions/auth';
+import {setAuthRedirect} from '../../store/actions/auth';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import * as uris from '../../store/uris';
 import * as actions from '../../store/actions/teacher';
@@ -13,7 +13,7 @@ import './DataTable.css';
 class DataTableView extends Component {
     componentDidMount() {
         if (!this.props.activeClass)  this.props.setInfoBox({summary:"Info Message", detail: 'No Active Class Selected!!!'});
-        // this.props.setRedirectNULL();
+        this.props.setRedirectNULL();
         let i;
         for(i=0;i<this.props.classStudentValues.length;i++){
             if ((this.props.classStudentValues[i].classId === this.props.activeClass) &&
@@ -83,7 +83,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        // setRedirectNULL: () => dispatch(setAuthRedirect(null)),
+        setRedirectNULL: () => dispatch(setAuthRedirect(null)),
         setClassStudentValues: (values) => dispatch(actions.setClassStudentValues(values)),
         setActiveStudentIndex: (value) => dispatch(actions.setActiveStudentIndex(value)),
         setInfoBox: (value) => dispatch( actions.setInfoBox(value) )
