@@ -21,12 +21,10 @@ export const resetTeacherState = () => {
     }
 };
 
-export const setActiveClass = (Class, sem, group) => {
+export const setActiveClass = (Class) => {
     return {
         type: actionTypes.SET_TEACHER_ACTIVE_CLASS,
-        Class: Class,
-        sem: sem,
-        group: group
+        Class: Class
     }
 };
 

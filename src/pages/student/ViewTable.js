@@ -6,7 +6,7 @@ import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
 // import {setAuthRedirect} from '../../store/actions/auth';
 import { ProgressSpinner } from 'primereact/progressspinner';
-// import * as uris from '../../store/uris';
+import * as uris from '../../store/uris';
 import * as actions from '../../store/actions/student';
 // import './DataTable.css';
 
@@ -14,38 +14,36 @@ class DataTableView extends Component {
     componentDidMount() {
         if (this.props.activeSem === null)  this.props.setInfoBox({summary:"Info Message", detail: 'No Active Semester Selected!!!'});
         // this.props.setRedirectNULL();
-        /* let i;
+        let i;
         for(i=0;i<this.props.semSubjectValues.length;i++){
-            if ((this.props.semSubjectValues[i].classId === this.props.activeClass) &&
-                (this.props.semSubjectValues[i].sem === this.props.activeSem) &&
-                (this.props.semSubjectValues[i].group === this.props.activeGroup)){
-                this.props.setActiveStudentIndex(i);
+            if (this.props.semSubjectValues[i].sem === this.props.activeSem){
+                this.props.setActiveSemIndex(i);
                 break;
             }
         }
         //fetch(`http://localhost:3000/api/record/class?class=${this.props.tutorClass}&subjectCode=${this.props.subjectCode}&sem=1`)
-        if (i === this.props.semSubjectValues.length && this.props.activeClass !== null){
+        if (i === this.props.semSubjectValues.length && this.props.activeSem !== null){
             // let dat = this.props.classes.find((cls) => this.props.activeClass === cls.batch+cls.subCode+cls.group);
             // let sem = ((parseInt(this.props.activeSem[0])-1)*2+parseInt(this.props.activeSem[2])).toString();
-            fetch(uris.FETCH_CLASS_STUDENT_lIST+'073BCESH603CD', { // TODO: change the hardcoded student list fetch, this.props.activeClass
+            fetch(uris.FETCH_STUDENT_SEM_MARKS+'?username='+this.props.username+'&semester='+this.props.activeSem.toString(), {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 }})
                 .then(res => res.json())
                 .then(res => {
-                    this.props.setsemSubjectValues({classId:this.props.activeClass, sem: this.props.activeSem, group: this.props.activeGroup, data: res.data, fm: res.fm});
-                    this.props.setActiveStudentIndex(this.props.semSubjectValues.length-1);
+                    this.props.setSemSubjectValues({sem: this.props.activeSem, data: res.data});
+                    this.props.setActiveSemIndex(this.props.semSubjectValues.length-1);
                 })
                 .catch(err => console.log(err));
-        } */
-        this.props.setSemSubjectValues([{username: "SH401", name:"Engineering Mathematics", test: "20", practical: "50"},
-                                        {username: "CT401", name:"Computer Programming", test: "20", practical: "50"},
-                                        {username: "ME401", name:"Engineering Drawing", test: "20", practical: "50"},
-                                        {username: "SH402", name:"Engineering Physics", test: "20", practical: "50"},
-                                        {username: "CE401", name:"Applied Mechanics", test: "20", practical: "50"},
-                                        {username: "EE401", name:"Basic Electrical Engineering", test: "20", practical: "50"}]);
-        this.props.setActiveSemIndex(0);
+        }
+        // this.props.setSemSubjectValues([{username: "SH401", name:"Engineering Mathematics", test: "20", practical: "50"},
+        //                                 {username: "CT401", name:"Computer Programming", test: "20", practical: "50"},
+        //                                 {username: "ME401", name:"Engineering Drawing", test: "20", practical: "50"},
+        //                                 {username: "SH402", name:"Engineering Physics", test: "20", practical: "50"},
+        //                                 {username: "CE401", name:"Applied Mechanics", test: "20", practical: "50"},
+        //                                 {username: "EE401", name:"Basic Electrical Engineering", test: "20", practical: "50"}]);
+        // this.props.setActiveSemIndex(0);
     }
 
     render() {
@@ -61,11 +59,11 @@ class DataTableView extends Component {
                         
                         <div className="card">
                             <h3>Marks Summary View : Assessment and Practical Marks are NOT Editable</h3>
-                            <DataTable value={recordDatas} header="Data">
-                                <Column field="username" header="Subject Code"></Column>
-                                <Column field="name" header="Subject Name"></Column>
-                                <Column field="test" header="Assessment"></Column>
-                                <Column field="practical" header="Practical"></Column>
+                            <DataTable value={recordDatas.data} header="Data">
+                                <Column field="subject_code" header="Subject Code"></Column>
+                                <Column field="title" header="Subject Name"></Column>
+                                <Column field="theory_marks" header="Assessment"></Column>
+                                <Column field="practical_marks" header="Practical"></Column>
                             </DataTable>
                         </div>
                         </div>
@@ -79,6 +77,7 @@ class DataTableView extends Component {
 const mapStateToProps = state => {
     return {
         activeSem: state.student.activeSem,
+        username: state.auth.username,
         semSubjectValues: state.student.semSubjectValues,
         semIndex: state.student.activeSemSubjectValuesIndex,
         loading: state.student.loading,

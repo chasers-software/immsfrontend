@@ -3,8 +3,6 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
     infoBox: null,
     activeClass: null,
-    activeSem: null,
-    activeGroup: null,
     activeClassStudentValuesIndex: null,
     classes: [],
     classStudentValues: [],
@@ -24,7 +22,7 @@ const resetStates = (state, action) => {
 };
 
 const setActiveClass = (state, action) => {
-    return {...state, activeClass: action.Class, activeSem: action.sem, activeGroup: action.group, loading: true};
+    return {...state, activeClass: action.Class, loading: true};
 };
 
 const setActiveClassStudentIndex = (state, action) => {

@@ -10,7 +10,6 @@ export const authStart = () => {
 };
 
 export const authSuccess = (token, username, role) => {
-    console.log("in authSuccess ",token,username,role);
     return {
         type: actionTypes.AUTH_SUCCESS,
         token: token,
@@ -61,7 +60,6 @@ export const auth = (username, password) => {
         })
             .then(res => res.json())
             .then(res => {
-                console.log("got ",res);
                 const expirationDate = new Date().getTime() + res.expires * 1000;
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('expirationDate', expirationDate);

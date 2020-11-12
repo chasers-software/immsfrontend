@@ -8,15 +8,14 @@ import { connect } from 'react-redux';
 import * as actions from '../../store/actions/teacher';
 import { Button } from 'primereact/button';
 import './DataTable.css';
+import * as uris from '../../store/uris';
 import { isInt } from '@fullcalendar/core';
 
 class DataTableEdit extends Component {
 
     constructor(props) {
         super();
-        this.state = { data: [{"RollNo":"001", "Name":"Ashique Barma", "Assessment":10, "Practical":45},
-                            {"RollNo":"001", "Name":"Ashique Barma", "Assessment":10, "Practical":45},
-                            {"RollNo":"001", "Name":"Ashique Barma", "Assessment":10, "Practical":45}]}
+        this.state = { data: null}
         this.toast = null;
         this.onMarksSubmitHandler = this.onMarksSubmitHandler.bind(this);
     }
@@ -38,9 +37,9 @@ class DataTableEdit extends Component {
             return
         }
         switch (props.field){
-            case "test": update = (parseInt(value) >=0 && parseInt(value) <= 20);
+            case "theory_marks": update = (parseInt(value) >=0 && parseInt(value) <= 20);
                 break;
-            case "practical": update = (parseInt(value) >=0 && parseInt(value) <= 50);
+            case "practical_marks": update = (parseInt(value) >=0 && parseInt(value) <= 50);
                 break;
             default: update = false;
         }
@@ -51,15 +50,15 @@ class DataTableEdit extends Component {
     }
 
     inputTextEditor(stateItem, props, field) {
-        return <InputText type="number" value={props.rowData[field]} onChange={(e) => this.onEditorValueChange(stateItem, props, e.target.value)} />;
+        return <InputText style={{width: "5em"}} type="number" value={props.rowData[field]} onChange={(e) => this.onEditorValueChange(stateItem, props, e.target.value)} />;
     }
 
     AssessmentEditor(stateItem, props) {
-        return this.inputTextEditor(stateItem, props, 'test');
+        return this.inputTextEditor(stateItem, props, 'theory_marks');
     }
 
     PracticalEditor(stateItem, props) {
-        return this.inputTextEditor(stateItem, props, 'practical');
+        return this.inputTextEditor(stateItem, props, 'practical_marks');
     }
 
     onMarksSubmitHandler(event){
@@ -70,6 +69,20 @@ class DataTableEdit extends Component {
         // this.props.submitMarks(tempData);
         // console.log(tempData)
         this.props.updateValues(this.state.data);
+        fetch(uris.FETCH_CLASS_STUDENT_lIST+this.props.activeClass,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.state.data)
+        })
+            .then(res => res.json())
+            .then(res => {
+                if(res.status === 'success'){
+                    this.toast.show({severity: 'info', summary: 'Submission Succeded', detail: 'The Marks has been Successfully Updated!!!'});
+                }
+            })
+            .catch(err => console.log(err))
     }
 
     render() {
@@ -84,9 +97,9 @@ class DataTableEdit extends Component {
                     </div>
                     <DataTable value={this.state.data} editMode="cell" className="editable-cells-table" header="Data">
                         <Column field="username" header="RollNo"></Column>
-                        <Column field="name" header="Name"></Column>
-                        <Column field="test" header="Assessment" editor={(props) => this.AssessmentEditor('data', props)}></Column>
-                        <Column field="practical" header="Practical" editor={(props) => this.PracticalEditor('data', props)}></Column>
+                        <Column field="full_name" header="Name"></Column>
+                        <Column field="theory_marks" header="Assessment" editor={(props) => this.AssessmentEditor('data', props)}></Column>
+                        <Column field="practical_marks" header="Practical" editor={(props) => this.PracticalEditor('data', props)}></Column>
                     </DataTable>
                 </div>
             </div>
@@ -106,7 +119,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         setInfoBox: (value) => dispatch( actions.setInfoBox(value) ),
-        updateValues: (value) => dispatch(actions.updateClassStudentValues(value))
+        updateValues: (value) => dispatch(actions.updateClassStudentValues(value)),
+
     };
 };
   

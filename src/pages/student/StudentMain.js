@@ -27,9 +27,9 @@ class MainDashStudent extends React.Component {
     this.props.setInfoBoxNULL();
   }
 
-  onCardSelectHandler(data){
+  onCardSelectHandler(index){
+		this.props.selectCard(index);
 		this.setState({redirect: <Redirect to='/marksview'/>});
-		this.props.selectCard(0);
     // this.props.setRedirect();
   }
 
@@ -41,8 +41,8 @@ class MainDashStudent extends React.Component {
           <div className="p-lg-12 p-d-flex p-flex-wrap p-flex-column p-flex-lg-row">
           {this.props.sems.map((data, index) => {
                                 return (<Card key={index} title={"Semester Card"} subTitle={"Semester No."} style={{ width: "20em" }}
-                                            className="p-shadow-8 p-mb-2 p-mr-3" footer={<Button style={{width: "100%"}} label="View"
-                                            onClick={() => this.onCardSelectHandler(data)}/>}>
+                                            className="p-shadow-8 p-mb-3 p-mr-3" footer={<Button style={{width: "100%"}} label="View"
+                                            onClick={() => this.onCardSelectHandler(index+1)}/>}>
                                           <span style={{margin: "0 1em 0 0"}} className="p-tag p-badge-secondary p-tag-rounded">{data.value}</span>
                                           {/* <span className="p-tag p-badge-secondary p-tag-rounded">{data.group}</span> */}
                                           <p className="p-m-0" style={{ lineHeight: "1.5" }}></p>

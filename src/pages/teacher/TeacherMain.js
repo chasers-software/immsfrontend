@@ -20,7 +20,7 @@ class MainDashTeacher extends React.Component {
   }
 
   onCardSelectHandler(data){
-    this.props.selectCard(data.batch+data.subCode+data.group, data.sem, data.group);
+    this.props.selectCard(data.section_code+'/'+data.subject_code);
     this.props.setRedirect();
   }
 
@@ -56,11 +56,11 @@ class MainDashTeacher extends React.Component {
         {this.props.loading ? <div style={{paddingTop: '50px'}}><ProgressSpinner style={{width: '100%'}}/></div> : 
           <div className="p-lg-12 p-d-flex p-flex-wrap p-flex-column p-flex-lg-row">
           {this.props.classes.map((data, index) => {
-                                return (<Card key={index} title={data.subCode} subTitle={data.subName} style={{ width: "20em" }}
-                                            className="p-shadow-8 p-mb-2 p-mr-3" footer={<Button style={{width: "100%"}} label="View"
+                                return (<Card key={index} title={data.subject_code} subTitle={data.title} style={{ width: "20em" }}
+                                            className="p-shadow-8 p-mb-3 p-mr-3" footer={<Button style={{width: "100%"}} label="View"
                                             onClick={() => this.onCardSelectHandler(data)}/>}>
-                                          <span style={{margin: "0 1em 0 0"}} className="p-tag p-badge-secondary p-tag-rounded">{data.batch}</span>
-                                          <span className="p-tag p-badge-secondary p-tag-rounded">{data.group}</span>
+                                          <span style={{margin: "0 1em 0 0"}} className="p-tag p-badge-secondary p-tag-rounded">{data.section_code.slice(0,-2)}</span>
+                                          <span className="p-tag p-badge-secondary p-tag-rounded">{data.section_code.slice(-2,-1)}</span>
                                           <p className="p-m-0" style={{ lineHeight: "1.5" }}></p>
                                         </Card>)})}
           {/* {{{<CourseCard title="PUC CT652" subTitle="Database Management System" section="074BCT"/>
@@ -120,7 +120,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    selectCard: (Class, sem, group) => dispatch(actions.setActiveClass(Class, sem, group)),
+    selectCard: (Class) => dispatch(actions.setActiveClass(Class)),
     setInfoBoxNULL: () => dispatch( actions.setInfoBox(null) ),
     setRedirect: () => dispatch(setAuthRedirect(<Redirect to='/marksview'/>))
   };

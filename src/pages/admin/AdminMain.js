@@ -46,7 +46,7 @@ class AdminMain extends Component {
             globalFilter: null
         };
 
-        this.cities = [{department: 'Electronics & Computer Engineering'},
+        this.departments = [{department: 'Electronics & Computer Engineering'},
                         {department: 'Civil Engineering'},
                         {department: 'Electrical Engineering'}];
 
@@ -309,7 +309,7 @@ class AdminMain extends Component {
                     </div>
                     <div>
                         <label htmlFor="department">Department</label>
-                        <Dropdown value={{department: this.state.teacher.department}} options={this.cities} onChange={this.onCityChange} optionLabel="department" required placeholder="Select a Department"/>
+                        <Dropdown value={{department: this.state.teacher.department}} options={this.departments} onChange={this.onCityChange} optionLabel="department" required placeholder="Select a Department"/>
                         {this.state.submitted && !this.state.teacher.department && <small className="p-invalid">Department is required.</small>}
                     </div>
 {/*                     

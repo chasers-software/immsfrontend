@@ -1,13 +1,13 @@
 import * as actionTypes from './actionTypes';
 
-export const setActiveSem=(sem)=>{
+export const setActiveSem = (sem)=>{
     return {
         type: actionTypes.SET_STUDENT_ACTIVE_SEM,
         value: sem
     }
 }
 
-export const setSemSubjectValues=(value)=>{
+export const setSemSubjectValues = (value)=>{
     return {
         type: actionTypes.SET_STUDENT_SEM_SUBJECT_VALUES,
         value: value

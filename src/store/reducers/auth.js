@@ -14,7 +14,6 @@ const authStart = ( state, action ) => {
 };
 
 const authSuccess = (state, action) => {
-    console.log("In auth suc reducer", action);
     // return updateObject( state, { 
     //     token: action.token,
     //     id: action.id,
@@ -22,10 +21,17 @@ const authSuccess = (state, action) => {
     //     error: null,
     //     loading: false
     //  } );
+    // TODO: remove below hardcodes
+    let username = null;
+    if (action.username === '073BCE001A') {
+        username = '074BCT001';
+    } else if (action.role === 'teacher') {
+        username = 'teacher';
+    }
     return {
         ...state,
         token: action.token,
-        username: action.username,
+        username: username,
         role: action.role
     }
 };
