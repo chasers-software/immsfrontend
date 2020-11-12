@@ -9,6 +9,7 @@ import { AppMenu } from "./AppMenu";
 import AppProfile from "./AppProfile";
 import Teacher from './pages/teacher/Teacher';
 import Student from './pages/student/Student';
+import Admin from './pages/admin/Admin';
 // import { MainDashTeacher } from "./pages/teacher/TeacherMain";
 // import { Students } from "./Components/Students";
 // import { DataTableEdit } from "./pages/teacher/EditTable";
@@ -165,7 +166,22 @@ class App extends Component {
         }
       ];
     } else if (this.props.role === 'admin') {
-      // TODO: add paths
+      this.menu = [
+        {
+          label: "Admin Dashboard",
+          icon: "pi pi-fw pi-home",
+          command: () => {
+            window.location = "#/";
+          }
+        },
+        {
+          label: "Teacher Sessions",
+          icon: "pi pi-fw pi-calendar",
+          command: () => {
+            window.location = '#/teachersessions';
+          }
+        }
+      ];
     }
   }
 
@@ -219,7 +235,7 @@ class App extends Component {
 
       let renderComponent = null
       switch (this.props.role){
-        case 'admin': renderComponent = null;
+        case 'admin': renderComponent = <Admin/>;
           break;
         case 'teacher': renderComponent = <Teacher/>;
           break;

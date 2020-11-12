@@ -38,7 +38,7 @@ class MainDashStudent extends React.Component {
         <h3>Choose your subject and see Student details.</h3>
         <Toast ref={(el) => this.toast = el} />
         {this.props.loading ? <div style={{paddingTop: '50px'}}><ProgressSpinner style={{width: '100%'}}/></div> : 
-          <div className="p-lg-12 p-d-flex p-flex-column p-flex-lg-row">
+          <div className="p-lg-12 p-d-flex p-flex-wrap p-flex-column p-flex-lg-row">
           {this.props.sems.map((data, index) => {
                                 return (<Card key={index} title={"Semester Card"} subTitle={"Semester No."} style={{ width: "20em" }}
                                             className="p-shadow-8 p-mb-2 p-mr-3" footer={<Button style={{width: "100%"}} label="View"
