@@ -28,10 +28,11 @@ import './AdminMain.css';
 
 class AdminMain extends Component {
     emptyTeacher = {
-        name: '',
+        full_name: '',
+        username: '',
         email: '',
-        contact: '',
-        department: ''
+        phone_no: '',
+        program_code: ''
     };
 
     constructor(props) {
@@ -39,7 +40,6 @@ class AdminMain extends Component {
 
         this.state = {
             redirect: null,
-            teachers: null,
             teacherDialog: false,
             deleteTeacherDialog: false,
             deleteTeachersDialog: false,
@@ -49,9 +49,9 @@ class AdminMain extends Component {
             globalFilter: null
         };
 
-        this.departments = [{department: 'Electronics & Computer Engineering'},
-                        {department: 'Civil Engineering'},
-                        {department: 'Electrical Engineering'}];
+        this.program_codes = [{program_code: 'Electronics & Computer Engineering'},
+                        {program_code: 'Civil Engineering'},
+                        {program_code: 'Electrical Engineering'}];
 
         // this.teacherService = new TeacherService();
         this.leftToolbarTemplate = this.leftToolbarTemplate.bind(this);
@@ -77,13 +77,7 @@ class AdminMain extends Component {
         if (this.props.infoBox) {
           this.toast.show({severity: 'info', summary: this.props.infoBox.summary, detail: this.props.infoBox.detail})
         }
-        this.props.setInfoBoxNULL();
-        this.setState({teachers: [{id: 'qweda', name: 'Teacher1', email:'qwertyzxc@gmai.com', contact:'9874563210', department: 'Electronics & Computer Engineering', status: 'online'},
-                                    {id: 'asdaa', name: 'Teacher1', email:'fsdfwefrweqc@gmai.com', contact:'98765230140', department: 'Electronics & Computer Engineering', status: 'online'},
-                                    {id: 'dgsxv',name: 'Teacher3', email:'qwertyzxc@gmai.com', contact:'9874563210', department: 'Electronics & Computer Engineering', status: 'online'},
-                                    {id: 'sfdva',name: 'Teacher4', email:'qwertyzxc@gmai.com', contact:'9874563210', department: 'Electronics & Computer Engineering', status: 'online'},
-                                    {id: 'sdzfa',name: 'Teacher5', email:'qwertyzxc@gmai.com', contact:'9874563210', department: 'Electronics & Computer Engineering', status: 'online'}]})
-        // this.teacherService.getTeachers().then(data => this.setState({ teachers: data }));
+        this.props.setInfoBoxNULL();// this.teacherService.getTeachers().then(data => this.setState({ teachers: data }));
     }
 
     openNew() {
@@ -112,28 +106,31 @@ class AdminMain extends Component {
     saveTeacher() {
         let state = { submitted: true };
         console.log(this.state.teacher)
-        if (this.state.teacher.name.trim()) {
-            let teachers = [...this.state.teachers];
+        if (this.state.teacher.full_name.trim()) {
+            let teachers = [...this.props.teachers];
             let teacher = {...this.state.teacher};
-            if (this.state.teacher.id) {
-                const index = this.findIndexById(this.state.teacher.id);
+            let toastMsg = null
+            if (this.state.teacher.username) {
+                const index = this.findIndexByUsername(this.state.teacher.username);
 
                 teachers[index] = teacher;
-                this.toast.show({ severity: 'success', summary: 'Successful', detail: 'Teacher Updated', life: 3000 });
+                toastMsg = 'Teacher Updated';
             }
             else {
-                teacher.id = this.createId();
+                teacher.username = this.createId();
                 teacher.image = 'teacher-placeholder.svg';
                 teachers.push(teacher);
-                this.toast.show({ severity: 'success', summary: 'Successful', detail: 'Teacher Created', life: 3000 });
+                toastMsg = 'Teacher Created';
             }
+            this.toast.show({ severity: 'success', summary: 'Successful', detail: toastMsg, life: 3000 });
 
             state = {
                 ...state,
-                teachers,
                 teacherDialog: false,
                 teacher: this.emptyTeacher
             };
+
+            this.props.setTeachers(teachers);
         }
 
         this.setState(state);
@@ -163,10 +160,10 @@ class AdminMain extends Component {
         this.toast.show({ severity: 'success', summary: 'Successful', detail: 'Teacher Deleted', life: 3000 });
     }
 
-    findIndexById(id) {
+    findIndexByUsername(id) {
         let index = -1;
-        for (let i = 0; i < this.state.teachers.length; i++) {
-            if (this.state.teachers[i].id === id) {
+        for (let i = 0; i < this.props.teachers.length; i++) {
+            if (this.props.teachers[i].username === id) {
                 index = i;
                 break;
             }
@@ -210,7 +207,7 @@ class AdminMain extends Component {
         this.setState({ teacher });
     }
 
-    onCityChange(e) { this.setState({teacher: {...this.state.teacher, department: e.value.department}})}
+    onCityChange(e) { this.setState({teacher: {...this.state.teacher, program_code: e.value.program_code}})}
 
     leftToolbarTemplate() {
         return (
@@ -300,8 +297,8 @@ class AdminMain extends Component {
             <Dialog visible={this.state.teacherDialog} style={{ width: '450px' }} header="Teacher Details" modal className="p-fluid" footer={teacherDialogFooter} onHide={this.hideDialog}>
                 {/* {this.state.teacher.image && <img src={`showcase/demo/images/teacher/${this.state.teacher.image}`} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={this.state.teacher.image} className="teacher-image" />} */}
                 <div className="p-field">
-                    <label htmlFor="name">Name</label>
-                    <InputText id="name" value={this.state.teacher.name} onChange={(e) => this.onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': this.state.submitted && !this.state.teacher.name })} />
+                    <label htmlFor="full_name">Name</label>
+                    <InputText id="full_name" value={this.state.teacher.full_name} onChange={(e) => this.onInputChange(e, 'full_name')} required autoFocus className={classNames({ 'p-invalid': this.state.submitted && !this.state.teacher.full_name })} />
                     {this.state.submitted && !this.state.teacher.name && <small className="p-invalid">Name is required.</small>}
                 </div>
                  <div className="p-field">
@@ -310,14 +307,14 @@ class AdminMain extends Component {
                     {this.state.submitted && !this.state.teacher.email && <small className="p-invalid">Email is required.</small>}
                 </div>
                  <div className="p-field">
-                    <label htmlFor="comtact">Phone No:</label>
-                    <InputText id="contact" value={this.state.teacher.contact} onChange={(e) => this.onInputChange(e, 'contact')} required autoFocus className={classNames({ 'p-invalid': this.state.submitted && !this.state.teacher.contact })} />
-                    {this.state.submitted && !this.state.teacher.contact && <small className="p-invalid">Contact is required.</small>}
+                    <label htmlFor="phone_no">Phone No:</label>
+                    <InputText id="phone_no" value={this.state.teacher.phone_no} onChange={(e) => this.onInputChange(e, 'phone_no')} required autoFocus className={classNames({ 'p-invalid': this.state.submitted && !this.state.teacher.phone_no })} />
+                    {this.state.submitted && !this.state.teacher.phone_no && <small className="p-invalid">phone_no is required.</small>}
                 </div>
                 <div>
-                    <label htmlFor="department">Department</label>
-                    <Dropdown value={{department: this.state.teacher.department}} options={this.departments} onChange={this.onCityChange} optionLabel="department" required placeholder="Select a Department"/>
-                    {this.state.submitted && !this.state.teacher.department && <small className="p-invalid">Department is required.</small>}
+                    <label htmlFor="program_code">program_code</label>
+                    <Dropdown value={{program_code: this.state.teacher.program_code}} options={this.program_codes} onChange={this.onCityChange} optionLabel="program_code" required placeholder="Select a program_code"/>
+                    {this.state.submitted && !this.state.teacher.program_code && <small className="p-invalid">program_code is required.</small>}
                 </div>
 {/*                     
                 <div className="p-field">
@@ -369,6 +366,7 @@ const mapStateToProps = state => {
     return {
       selectCard: (Class) => dispatch(actions.setActiveTeacherUsername(Class)),
       setInfoBoxNULL: () => dispatch( actions.setInfoBox(null) ),
+      setTeachers: (value) => dispatch(actions.setTeachers(value))
     //   setRedirect: () => dispatch(setAuthRedirect(<Redirect to='/marksview'/>))
     };
   };
