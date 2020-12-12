@@ -292,7 +292,7 @@ class AdminMain extends Component {
                     <Column field="username" header="UserName" sortable></Column>
                     <Column field="email" header="Email" ></Column>
                     <Column field="phone_no" header="Phone No"  ></Column>
-                    <Column field="program_code" header="Department" ></Column>
+                    <Column field="program_code" header="Department" sortable></Column>
                     <Column body={this.actionBodyTemplate}></Column>
                 </DataTable>
             </div>
