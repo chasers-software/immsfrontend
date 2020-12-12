@@ -5,7 +5,7 @@ import 'primeflex/primeflex.css';
 import '../../index.css';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-// import { Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import classNames from 'classnames';
 import CSVReader from 'react-csv-reader';
 import { DataTable } from 'primereact/datatable';
@@ -143,6 +143,11 @@ class AdminMain extends Component {
         });
     }
 
+    teacherClickHandler(rowData){
+        this.props.selectCard(rowData.username);
+		this.setState({redirect: <Redirect to='/teachersessions'/>});
+    }
+
     confirmDeleteTeacher(teacher) {
         this.setState({
             teacher,
@@ -235,7 +240,7 @@ class AdminMain extends Component {
         return (
             <React.Fragment>
                 <Button icon="pi pi-pencil" className="p-button-rounded p-button-success p-mr-2" onClick={() => this.editTeacher(rowData)} />
-                <Button icon='pi pi-briefcase' className="p-button-rounded p-button-info p-mr-2"/>
+                <Button icon='pi pi-briefcase' className="p-button-rounded p-button-info p-mr-2" onClick={() => this.teacherClickHandler(rowData)} />
                 <Button icon="pi pi-trash" className="p-button-rounded p-button-danger p-mr-2" onClick={() => this.confirmDeleteTeacher(rowData)} />
             </React.Fragment>
         );
@@ -348,6 +353,7 @@ class AdminMain extends Component {
                 </div>
             </Dialog> */}
         </div>}
+        {this.state.redirect}
         </Fragment>
         );
     }

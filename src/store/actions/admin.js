@@ -14,6 +14,20 @@ export const setActiveTeacherClasses = (value)=>{
     }
 }
 
+export const setActiveTeacherIndex = (value) => {
+    return {
+        type: actionTypes.SET_ADMIN_ACTIVE_TEACHER_CLASS_VALUE_INDEX,
+        value: value
+    }
+};
+
+export const setTeacherClassValues = (value) => {
+    return {
+        type: actionTypes.SET_ADMIN_TEACHER_CLASS_VALUES,
+        value: value
+    }
+};
+
 export const setInfoBox = (values) => {
     return {
         type: actionTypes.SET_ADMIN_INFOBOX,

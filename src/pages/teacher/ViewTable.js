@@ -12,7 +12,7 @@ import './DataTable.css';
 
 class DataTableView extends Component {
     componentDidMount() {
-        if (!this.props.activeClass)  this.props.setInfoBox({summary:"Info Message", detail: 'No Active Class Selected!!!'});
+        if (!this.props.activeClass) this.props.setInfoBox({summary:"Info Message", detail: 'No Active Class Selected!!!'});
         this.props.setRedirectNULL();
         let i;
         for(i=0;i<this.props.classStudentValues.length;i++){
