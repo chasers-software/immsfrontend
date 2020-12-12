@@ -180,6 +180,13 @@ class App extends Component {
           command: () => {
             window.location = '#/teachersessions';
           }
+        },
+        {
+          label: "Log Out",
+          icon: "pi pi-fw pi-sign-out",
+          command: () => {
+            window.location = "#/logout";
+          }
         }
       ];
     }

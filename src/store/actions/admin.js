@@ -21,7 +21,7 @@ export const setTeacherDepartments = (value)=>{
     }
 }
 
-export const resetDefaults = (value)=>{
+export const resetAdminState = (value)=>{
     return {
         type: actionTypes.RESET_ADMIN_DEFAULTS
     }

@@ -17,7 +17,8 @@ const reducer=(state=initialState, action)=>{
                                                                     loading: false}
         case actionTypes.SET_STUDENT_INFOBOX: return {...state, infoBox: action.value}
         case actionTypes.RESET_STUDENT_DEFAULTS: return {...initialState}
-        case actionTypes.SET_STUDENT_ACTIVE_SEM_SUBJECT_VALUE_INDEX: return {...state, activeSemSubjectValuesIndex: action.value}
+        case actionTypes.SET_STUDENT_ACTIVE_SEM_SUBJECT_VALUE_INDEX: return {...state, activeSemSubjectValuesIndex: action.value,
+                                                                    loading: false}
         default:
             return state;
     }

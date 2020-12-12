@@ -17,10 +17,6 @@ const setTeacherInfoBox = (state, action) => {
     return {...state, infoBox: action.value}
 };
 
-const resetStates = (state, action) => {
-    return {...initialState}
-};
-
 const setActiveClass = (state, action) => {
     return {...state, activeClass: action.Class, loading: true};
 };
@@ -47,7 +43,7 @@ const reducer = (state = initialState, action) => {
     switch ( action.type ) {
         case actionTypes.SET_TEACHER_CLASSES: return setTeacherClasses(state, action);
         case actionTypes.SET_TEACHER_INFOBOX: return setTeacherInfoBox(state, action);
-        case actionTypes.RESET_TEACHER_DEFAULTS: return resetStates(state, action);
+        case actionTypes.RESET_TEACHER_DEFAULTS: return {...initialState};
         case actionTypes.SET_TEACHER_ACTIVE_CLASS: return setActiveClass(state, action);
         case actionTypes.SET_TEACHER_CLASS_STUDENT_VALUES: return setClassStudentValues(state, action);
         case actionTypes.UPDATE_TEACHER_CLASS_STUDENT_VALUES: return updateClassStudentValues(state, action);

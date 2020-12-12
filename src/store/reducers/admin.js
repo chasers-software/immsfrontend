@@ -13,7 +13,7 @@ const reducer=(state=initialState, action)=>{
         case actionTypes.SET_ADMIN_ACTIVE_TEACHER_USERNAME: return {...state, activeTeacherUsername: action.value, loading: true}
         case actionTypes.SET_ADMIN_ACTIVE_TEACHER_CLASSES: return {...state, activeTeacherClasses: action.value, loading: false}
         case actionTypes.SET_ADMIN_TEACHER_DEPARTMENTS: return {...state, teacherDepartments: action.value}
-        case actionTypes.RESET_STUDENT_DEFAULTS: return {...initialState}
+        case actionTypes.RESET_ADMIN_DEFAULTS: return {...initialState}
         default:
             return state;
     }
