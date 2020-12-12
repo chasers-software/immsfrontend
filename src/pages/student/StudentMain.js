@@ -58,7 +58,7 @@ const mapStateToProps = state => {
   return {
     sems: state.student.sems,
     infoBox: state.student.infoBox,
-    redirect: state.auth.redirect,
+    // redirect: state.auth.redirect,
     loading: state.student.loading    
   };
 };

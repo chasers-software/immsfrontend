@@ -3,7 +3,9 @@ import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.css';
 import 'primeflex/primeflex.css';
 import '../../index.css';
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
+// import { Redirect } from 'react-router-dom';
 import classNames from 'classnames';
 import CSVReader from 'react-csv-reader';
 import { DataTable } from 'primereact/datatable';
@@ -20,22 +22,23 @@ import { Toolbar } from 'primereact/toolbar';
 import { Dropdown } from 'primereact/dropdown';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
+import { ProgressSpinner } from 'primereact/progressspinner';
+import * as actions from '../../store/actions/admin';
 import './AdminMain.css';
 
 class AdminMain extends Component {
-
     emptyTeacher = {
         name: '',
         email: '',
         contact: '',
-        department: '',
-        status: 0
+        department: ''
     };
 
     constructor(props) {
         super();
 
         this.state = {
+            redirect: null,
             teachers: null,
             teacherDialog: false,
             deleteTeacherDialog: false,
@@ -71,6 +74,10 @@ class AdminMain extends Component {
     }
 
     componentDidMount() {
+        if (this.props.infoBox) {
+          this.toast.show({severity: 'info', summary: this.props.infoBox.summary, detail: this.props.infoBox.detail})
+        }
+        this.props.setInfoBoxNULL();
         this.setState({teachers: [{id: 'qweda', name: 'Teacher1', email:'qwertyzxc@gmai.com', contact:'9874563210', department: 'Electronics & Computer Engineering', status: 'online'},
                                     {id: 'asdaa', name: 'Teacher1', email:'fsdfwefrweqc@gmai.com', contact:'98765230140', department: 'Electronics & Computer Engineering', status: 'online'},
                                     {id: 'dgsxv',name: 'Teacher3', email:'qwertyzxc@gmai.com', contact:'9874563210', department: 'Electronics & Computer Engineering', status: 'online'},
@@ -266,85 +273,104 @@ class AdminMain extends Component {
         //     </React.Fragment>
         // );
 
-        return (
+        return (<Fragment>
+            <Toast ref={(el) => this.toast = el} />
+            {this.props.loading ?  <div style={{paddingTop: '50px'}}><ProgressSpinner style={{width: '100%'}}/></div> :
             <div className="datatable-crud-demo">
-                <Toast ref={(el) => this.toast = el} />
+            <div className="card">
+                <Toolbar className="p-mb-4" left={this.leftToolbarTemplate} right={this.rightToolbarTemplate}></Toolbar>
+                {/* selection={this.state.selectedTeachers} onSelectionChange={(e) => this.setState({ selectedTeachers: e.value })} */}
+                <DataTable ref={(el) => this.dt = el} value={this.props.teachers}
+                    dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
+                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} teachers"
+                    globalFilter={this.state.globalFilter}
+                    header={header}>
 
-                <div className="card">
-                    <Toolbar className="p-mb-4" left={this.leftToolbarTemplate} right={this.rightToolbarTemplate}></Toolbar>
-                    {/* selection={this.state.selectedTeachers} onSelectionChange={(e) => this.setState({ selectedTeachers: e.value })} */}
-                    <DataTable ref={(el) => this.dt = el} value={this.state.teachers}
-                        dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
-                        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} teachers"
-                        globalFilter={this.state.globalFilter}
-                        header={header}>
-
-                        {/* <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column> */}
-                        <Column field="name" header="Name" sortable></Column>
-                        <Column field="email" header="Email" ></Column>
-                        <Column field="contact" header="Phone No"  ></Column>
-                        <Column field="department" header="Department" ></Column>
-                        <Column body={this.actionBodyTemplate}></Column>
-                    </DataTable>
-                </div>
-
-                <Dialog visible={this.state.teacherDialog} style={{ width: '450px' }} header="Teacher Details" modal className="p-fluid" footer={teacherDialogFooter} onHide={this.hideDialog}>
-                    {/* {this.state.teacher.image && <img src={`showcase/demo/images/teacher/${this.state.teacher.image}`} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={this.state.teacher.image} className="teacher-image" />} */}
-                    <div className="p-field">
-                        <label htmlFor="name">Name</label>
-                        <InputText id="name" value={this.state.teacher.name} onChange={(e) => this.onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': this.state.submitted && !this.state.teacher.name })} />
-                        {this.state.submitted && !this.state.teacher.name && <small className="p-invalid">Name is required.</small>}
-                    </div>
-                     <div className="p-field">
-                        <label htmlFor="email">Email</label>
-                        <InputText id="email" value={this.state.teacher.email} onChange={(e) => this.onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': this.state.submitted && !this.state.teacher.email })} />
-                        {this.state.submitted && !this.state.teacher.email && <small className="p-invalid">Email is required.</small>}
-                    </div>
-                     <div className="p-field">
-                        <label htmlFor="comtact">Phone No:</label>
-                        <InputText id="contact" value={this.state.teacher.contact} onChange={(e) => this.onInputChange(e, 'contact')} required autoFocus className={classNames({ 'p-invalid': this.state.submitted && !this.state.teacher.contact })} />
-                        {this.state.submitted && !this.state.teacher.contact && <small className="p-invalid">Contact is required.</small>}
-                    </div>
-                    <div>
-                        <label htmlFor="department">Department</label>
-                        <Dropdown value={{department: this.state.teacher.department}} options={this.departments} onChange={this.onCityChange} optionLabel="department" required placeholder="Select a Department"/>
-                        {this.state.submitted && !this.state.teacher.department && <small className="p-invalid">Department is required.</small>}
-                    </div>
-{/*                     
-                    <div className="p-field">
-                        <label className="p-mb-3">Subject</label>
-                        <div className="p-formgrid p-grid">
-                            <div className="p-field-radiobutton p-col-6">
-                                <RadioButton inputId="category1" name="category" value="074BCT" onChange={this.onCategoryChange} checked={this.state.teacher.category === 'Accessories'} />
-                                <label htmlFor="category1">074BCT</label>
-                            </div>
-                             <div className="p-field-radiobutton p-col-6">
-                                <RadioButton inputId="category2" name="category" value="074BCT" onChange={this.onCategoryChange} checked={this.state.teacher.category === 'Accessories'} />
-                                <label htmlFor="category1">074BCE</label>
-                            </div>
-                            
-                        </div>
-                    </div> */}
-
-                </Dialog>
-
-                <Dialog visible={this.state.deleteTeacherDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteTeacherDialogFooter} onHide={this.hideDeleteTeacherDialog}>
-                    <div className="confirmation-content">
-                        <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
-                        {this.state.teacher && <span>Are you sure you want to delete <b>{this.state.teacher.email}</b>?</span>}
-                    </div>
-                </Dialog>
-
-                {/* <Dialog visible={this.state.deleteTeachersDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteTeachersDialogFooter} onHide={this.hideDeleteTeachersDialog}>
-                    <div className="confirmation-content">
-                        <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
-                        {this.state.teacher && <span>Are you sure you want to delete the selected teachers?</span>}
-                    </div>
-                </Dialog> */}
+                    {/* <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column> */}
+                    <Column field="full_name" header="Full Name" sortable></Column>
+                    <Column field="username" header="UserName" sortable></Column>
+                    <Column field="email" header="Email" ></Column>
+                    <Column field="phone_no" header="Phone No"  ></Column>
+                    <Column field="program_code" header="Department" ></Column>
+                    <Column body={this.actionBodyTemplate}></Column>
+                </DataTable>
             </div>
+
+            <Dialog visible={this.state.teacherDialog} style={{ width: '450px' }} header="Teacher Details" modal className="p-fluid" footer={teacherDialogFooter} onHide={this.hideDialog}>
+                {/* {this.state.teacher.image && <img src={`showcase/demo/images/teacher/${this.state.teacher.image}`} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={this.state.teacher.image} className="teacher-image" />} */}
+                <div className="p-field">
+                    <label htmlFor="name">Name</label>
+                    <InputText id="name" value={this.state.teacher.name} onChange={(e) => this.onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': this.state.submitted && !this.state.teacher.name })} />
+                    {this.state.submitted && !this.state.teacher.name && <small className="p-invalid">Name is required.</small>}
+                </div>
+                 <div className="p-field">
+                    <label htmlFor="email">Email</label>
+                    <InputText id="email" value={this.state.teacher.email} onChange={(e) => this.onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': this.state.submitted && !this.state.teacher.email })} />
+                    {this.state.submitted && !this.state.teacher.email && <small className="p-invalid">Email is required.</small>}
+                </div>
+                 <div className="p-field">
+                    <label htmlFor="comtact">Phone No:</label>
+                    <InputText id="contact" value={this.state.teacher.contact} onChange={(e) => this.onInputChange(e, 'contact')} required autoFocus className={classNames({ 'p-invalid': this.state.submitted && !this.state.teacher.contact })} />
+                    {this.state.submitted && !this.state.teacher.contact && <small className="p-invalid">Contact is required.</small>}
+                </div>
+                <div>
+                    <label htmlFor="department">Department</label>
+                    <Dropdown value={{department: this.state.teacher.department}} options={this.departments} onChange={this.onCityChange} optionLabel="department" required placeholder="Select a Department"/>
+                    {this.state.submitted && !this.state.teacher.department && <small className="p-invalid">Department is required.</small>}
+                </div>
+{/*                     
+                <div className="p-field">
+                    <label className="p-mb-3">Subject</label>
+                    <div className="p-formgrid p-grid">
+                        <div className="p-field-radiobutton p-col-6">
+                            <RadioButton inputId="category1" name="category" value="074BCT" onChange={this.onCategoryChange} checked={this.state.teacher.category === 'Accessories'} />
+                            <label htmlFor="category1">074BCT</label>
+                        </div>
+                         <div className="p-field-radiobutton p-col-6">
+                            <RadioButton inputId="category2" name="category" value="074BCT" onChange={this.onCategoryChange} checked={this.state.teacher.category === 'Accessories'} />
+                            <label htmlFor="category1">074BCE</label>
+                        </div>
+                        
+                    </div>
+                </div> */}
+
+            </Dialog>
+
+            <Dialog visible={this.state.deleteTeacherDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteTeacherDialogFooter} onHide={this.hideDeleteTeacherDialog}>
+                <div className="confirmation-content">
+                    <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
+                    {this.state.teacher && <span>Are you sure you want to delete <b>{this.state.teacher.email}</b>?</span>}
+                </div>
+            </Dialog>
+
+            {/* <Dialog visible={this.state.deleteTeachersDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteTeachersDialogFooter} onHide={this.hideDeleteTeachersDialog}>
+                <div className="confirmation-content">
+                    <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
+                    {this.state.teacher && <span>Are you sure you want to delete the selected teachers?</span>}
+                </div>
+            </Dialog> */}
+        </div>}
+        </Fragment>
         );
     }
 }
                 
-export default AdminMain;
+const mapStateToProps = state => {
+    return {
+      teachers: state.admin.teachers,
+      infoBox: state.admin.infoBox,
+    //   redirect: state.auth.redirect,
+      loading: state.admin.loading    
+    };
+  };
+  
+  const mapDispatchToProps = dispatch => {
+    return {
+      selectCard: (Class) => dispatch(actions.setActiveTeacherUsername(Class)),
+      setInfoBoxNULL: () => dispatch( actions.setInfoBox(null) ),
+    //   setRedirect: () => dispatch(setAuthRedirect(<Redirect to='/marksview'/>))
+    };
+  };
+  
+  export default connect( mapStateToProps, mapDispatchToProps )( AdminMain );

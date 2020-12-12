@@ -3,22 +3,22 @@ import { connect } from 'react-redux';
 import { Route } from "react-router-dom";
 import AdminMain from './AdminMain';
 import TeacherSessions from './TeacherSessions';
-import * as actions from '../../store/actions/teacher';
-// import * as uris from '../../store/uris';
+import * as actions from '../../store/actions/admin';
+import * as uris from '../../store/uris';
 
 class Admin extends Component{
 	componentDidMount(){
-        // this.props.resetTeacherState();
-        // fetch(uris.FETCH_CLASS_LIST+this.props.username, {
-        //     method: 'GET',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Authorization': 'Bearer '+this.props.token
-        //     }
-        // })
-        //     .then(res => res.json())
-        //     .then(res => this.props.onSetClass(res.data))
-        //     .catch(err => console.log("Teacher err", err))
+        fetch(uris.FETCH_TEACHER_LIST, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': 'Bearer '+this.props.token
+            }
+        })
+            .then(res => res.json())
+            .then(res => {console.log(res);
+                        this.props.onSetTeachers(res.data)})
+            .catch(err => console.log("Teacher err", err))
 	}
 	
 	render(){
@@ -42,8 +42,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSetClass: (values) => dispatch(actions.setClasses(values)),
-        resetTeacherState: () => dispatch(actions.resetTeacherState())
+        onSetTeachers: (values) => dispatch(actions.setTeachers(values))
     }
 };
 

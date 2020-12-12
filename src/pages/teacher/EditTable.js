@@ -69,7 +69,7 @@ class DataTableEdit extends Component {
         // this.props.submitMarks(tempData);
         // console.log(tempData)
         this.props.updateValues(this.state.data);
-        fetch(uris.FETCH_CLASS_STUDENT_lIST+this.props.activeClass,{
+        fetch(uris.FETCH_CLASS_STUDENT_LIST+this.props.activeClass,{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

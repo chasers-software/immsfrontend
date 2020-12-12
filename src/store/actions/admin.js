@@ -14,9 +14,23 @@ export const setActiveTeacherClasses = (value)=>{
     }
 }
 
+export const setInfoBox = (values) => {
+    return {
+        type: actionTypes.SET_ADMIN_INFOBOX,
+        value: values
+    }
+};
+
 export const setTeacherDepartments = (value)=>{
     return {
         type: actionTypes.SET_ADMIN_TEACHER_DEPARTMENTS,
+        value: value
+    }
+}
+
+export const setTeachers = (value)=>{
+    return {
+        type: actionTypes.SET_ADMIN_TEACHERS,
         value: value
     }
 }
