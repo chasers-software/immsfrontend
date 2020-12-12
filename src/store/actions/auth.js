@@ -53,6 +53,7 @@ export const auth = (username, password) => {
         // dispatch(authSuccess("test", "test", "teacher"));
         fetch(uris.LOGIN, {
             method: 'POST',
+            // credentials : 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -60,31 +61,29 @@ export const auth = (username, password) => {
         })
             .then(res => res.json())
             .then(res => {
-                const expirationDate = new Date().getTime() + res.expires * 1000;
-                localStorage.setItem('token', res.data.token);
-                localStorage.setItem('expirationDate', expirationDate);
-                localStorage.setItem('id', res.data.user._id);
-                localStorage.setItem('role', res.data.user.role);
-                dispatch(authSuccess(res.data.token, res.data.user.username, res.data.user.role));
-                dispatch(checkAuthTimeout(res.expires));
+                console.log(res);
+                // const expirationDate = new Date().getTime() + res.expires * 1000;
+                localStorage.setItem('token', res.token);
+                // localStorage.setItem('expirationDate', expirationDate);
+                localStorage.setItem('id', res.data.user.username);
+                localStorage.setItem('role', ['admin','teacher','student'][res.data.user.role]);
+                dispatch(authSuccess(res.token, res.data.user.username, ['admin','teacher','student'][res.data.user.role]));
+                // dispatch(checkAuthTimeout(res.expires));
                 // dispatch(setAuthRedirect()); // TODO: check and set path
             })
             .catch(err => {
                 dispatch(authFail(err));
         });
-        /*axios.post(url, authData)
+        /* axios.post(uris.LOGIN, authData, {withCredentials: true})
             .then(res => {
-                console.log(res);
-                const expirationDate = new Date(new Date().getTime() + res.data.expiresIn * 1000);
-                localStorage.setItem('token', res.data.idToken);
-                localStorage.setItem('expirationDate', expirationDate);
-                localStorage.setItem('userId', res.data.localId);
-                dispatch(authSuccess(res.data.idToken, res.data.localId));
-                dispatch(checkAuthTimeout(res.data.expiresIn));
+                localStorage.setItem('token', res.data.token);
+                localStorage.setItem('id', res.data.data.user.username);
+                localStorage.setItem('role', ['admin','teacher','student'][res.data.data.user.role]);
+                dispatch(authSuccess(res.data.token, res.data.data.user.username, ['admin','teacher','student'][res.data.data.user.role]));
             })
             .catch(err => {
-                dispatch(authFail(err.res.data.error));
-            });*/
+                dispatch(authFail(err.res.data.data.error));
+            }); */
             /* const options={
                 method:'POST',
                 uri:uris.LOGIN,
@@ -117,21 +116,21 @@ export const setAuthRedirect = (value) => {
     };
 };
 
-export const authCheckState = () => {
-    return dispatch => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            dispatch(logout());
-        } else {
-            const expirationDate = new Date(localStorage.getItem('expirationDate'));
-            if (expirationDate <= new Date()) {
-                dispatch(logout());
-            } else {
-                const username = localStorage.getItem('username');
-                const role = localStorage.getItem('role');
-                dispatch(authSuccess(token, username, role));
-                dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000 ));
-            }   
-        }
-    };
-};
+// export const authCheckState = () => {
+//     return dispatch => {
+//         const token = localStorage.getItem('token');
+//         if (!token) {
+//             dispatch(logout());
+//         } else {
+//             const expirationDate = new Date(localStorage.getItem('expirationDate'));
+//             if (expirationDate <= new Date()) {
+//                 dispatch(logout());
+//             } else {
+//                 const username = localStorage.getItem('username');
+//                 const role = localStorage.getItem('role');
+//                 dispatch(authSuccess(token, username, role));
+//                 dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000 ));
+//             }   
+//         }
+//     };
+// };

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import classNames from "classnames";
 import { connect } from 'react-redux';
-import * as actions from './store/actions/auth';
+// import * as actions from './store/actions/auth';
 import { AppTopbar } from "./AppTopbar";
 import { Route, Redirect } from "react-router-dom";
 // import { AppFooter } from "./AppFooter";
@@ -276,7 +276,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-      onTryAutoSignup: () => dispatch( actions.authCheckState() )
+      // onTryAutoSignup: () => dispatch( actions.authCheckState() )
   };
 };
 

@@ -22,16 +22,16 @@ const authSuccess = (state, action) => {
     //     loading: false
     //  } );
     // TODO: remove below hardcodes
-    let username = null;
-    if (action.username === '073BCE001A') {
-        username = '074BCT001';
-    } else if (action.role === 'teacher') {
-        username = 'teacher';
-    }
+    // let username = null;
+    // if (action.username === '073BCE001A') {
+    //     username = '074BCT001';
+    // } else if (action.role === 'teacher') {
+    //     username = 'teacher';
+    // }
     return {
         ...state,
         token: action.token,
-        username: username,
+        username: action.username,
         role: action.role
     }
 };
