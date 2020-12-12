@@ -21,4 +21,7 @@
     align-items: center;
     justify-content: center;
 }
-                
+
+.p-datatable .p-datatable-tbody > tr > td {
+    padding: 15px !important;
+}
