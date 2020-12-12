@@ -10,7 +10,6 @@ import AppProfile from "./AppProfile";
 import Teacher from './pages/teacher/Teacher';
 import Student from './pages/student/Student';
 import Admin from './pages/admin/Admin';
-// import { MainDashTeacher } from "./pages/teacher/TeacherMain";
 // import { Students } from "./Components/Students";
 // import { DataTableEdit } from "./pages/teacher/EditTable";
 //import 'primereact/resources/themes/nova-light/theme.css';
