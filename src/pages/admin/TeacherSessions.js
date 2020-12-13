@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 import { ProgressSpinner } from 'primereact/progressspinner';
+import { Toolbar } from 'primereact/toolbar';
 import * as uris from '../../store/uris';
 import * as actions from '../../store/actions/admin';
 // import { Button } from 'primereact/button';
@@ -13,7 +14,7 @@ import * as actions from '../../store/actions/admin';
 import './TeacherSessions.css';
 
 class TeacherSessions extends Component {
-    constructor(){
+    constructor(props){
         super();
         this.state = {
             redirect: null
@@ -46,6 +47,19 @@ class TeacherSessions extends Component {
         }
     }
 
+    addClass(){
+
+    }
+
+    leftToolbarTemplate() {
+        return (
+            <React.Fragment>
+                <Button label="New" icon="pi pi-plus" className="p-button-success p-mr-2" onClick={() => this.addClass.bind(this)} />
+                {/* <Button label="Delete" icon="pi pi-trash" className="p-button-danger" onClick={this.confirmDeleteSelected} disabled={!this.state.selectedTeachers || !this.state.selectedTeachers.length} /> */}
+            </React.Fragment>
+        )
+    }
+
     render (){
         return (
             <Fragment>
@@ -64,6 +78,7 @@ class TeacherSessions extends Component {
                                           <p className="p-m-0" style={{ lineHeight: "1.5" }}></p>
                                         </Card> */}
                 <div className="p-lg-12 p-d-flex p-flex-wrap p-flex-column p-flex-lg-row">
+                <Toolbar className="p-mb-4" left={this.leftToolbarTemplate}></Toolbar>
                 {this.props.teacherClassValues.length === 0 ? null : this.props.teacherClassValues[this.props.teacherIndex].data.map((data, index) => {
                                 return (<Card key={index} title={data.subject_code} subTitle={data.title} style={{ width: "20em" }}
                                             className="p-shadow-8 p-mb-3 p-mr-3" footer={<Button style={{width: "100%"}} label="Remove"
