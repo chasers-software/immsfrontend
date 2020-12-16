@@ -25,10 +25,11 @@ import LogOut from './pages/LogOut';
 import pcampus from "./images/pcampus.jpg";
 import "primereact/resources/themes/saga-green/theme.css";
 import "./Layout/layout.scss"
-//import { MainDashTeacher } from "./Components/TeacherMain";
+import PrimeReact from 'primereact/utils';
 
 
 class App extends Component {
+ 
   constructor() {
     super();
     this.state = {
@@ -39,7 +40,7 @@ class App extends Component {
       overlayMenuActive: false,
       mobileMenuActive: false
     };
-
+ PrimeReact.ripple = true;
     this.onWrapperClick = this.onWrapperClick.bind(this);
     this.onToggleMenu = this.onToggleMenu.bind(this);
     this.onSidebarClick = this.onSidebarClick.bind(this);
