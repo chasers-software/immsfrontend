@@ -83,9 +83,10 @@ class BarChart extends Component {
 
     render() {
         const basicOptions = this.options;
+        //TODO: Titles
         return (
-            <div className='p-grid p-lg-12 fixedBar'>
-                <div className="card p-col-12" style={{padding: '25px'}}>
+            <div>
+                <div className="card" style={{padding: '25px'}}>
                     <Chart type="bar" data={this.state.assessmentData} options={basicOptions} />
                 </div>
                 <div className="card" style={{padding: '25px'}}>

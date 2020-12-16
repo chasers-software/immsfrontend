@@ -295,7 +295,7 @@ class AdminMain extends Component {
         // );
 
         return (<Fragment>
-            <Toast style={{'z-index': 10000}} ref={(el) => this.toast = el} />
+            <Toast style={{zIndex: 10000}} ref={(el) => this.toast = el} />
             {this.props.loading ?  <div style={{paddingTop: '50px'}}><ProgressSpinner style={{width: '100%'}}/></div> :
             <div className="datatable-crud-demo">
             <div className="card">

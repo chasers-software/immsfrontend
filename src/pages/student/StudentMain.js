@@ -36,7 +36,7 @@ class MainDashStudent extends React.Component {
   render() {
     return (<>
         <h3>Choose your subject and see Student details.</h3>
-        <Toast style={{'z-index': 10000}} ref={(el) => this.toast = el} />
+        <Toast style={{zIndex: 10000}} ref={(el) => this.toast = el} />
         {this.props.loading ? <div style={{paddingTop: '50px'}}><ProgressSpinner style={{width: '100%'}}/></div> : 
           <div className="p-lg-12 p-d-flex p-flex-wrap p-flex-column p-flex-lg-row">
           {this.props.sems.map((data, index) => {
