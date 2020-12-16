@@ -76,7 +76,7 @@ class AppProfile extends Component {
           })}
         >
           <li>
-            <button className="p-link" onClick={() => this.onClick('displayPosition', 'top-left')} >
+            <button className="p-link" onClick={() => this.onClick('displayPosition', 'left')} >
               <i className="pi pi-fw pi-user" />
               <span>Account</span>
             </button>

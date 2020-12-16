@@ -35,7 +35,7 @@ export class AppTopbar extends Component {
         </div>
         <div className="layout-topbar-icons">
          
-          <button className="p-link" onClick={() => this.onClick('displayBasic', 'top-right')} >
+          <button className="p-link"  >
             
             <span className="layout-topbar-item-text">Inbox</span>
             <span className="layout-topbar-icon pi pi-fw pi-inbox" />
