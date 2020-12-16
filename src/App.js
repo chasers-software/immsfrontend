@@ -125,8 +125,11 @@ class App extends Component {
         {
           label: "Statistics",
           icon: "pi pi-fw pi-chart-bar",
+          command: () => {
+            window.location = "#/statistics";
+          }
+
         },
-        
         {
           label: "Log Out",
           icon: "pi pi-fw pi-sign-out",

@@ -295,11 +295,11 @@ class AdminMain extends Component {
         // );
 
         return (<Fragment>
-            <Toast ref={(el) => this.toast = el} />
+            <Toast style={{'z-index': 10000}} ref={(el) => this.toast = el} />
             {this.props.loading ?  <div style={{paddingTop: '50px'}}><ProgressSpinner style={{width: '100%'}}/></div> :
             <div className="datatable-crud-demo">
             <div className="card">
-                <Toolbar className="p-mb-4" left={this.leftToolbarTemplate} right={this.rightToolbarTemplate}></Toolbar>
+                <Toolbar className="p-mb-4" style={{marginTop: '20px'}} left={this.leftToolbarTemplate} right={this.rightToolbarTemplate}></Toolbar>
                 {/* selection={this.state.selectedTeachers} onSelectionChange={(e) => this.setState({ selectedTeachers: e.value })} */}
                 <DataTable ref={(el) => this.dt = el} value={this.props.teachers}
                     dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}

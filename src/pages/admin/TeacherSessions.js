@@ -185,7 +185,7 @@ class TeacherSessions extends Component {
                                           <span className="p-tag p-badge-secondary p-tag-rounded">{data.group}</span>
                                           <p className="p-m-0" style={{ lineHeight: "1.5" }}></p>
                                         </Card> */}
-                <Toolbar className="p-mb-4" left={this.leftToolbarTemplate}></Toolbar>
+                <Toolbar style={{marginTop: '20px'}} className="p-mb-4" left={this.leftToolbarTemplate}></Toolbar>
                 <div className="p-lg-12 p-d-flex p-flex-wrap p-flex-column p-flex-lg-row">
                 {this.props.teacherClassValues.length === 0 ? null : this.props.teacherClassValues[this.props.teacherIndex].data.map((data, index) => {
                                 return (<Card key={index} title={data.subject_code} subTitle={data.title} style={{ width: "20em" }}
