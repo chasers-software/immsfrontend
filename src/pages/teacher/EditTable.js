@@ -95,7 +95,7 @@ class DataTableEdit extends Component {
                     <div style={{padding: "10px 0", display: "flex", justifyContent: "flex-end"}}>
                         <Button label="Confirm & Submit" onClick={this.onMarksSubmitHandler}/>
                     </div>
-                    <DataTable value={this.state.data} editMode="cell" className="editable-cells-table" header="Data">
+                    <DataTable value={this.state.data} editMode="cell" className="editable-cells-table" header={this.props.activeClass ? "Student Data for Section "+this.props.activeClass.slice(0,6)+" of Subject with Subjcect Code : "+this.props.activeClass.slice(-5,) : null}>
                         <Column field="username" header="RollNo"></Column>
                         <Column field="full_name" header="Name"></Column>
                         <Column field="theory_marks" header="Assessment" editor={(props) => this.AssessmentEditor('data', props)}></Column>

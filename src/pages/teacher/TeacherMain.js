@@ -60,7 +60,7 @@ class MainDashTeacher extends React.Component {
                                             className="p-shadow-8 p-mb-3 p-mr-3" footer={<Button style={{width: "100%"}} label="View"
                                             onClick={() => this.onCardSelectHandler(data)}/>}>
                                           <span style={{margin: "0 1em 0 0"}} className="p-tag p-badge-secondary p-tag-rounded">{data.section_code.slice(0,-2)}</span>
-                                          <span className="p-tag p-badge-secondary p-tag-rounded">{data.section_code.slice(-2,-1)}</span>
+                                          <span className="p-tag p-badge-secondary p-tag-rounded">{data.section_code.slice(-2,)}</span>
                                           <p className="p-m-0" style={{ lineHeight: "1.5" }}></p>
                                         </Card>)})}
           {/* {{{<CourseCard title="PUC CT652" subTitle="Database Management System" section="074BCT"/>

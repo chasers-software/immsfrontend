@@ -54,3 +54,9 @@ export const resetAdminState = (value)=>{
         type: actionTypes.RESET_ADMIN_DEFAULTS
     }
 }
+
+export const resetAdminTeacherClass = (value)=>{
+    return {
+        type: actionTypes.RESET_ADMIN_TEACHER_CLASS_VALUES
+    }
+}

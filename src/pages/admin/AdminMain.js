@@ -24,12 +24,13 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import * as actions from '../../store/actions/admin';
+import * as uris from '../../store/uris';
 import './AdminMain.css';
 
 class AdminMain extends Component {
     emptyTeacher = {
-        full_name: '',
         username: '',
+        full_name: '',
         email: '',
         phone_no: '',
         program_code: ''
@@ -106,22 +107,42 @@ class AdminMain extends Component {
     saveTeacher() {
         let state = { submitted: true };
         console.log(this.state.teacher)
-        if (this.state.teacher.full_name.trim()) {
-            let teachers = [...this.props.teachers];
-            let teacher = {...this.state.teacher};
-            let toastMsg = null
+        if (this.state.teacher.full_name && this.state.teacher.email && this.state.teacher.phone_no && this.state.teacher.program_code ) {
+            // let teachers = [...this.props.teachers];
+            // let teacher = {...this.state.teacher};
+            let toastMsg = null;
+            let method = null;
             if (this.state.teacher.username) {
-                const index = this.findIndexByUsername(this.state.teacher.username);
-
-                teachers[index] = teacher;
+                // const index = this.findIndexByUsername(this.state.teacher.username);
+                method = 'PATCH';
+                // teachers[index] = teacher;
                 toastMsg = 'Teacher Updated';
             }
             else {
-                teacher.username = this.createId();
-                teacher.image = 'teacher-placeholder.svg';
-                teachers.push(teacher);
+                // teachers.push(teacher);
+                method = 'POST';
                 toastMsg = 'Teacher Created';
             }
+            fetch(uris.FETCH_TEACHER_LIST, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    // 'Authorization': 'Bearer '+this.props.token
+                },
+                body: JSON.stringify(this.state.teacher)
+            })
+                .then(fetch(uris.FETCH_TEACHER_LIST, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // 'Authorization': 'Bearer '+this.props.token
+                    }
+                })
+                    .then(res => res.json())
+                    .then(res => {console.log(res);
+                                this.props.onSetTeachers(res.data)})
+                    .catch(err => console.log("Teacher err", err)))
+                .catch(err => console.log("Teacher err", err))
             this.toast.show({ severity: 'success', summary: 'Successful', detail: toastMsg, life: 3000 });
 
             state = {
@@ -129,8 +150,6 @@ class AdminMain extends Component {
                 teacherDialog: false,
                 teacher: this.emptyTeacher
             };
-
-            this.props.setTeachers(teachers);
         }
 
         this.setState(state);
@@ -304,7 +323,7 @@ class AdminMain extends Component {
                 <div className="p-field">
                     <label htmlFor="full_name">Name</label>
                     <InputText id="full_name" value={this.state.teacher.full_name} onChange={(e) => this.onInputChange(e, 'full_name')} required autoFocus className={classNames({ 'p-invalid': this.state.submitted && !this.state.teacher.full_name })} />
-                    {this.state.submitted && !this.state.teacher.name && <small className="p-invalid">Name is required.</small>}
+                    {this.state.submitted && !this.state.teacher.full_name && <small className="p-invalid">Name is required.</small>}
                 </div>
                  <div className="p-field">
                     <label htmlFor="email">Email</label>
@@ -314,12 +333,12 @@ class AdminMain extends Component {
                  <div className="p-field">
                     <label htmlFor="phone_no">Phone No:</label>
                     <InputText id="phone_no" value={this.state.teacher.phone_no} onChange={(e) => this.onInputChange(e, 'phone_no')} required autoFocus className={classNames({ 'p-invalid': this.state.submitted && !this.state.teacher.phone_no })} />
-                    {this.state.submitted && !this.state.teacher.phone_no && <small className="p-invalid">phone_no is required.</small>}
+                    {this.state.submitted && !this.state.teacher.phone_no && <small className="p-invalid">Phone No is required.</small>}
                 </div>
                 <div>
-                    <label htmlFor="program_code">program_code</label>
+                    <label htmlFor="Department">Department</label>
                     <Dropdown value={{program_code: this.state.teacher.program_code}} options={this.program_codes} onChange={this.onCityChange} optionLabel="program_code" required placeholder="Select a program_code"/>
-                    {this.state.submitted && !this.state.teacher.program_code && <small className="p-invalid">program_code is required.</small>}
+                    {this.state.submitted && !this.state.teacher.program_code && <small className="p-invalid">Department is required.</small>}
                 </div>
 {/*                     
                 <div className="p-field">

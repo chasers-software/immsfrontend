@@ -4,6 +4,7 @@ import { Route } from "react-router-dom";
 import MainDashTeacher from './TeacherMain';
 import DataTableView from './ViewTable';
 import DataTableEdit from './EditTable';
+import BarChart from './BarChart';
 import * as actions from '../../store/actions/teacher';
 import * as uris from '../../store/uris';
 
@@ -31,6 +32,7 @@ class Teacher extends Component{
             	<Route path="/" exact component={MainDashTeacher}/>
             	<Route path="/marksview" exact component={DataTableView}/>
             	<Route path="/marksentry" exact component={DataTableEdit}/>
+            	<Route path="/statistics" exact component={BarChart}/>
       		</div>
 		)
 	}
