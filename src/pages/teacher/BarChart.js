@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Chart } from 'primereact/chart';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import * as actions from '../../store/actions/teacher';
 import '../../App.css';
 
 class BarChart extends Component {
@@ -9,13 +11,13 @@ class BarChart extends Component {
 
         this.state = {
             assessmentData: null,
-            practicalData: null
+            practicalData: null,
+            max: []
         }
-
-        this.options = this.getLightTheme();
     }
 
     componentDidMount(){
+        if (this.props.activeClass === null)  this.props.setInfoBox({summary:"Info Message", detail: 'No Active Class Selected!!!'});
         if (this.props.classIndex !== null) {
             let data = this.props.classStudentValues[this.props.classIndex].data
             let count = { assessment : [], practical : []}
@@ -33,13 +35,12 @@ class BarChart extends Component {
                     count.practical[`${pval}`] = 1
                 }
             }
-            console.log(count)
             this.setState({
                 assessmentData: {
                     labels: Object.keys(count.assessment),
                     datasets: [
                         {
-                            label: 'Frequency BarGraph for '+this.props.activeClass+' Assessment Marks',
+                            label: 'Frequency of Assessment Marks',
                             backgroundColor: '#42A5F5',
                             data: Object.values(count.assessment)
                         }
@@ -49,17 +50,19 @@ class BarChart extends Component {
                     labels: Object.keys(count.practical),
                     datasets: [
                         {
-                            label: 'Frequency BarGraph for '+this.props.activeClass+' Practical Marks',
+                            label: 'Frequency of Practical Marks',
                             backgroundColor: '#42A5F5',
                             data: Object.values(count.practical)
                         }
                     ]
-                }
+                },
+                max: [Math.max(...Object.values(count.assessment)), Math.max(...Object.values(count.practical))]
             })
         }
     }
 
-    getLightTheme() {
+    getOption(max) {
+        console.log(max)
         return {
             legend: {
                 labels: {
@@ -74,23 +77,26 @@ class BarChart extends Component {
                 }],
                 yAxes: [{
                     ticks: {
+                        min: 0,
+                        max: max,
                         fontColor: '#495057'
                     }
                 }]
             }
-        };
-    }
+        }
+    };
 
     render() {
-        const basicOptions = this.options;
-        //TODO: Titles
         return (
             <div>
+                {this.props.infoBox ? <Redirect to='/'/> : null}
+                <h2>Frequency BarGraph for {this.props.activeClass} Assessment Marks</h2>
                 <div className="card" style={{padding: '25px'}}>
-                    <Chart type="bar" data={this.state.assessmentData} options={basicOptions} />
-                </div>
+                    <Chart type="bar" data={this.state.assessmentData} options={this.getOption(this.state.max[0]+1)} />
+                </div><hr/>
+                <h2>Frequency BarGraph for {this.props.activeClass} Practical Marks</h2>
                 <div className="card" style={{padding: '25px'}}>
-                    <Chart type="bar" data={this.state.practicalData} options={basicOptions} />
+                    <Chart type="bar" data={this.state.practicalData} options={this.getOption(this.state.max[1]+1)} />
                 </div>
             </div>
         )
@@ -101,8 +107,15 @@ const mapStateToProps = state => {
     return {
         activeClass: state.teacher.activeClass,
         classStudentValues: state.teacher.classStudentValues,
-        classIndex: state.teacher.activeClassStudentValuesIndex
+        classIndex: state.teacher.activeClassStudentValuesIndex,
+        infoBox: state.teacher.infoBox
     };
 };
 
-export default connect( mapStateToProps, )( BarChart );
+const mapDispatchToProps = dispatch => {
+    return {
+        setInfoBox: (value) => dispatch( actions.setInfoBox(value) )
+    };
+};
+
+export default connect( mapStateToProps, mapDispatchToProps)( BarChart );
