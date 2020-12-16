@@ -61,3 +61,26 @@
   display: none;
 }
 
+
+.customgrid {
+  display: flex;
+  padding-top: 10vh;
+
+  height: 100vh;  
+  background-image: url(../images/bgR.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+
+}
+.bigText {
+  font-weight: 900;
+  
+  font-size: 5rem;
+  color:#ffffff;
+  text-align: left;
+  padding-left: 7vw;
+  padding-top: 7vh;
+  -webkit-text-stroke-width: 4px;
+  -webkit-text-stroke-color: rgb(16, 170, 50);
+  
+}

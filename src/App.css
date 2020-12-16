@@ -1,0 +1,17 @@
+.textfix {
+    text-align: left !important;
+}
+.accounttextleft {
+    text-align: left !important;
+}
+
+element.style {
+    z-index: 0 !important;
+}
+
+.fixelementstyle {
+    z-index: 0 !important;
+}
+.itstyle {
+    color: red;
+}

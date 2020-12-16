@@ -3,6 +3,7 @@ import "./Login.scss";
 import { connect } from 'react-redux';
 import * as actions from '../store/actions/auth';
 import tulogo from "../images/tulogo.png";
+import 'primeflex/primeflex.css';
 
 class Login extends React.Component{
   constructor (props){
@@ -18,7 +19,12 @@ class Login extends React.Component{
   }
   render() {
       return (
-        <div className="login-page">
+        <div className="customgrid">
+    <div className="p-col bigText ">
+      Internal Marks Management System
+    </div>
+    <div className="p-col">
+      <div className="login-page">
           <div className="form">
               <img
             src={tulogo}
@@ -37,6 +43,11 @@ class Login extends React.Component{
             </form>
           </div>
         </div>
+    </div>
+    
+</div>
+
+        
       );
   }
 }

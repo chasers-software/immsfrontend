@@ -23,7 +23,9 @@ import "./Login/Login";
 import Login from "./Login/Login";
 import LogOut from './pages/LogOut';
 import tulogo from "./images/tulogo.png";
+import pcampus from "./images/pcampus.jpg";
 import "primereact/resources/themes/saga-green/theme.css";
+import "./Layout/layout.scss"
 //import { MainDashTeacher } from "./Components/TeacherMain";
 
 
@@ -256,7 +258,7 @@ class App extends Component {
 
           <div ref={(el) => (this.sidebar = el)} className={sidebarClassName} onClick={this.onSidebarClick}>
             <div className="layout-logo">
-              <img alt="Logo" width="50px" src={tulogo}/>
+              <img alt="Logo" width="250px" src={pcampus}/>
             </div>
             <AppProfile />
             <AppMenu model={this.menu} onMenuItemClick={this.onMenuItemClick} />

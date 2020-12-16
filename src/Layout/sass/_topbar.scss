@@ -1,26 +1,60 @@
 .layout-topbar {
+    display: flex;
+justify-content: flex-start;
+align-content: baseline;
   position: fixed;
-  height: 50px;
-  padding: .7em 1.5em 0em 1.5em;
+  height: 65px;
+  padding: .9em 1.5em 0.9em 1.5em;
   color: #ffffff;
-  z-index: 999;
+
   right: 0;
+  box-shadow: 0 2px 15px -6px #777; 
   @include clearfix();
   @include linear-gradient-left($topbarLeftBgColor,$topbarRightBgColor);
   @include transition(left $transitionDuration);
+    
+  .layout-heading {
+      flex-grow: 0;
+      padding: 0;
+    order: 3;
+        color: $topbarItemColor;
+       
+    
+    }
+    p {
+        margin-left: 2vw;
+        
+        font-weight: bold;
+        color: green;
+        font-size: 30px;
+        margin-top: 0%;
+    }
+    .pcampus {
+        order: 2;
+        margin-top: -7px;
+    
+ 
+    
+    }
+
+   
 
   .layout-topbar-icons {
-      float: right;
-      display: block;
+      flex-grow: 2;
+   
+      text-align: right;
+      outline: none;
+   order: 4;
+      display: inline-block;
       -moz-animation-duration: .5s;
       -webkit-animation-duration: .5s;
       animation-duration: .5s;
 
       button {
-          position: relative;
+      
           color: $topbarItemColor;
           margin-left: 20px;
-          display: inline-block;
+      
           text-decoration: none;
           @include transition(color $transitionDuration);
           overflow: visible;
@@ -54,62 +88,13 @@
               }
           }
       }
-
-      .layout-topbar-search {
-          padding: 0;
-          position: relative;
-          display: inline-block;
-          top: -4px;
-
-          input {
-              display: inline-block;
-              border: 0 none;
-              font-size: $fontSize;
-              background: transparent;
-              border-bottom: 2px solid $topbarSearchInputBorderBottomColor;
-              outline: 0 none;
-              -webkit-box-shadow: none;
-              box-shadow: none;
-              color: #000000;
-              width: 100px;
-              padding: 1px 20px 1px 1px;
-              margin: 0px;
-              @include border-radius(2px);
-
-              &::-webkit-input-placeholder { color:$topbarSearchInputColor; opacity: .7; @include transition(opacity $transitionDuration);}
-              &:-moz-placeholder { color:$topbarSearchInputColor; opacity: .7; @include transition(opacity $transitionDuration);}
-              &::-moz-placeholder { color:$topbarSearchInputColor; opacity: .7; @include transition(opacity $transitionDuration);}
-              &:-ms-input-placeholder { color:$topbarSearchInputColor; opacity: .7; @include transition(opacity $transitionDuration);}
-          }
-
-          .layout-topbar-search-icon {
-              font-size: 18px;
-              position: absolute;
-              top: -1px;
-              right: 0px;
-              color: $topbarSearchInputColor;
-          }
-
-          &:hover {
-              input {
-                  border-bottom-color: $topbarItemHoverColor;
-                  &::-webkit-input-placeholder { opacity: 1 }
-                  &:-moz-placeholder {opacity: 1}
-                  &::-moz-placeholder {opacity: 1}
-                  &:-ms-input-placeholder {opacity: 1}
-              }
-
-              .layout-topbar-search-icon {
-                  color: $topbarItemHoverColor;
-              }
-          }
-      }
   }
 
   .layout-menu-button {
       cursor: pointer;
       outline: none;
-      display: inline-block;
+      order: 1;
+    
       text-decoration: none;
       color: $topbarItemColor;
       @include transition(color $transitionDuration);

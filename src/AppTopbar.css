@@ -1,0 +1,22 @@
+.itstyle {
+    display: flex;
+    
+    justify-content: space-between;
+    align-content: baseline;
+    background-color: rgb(243, 234, 234);
+}
+.inboxtext {
+    font-weight: 500;
+    padding-left: 5px;
+    padding-top: 13px;
+    font-size: 1rem;
+}
+.timeago {
+    font-weight: 500;
+    font-size: 1em;
+    padding-left: 10px;
+    padding-top: 22px;
+}
+.elevate {
+  z-index: 100000;
+}
