@@ -43,7 +43,7 @@ class DataTableView extends Component {
         let recordDatas = this.props.classStudentValues[this.props.classIndex];
         return (
             <Fragment>
-                {this.props.infoBox ? <Redirect to='/'/> : null}
+                {this.props.infoBox ? <Redirect to='/dashboard'/> : null}
                 {this.props.loading ? <div style={{paddingTop: '50px'}}><ProgressSpinner style={{width: '100%'}}/></div> :
                 <Fragment>
                     {recordDatas ? (

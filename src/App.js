@@ -102,10 +102,17 @@ class App extends Component {
     if (this.props.role === 'teacher') {
       this.menu = [
         {
-          label: "Teacher Dashboard",
-          icon: "pi pi-fw pi-home",
+          label: "Teacher Timeline",
+          icon: "pi pi-fw pi-globe",
           command: () => {
             window.location = "#/";
+          }
+        },
+        {
+          label: "Teacher DashBoard",
+          icon: "pi pi-fw pi-home",
+          command: () => {
+            window.location = "#/dashboard";
           }
         },
         {
@@ -123,7 +130,7 @@ class App extends Component {
           }
         },
         {
-          label: "Statistics",
+          label: "Score Statistics",
           icon: "pi pi-fw pi-chart-bar",
           command: () => {
             window.location = "#/statistics";

@@ -5,6 +5,7 @@ import MainDashTeacher from './TeacherMain';
 import DataTableView from './ViewTable';
 import DataTableEdit from './EditTable';
 import BarChart from './BarChart';
+import Timeline from './Timeline';
 import * as actions from '../../store/actions/teacher';
 import * as uris from '../../store/uris';
 
@@ -29,7 +30,8 @@ class Teacher extends Component{
 	render(){
 		return (
 			<div className="layout-main">
-            	<Route path="/" exact component={MainDashTeacher}/>
+            	<Route path="/" exact component={Timeline}/>
+            	<Route path="/dashboard" exact component={MainDashTeacher}/>
             	<Route path="/marksview" exact component={DataTableView}/>
             	<Route path="/marksentry" exact component={DataTableEdit}/>
             	<Route path="/statistics" exact component={BarChart}/>
