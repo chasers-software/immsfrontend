@@ -22,7 +22,6 @@ import "./Layout/layout.scss";
 import "./Login/Login";
 import Login from "./Login/Login";
 import LogOut from './pages/LogOut';
-import tulogo from "./images/tulogo.png";
 import pcampus from "./images/pcampus.jpg";
 import "primereact/resources/themes/saga-green/theme.css";
 import "./Layout/layout.scss"
@@ -127,13 +126,7 @@ class App extends Component {
           label: "Statistics",
           icon: "pi pi-fw pi-chart-bar",
         },
-        // {
-        //   label: "Anything Else",
-        //   icon: "pi pi-fw pi-file",
-        //   items: [
-        //     { label: "Empty Page", icon: "pi pi-fw pi-circle-off", to: "/empty" }
-        //   ]
-        // },
+        
         {
           label: "Log Out",
           icon: "pi pi-fw pi-sign-out",

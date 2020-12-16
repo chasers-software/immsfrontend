@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
-import Panel from 'primereact/panel';
-import pcampuslogo from "./images/pcampus.jpg";
+//import Panel from 'primereact/panel';
+//import pcampuslogo from "./images/pcampus.jpg";
 import "./AppTopbar.css";
 
 export class AppTopbar extends Component {
