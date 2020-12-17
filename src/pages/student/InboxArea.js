@@ -25,7 +25,7 @@ class Inbox extends React.Component{
   <div className="p-grid styleInbox p-mt-4 ">
       {this.state.data.map((dat, index) => {
           return (
-            <div key={index} className="p-col itstyle">
+            <div key={index} className="p-col-12 itstyle">
             <img src="https://i.imgur.com/IqICwKK.jpg" width="45px" height="45px" alt=""/>                    
              <div className="inboxtext">{dat.message}</div>
             {/* <div className="timeago"> 3min Ago</div> */}
