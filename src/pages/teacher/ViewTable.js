@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
+import { Button } from 'primereact/button';
 import {setAuthRedirect} from '../../store/actions/auth';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import * as uris from '../../store/uris';
@@ -11,6 +12,10 @@ import * as actions from '../../store/actions/teacher';
 import './DataTable.css';
 
 class DataTableView extends Component {
+    constructor(props){
+        super(props);
+        this.exportCSV = this.exportCSV.bind(this);
+    }
     componentDidMount() {
         if (!this.props.activeClass) this.props.setInfoBox({summary:"Info Message", detail: 'No Active Class Selected!!!'});
         this.props.setRedirectNULL();
@@ -39,6 +44,10 @@ class DataTableView extends Component {
         }
     }
 
+    exportCSV() {
+        this.dt.exportCSV();
+    }
+
     render() {
         let recordDatas = this.props.classStudentValues[this.props.classIndex];
         return (
@@ -52,7 +61,8 @@ class DataTableView extends Component {
                         
                         <div className="card">
                             <h3 style={{color: '#B22222'}}>Marks Summary View : Assessment and Practical Marks are NOT Editable</h3>
-                            <DataTable value={recordDatas.data} header={"Student Data for Section "+this.props.sectionSubject[0]+" of Subject with Subject Code : "+this.props.sectionSubject[1]}>
+                            <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={this.exportCSV} />
+                            <DataTable ref={(el) => this.dt = el}  value={recordDatas.data} header={"Student Data for Section "+this.props.sectionSubject[0]+" of Subject with Subject Code : "+this.props.sectionSubject[1]}>
                                 <Column field="username" header="RollNo" sortable></Column>
                                 <Column field="full_name" header="Name"></Column>
                                 <Column field="theory_marks" header="Assessment" sortable></Column>
