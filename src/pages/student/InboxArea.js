@@ -23,45 +23,16 @@ class Inbox extends React.Component{
           return(
               
   <div className="p-grid styleInbox p-mt-4 ">
-                       
-                        <div className="p-col itstyle">
-                            <img src="https://i.imgur.com/IqICwKK.jpg" width="45px" height="45px" alt=""/>                    
-                             <div className="inboxtext">
-                            Aman Shakya Updated DBMS Assessment Mark.
-                            </div>
-                            <div className="timeago"> 3min Ago</div>
-                        </div>
-                        <div className="p-col itstyle">
-                            <img src="https://i.imgur.com/IqICwKK.jpg" width="45px" height="45px" alt=""/>                    
-                             <div className="inboxtext">
-                            Aman Shakya Updated DBMS Assessment Mark.
-                            </div>
-                            <div className="timeago"> 3min Ago</div>
-                        </div>
-                        <div className="p-col itstyle">
-                            <img src="https://i.imgur.com/IqICwKK.jpg" width="45px" height="45px" alt=""/>                    
-                             <div className="inboxtext">
-                            Aman Shakya Updated DBMS Assessment Mark.
-                            </div>
-                            <div className="timeago"> 3min Ago</div>
-                        </div>
-                        <div className="p-col itstyle">
-                            <img src="https://i.imgur.com/IqICwKK.jpg" width="45px" height="45px" alt=""/>                    
-                             <div className="inboxtext">
-                            Aman Shakya Updated DBMS Assessment Mark.
-                            </div>
-                            <div className="timeago"> 3min Ago</div>
-                        </div>
-                        <div className="p-col itstyle">
-                            <img src="https://i.imgur.com/IqICwKK.jpg" width="45px" height="45px" alt=""/>                    
-                             <div className="inboxtext">
-                            Aman Shakya Updated DBMS Assessment Mark.
-                            </div>
-                            <div className="timeago"> 3min Ago</div>
-                        </div>
-                        
-
-                   </div> 
+      {this.state.data.map((dat, index) => {
+          return (
+            <div key={index} className="p-col itstyle">
+            <img src="https://i.imgur.com/IqICwKK.jpg" width="45px" height="45px" alt=""/>                    
+             <div className="inboxtext">{dat.message}</div>
+            <div className="timeago"> 3min Ago</div>
+        </div>
+          );
+      })}
+  </div> 
           );
       }
   }
