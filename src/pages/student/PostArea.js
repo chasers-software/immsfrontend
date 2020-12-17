@@ -1,37 +1,52 @@
-import React from 'react';
+import React, {Fragment} from 'react';
+import { connect } from 'react-redux';
+import * as uris from '../../store/uris';
 
 class Post extends React.Component{
          constructor(props){
         super(props);
         this.state = {
-            value1: '',
-            value2: ''
+            data: []
         };
     }
-    
+    componentDidMount(){
+        fetch(uris.FETCH_POSTS+'?person_id='+this.props.username, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }})
+            .then(res => res.json())
+            .then(res => {console.log(res);this.setState({data: res.data})})
+            .catch(err => console.log(err));
+    }
       render(){
-          return(
-              <div>       
+          return( 
             <div className="postView p-grid  p-ml-2  p-pt-1 p-shadow-2  ">    
-                <div className="p-col">
+            {this.state.data.map((dat, index) => {
+          return (<Fragment key={index}>
+              <div className="p-col">
                     <div className="p-row p-p-2 fixPadd">
                             <img src="https://i.imgur.com/hLwNrtw.jpg" alt="" width="20px"/> 
-                            Aman Shakya <div className="fixedSUB">DBMS</div>
+                            {dat.full_name}<div className="fixedSUB">{dat.subject}</div>
                     </div>
                     <div className="p-row p-p-2">
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                    </div>
+                        {dat.content}</div>
                 </div>
-                <div className="p-col-1">
+                {/* <div className="p-col-1">
                     3min Ago
-                </div>
+                </div> */}
+          </Fragment>
+          );
+      })}
             </div>
-              </div>
           );
       }
   }
 
-export default Post;
-  
-  
- 
+const mapStateToProps = state => {
+  return {
+    username: state.auth.username   
+  };
+};
+
+export default connect( mapStateToProps, null )( Post );

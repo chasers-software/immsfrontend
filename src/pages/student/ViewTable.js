@@ -15,6 +15,7 @@ class DataTableView extends Component {
     constructor(props){
         super(props);
         this.onRequestRecheck = this.onRequestRecheck.bind(this);
+        this.actionBodyTemplate = this.actionBodyTemplate.bind(this);
     }
     componentDidMount() {
         if (this.props.activeSem === null)  this.props.setInfoBox({summary:"Info Message", detail: 'No Active Semester Selected!!!'});
