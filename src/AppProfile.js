@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import classNames from "classnames";
 import profile1 from "./../src/images/Profile-6.jpg";
-import { Button } from "evergreen-ui";
+import { Button} from "primereact/button";
 import { Dialog } from 'primereact/dialog';
+
 
 
 class AppProfile extends Component {
@@ -50,7 +51,6 @@ class AppProfile extends Component {
     renderFooter(name) {
         return (
             <div>
-                <Button label="Edit" icon="pi pi-times" onClick={() => this.onHide(name)} className="p-button-text" />
                 <Button label="Close" icon="pi pi-check" onClick={() => this.onHide(name)} autoFocus />
             </div>
         );
@@ -83,13 +83,24 @@ class AppProfile extends Component {
           </li>
         </ul>
          <Dialog className="accounttextleft" header="Account Details" visible={this.state.displayPosition} position={this.state.position} style={{ width: '50vw' }} footer={this.renderFooter('displayPosition')} onHide={() => this.onHide('displayPosition')}>
-                  <img src="https://i.imgur.com/IqICwKK.jpg" alt=""/>
-                  <h3>Full Name: Anjil Bishowkarma</h3>
-                  <h4>Email: anjilbis12@gmail.com</h4>
-                  <h4>This is Blank.</h4>
+             
+      
+              <div className="p-grid p-dir-col">
+                <img src="https://i.imgur.com/IqICwKK.jpg" alt=""/>
+                  <div className="p-col  p-dir-rev ">
+                  Full Name: Anjil Bishowkarma
+                    </div>
+                
+                  <div className="p-col">
+                    Roll No: 074BCT505
+                  </div>
+                  
+                </div>
+    
           </Dialog>
+          </div>
+         
           
-      </div>
     );
   }
 }
