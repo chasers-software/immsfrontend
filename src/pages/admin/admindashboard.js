@@ -117,7 +117,7 @@ onSemesterChange(e) {
                                 <Column field="title" header="Subject Name"></Column>
                                 <Column field="theory_marks" header="Assessment"></Column>
                                 <Column field="practical_marks" header="Practical"></Column>
-                                <Column body={this.actionBodyTemplate}></Column>
+                               
                             </DataTable>
                         </div>
                         </div>:null}
