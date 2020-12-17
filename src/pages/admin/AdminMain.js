@@ -328,10 +328,10 @@ class AdminMain extends Component {
                     header={header}>
 
                     {/* <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column> */}
-                    <Column field="username" header="UserName" sortable></Column>
-                    <Column field="full_name" header="Full Name" sortable></Column>
-                    <Column field="email" header="Email" ></Column>
-                    <Column field="phone_no" header="Phone No"  ></Column>
+                    <Column field="username" style={{width: '150px'}} header="UserName" sortable></Column>
+                    <Column field="full_name" style={{width: '150px'}} header="Full Name" sortable></Column>
+                    <Column field="email" style={{width: '350px'}} header="Email" ></Column>
+                    <Column field="phone_no" style={{width: '120px'}} header="Phone No"  ></Column>
                     <Column field="dept_name" header="Department" sortable></Column>
                     <Column body={this.actionBodyTemplate}></Column>
                 </DataTable>
