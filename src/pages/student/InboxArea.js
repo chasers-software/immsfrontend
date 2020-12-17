@@ -28,7 +28,7 @@ class Inbox extends React.Component{
             <div key={index} className="p-col itstyle">
             <img src="https://i.imgur.com/IqICwKK.jpg" width="45px" height="45px" alt=""/>                    
              <div className="inboxtext">{dat.message}</div>
-            <div className="timeago"> 3min Ago</div>
+            {/* <div className="timeago"> 3min Ago</div> */}
         </div>
           );
       })}
