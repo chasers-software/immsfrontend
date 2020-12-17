@@ -14,5 +14,7 @@ export const FETCH_CLASS_STUDENT_LIST = baseURI+'/api/marks/lecture/';
 export const FETCH_DEPARTMENT_LIST = baseURI+'/api/dept/';
 // export const POST_MARKS = baseURI+'/api/record/class/';
 export const FETCH_STUDENT_SEM_MARKS = baseURI+'/api/marks/student/';
+export const FETCH_STUDENT_DETAILS = baseURI+'/api/user/student/';
+export const REQUEST_STUDENT_MARKS_RECHECK = baseURI;
 // export const STUDENT_MARKS = baseURI+'/api/marks/';
 // export const FETCH_TEACHER_LIST = baseURI+'/api/users?role=teacher';

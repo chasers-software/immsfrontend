@@ -30,8 +30,8 @@ class Teacher extends Component{
 	render(){
 		return (
 			<div className="layout-main">
-            	<Route path="/" exact component={Timeline}/>
-            	<Route path="/dashboard" exact component={MainDashTeacher}/>
+            	<Route path="/" exact component={MainDashTeacher}/>
+            	<Route path="/timeline" exact component={Timeline}/>
             	<Route path="/marksview" exact component={DataTableView}/>
             	<Route path="/marksentry" exact component={DataTableEdit}/>
             	<Route path="/statistics" exact component={BarChart}/>

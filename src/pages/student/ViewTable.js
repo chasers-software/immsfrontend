@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
+import { Button } from 'primereact/button';
 // import {setAuthRedirect} from '../../store/actions/auth';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import * as uris from '../../store/uris';
@@ -11,6 +12,10 @@ import * as actions from '../../store/actions/student';
 // import './DataTable.css';
 
 class DataTableView extends Component {
+    constructor(props){
+        super(props);
+        this.onRequestRecheck = this.onRequestRecheck.bind(this);
+    }
     componentDidMount() {
         if (this.props.activeSem === null)  this.props.setInfoBox({summary:"Info Message", detail: 'No Active Semester Selected!!!'});
         // this.props.setRedirectNULL();
@@ -46,6 +51,30 @@ class DataTableView extends Component {
         // this.props.setActiveSemIndex(0);
     }
 
+    onRequestRecheck(rowData){
+        fetch(uris.REQUEST_STUDENT_MARKS_RECHECK, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                person_id: this.props.username,
+                subject_id: rowData.subject_id
+            })
+        })
+            .then(res => res.json())
+            .then(res => {this.toast.show({severity: 'info', summary: 'Info"', detail: 'Marks Recheck Request Sent!!!'})})
+            .catch(err => console.log(err))
+    }
+
+    actionBodyTemplate(rowData) {
+        return (
+            <React.Fragment>
+                <Button label="Request Recheck" className="p-button-rounded p-button-danger" onClick={() => this.onRequestRecheck(rowData)}/>
+            </React.Fragment>
+        );
+    }
+
     render() {
         let recordDatas = this.props.semSubjectValues[this.props.semIndex];
         return (
@@ -64,6 +93,7 @@ class DataTableView extends Component {
                                 <Column field="title" header="Subject Name"></Column>
                                 <Column field="theory_marks" header="Assessment"></Column>
                                 <Column field="practical_marks" header="Practical"></Column>
+                                <Column body={this.actionBodyTemplate}></Column>
                             </DataTable>
                         </div>
                         </div>

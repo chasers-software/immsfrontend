@@ -103,17 +103,17 @@ class App extends Component {
     if (this.props.role === 'teacher') {
       this.menu = [
         {
-          label: "Teacher Timeline",
-          icon: "pi pi-fw pi-globe",
+          label: "Teacher DashBoard",
+          icon: "pi pi-fw pi-home",
           command: () => {
             window.location = "#/";
           }
         },
         {
-          label: "Teacher DashBoard",
-          icon: "pi pi-fw pi-home",
+          label: "Teacher Timeline",
+          icon: "pi pi-fw pi-globe",
           command: () => {
-            window.location = "#/dashboard";
+            window.location = "#/timeline";
           }
         },
         {
@@ -172,6 +172,13 @@ class App extends Component {
       ];
     } else if (this.props.role === 'admin') {
       this.menu = [
+        {
+          label: "Admin Home",
+          icon: "pi pi-fw pi-home",
+          command: () => {
+            window.location = "#/admindashboard";
+          }
+        },
         {
           label: "Admin Dashboard",
           icon: "pi pi-fw pi-home",

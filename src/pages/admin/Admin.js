@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Route } from "react-router-dom";
 import AdminMain from './AdminMain';
 import TeacherSessions from './TeacherSessions';
+import AdminDashboard from './AdminDashboard';
 import * as actions from '../../store/actions/admin';
 import * as uris from '../../store/uris';
 
@@ -25,6 +26,7 @@ class Admin extends Component{
 			<div className="layout-main">
             	<Route path="/" exact component={AdminMain}/>
             	<Route path="/teachersessions" exact component={TeacherSessions}/>
+            	<Route path="/admindashboard" exact component={AdminDashboard}/>
             	{/* <Route path="/marksview" exact component={DataTableView}/>
             	<Route path="/marksentry" exact component={DataTableEdit}/> */}
       		</div>

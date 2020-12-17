@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import * as actions from '../../store/actions/teacher';
 import "./Timeline.css";
 
 import Inbox from './InboxArea';
 import Post from './PostArea';
 
 class Timeline extends React.Component {
-  render() {
+    componentDidMount(){        
+        if (this.props.activeClass === null)  this.props.setInfoBox({summary:"Info Message", detail: 'No Active Class Selected!!!'});
+    }
+    render() {
     return (
+        <Fragment>
+            {this.props.infoBox ? <Redirect to='/'/> : null}
         <div className="p-fluid wholeStyle">
            <div className="p-grid p-lg-12">
                <div className="p-col-8">
@@ -20,8 +28,22 @@ class Timeline extends React.Component {
             </div>
         
         </div>
-        
+        </Fragment>
     );
     }
 }
-export default Timeline;
+
+const mapStateToProps = state => {
+    return {
+        activeClass: state.teacher.activeClass,
+        infoBox: state.teacher.infoBox
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setInfoBox: (value) => dispatch( actions.setInfoBox(value) )
+    };
+};
+
+export default connect( mapStateToProps, mapDispatchToProps)( Timeline );

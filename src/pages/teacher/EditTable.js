@@ -89,7 +89,7 @@ class DataTableEdit extends Component {
         return (
             <div className="datatable-editing">
                 <Toast ref={(el) => this.toast = el} />
-                {this.props.infoBox ? <Redirect to='/dashboard'/> : null}
+                {this.props.infoBox ? <Redirect to='/'/> : null}
                 <div className="card">
                     <h3 style={{color: '#228B22'}}>Marks Editing View : Assessment and Practical Marks are Editable</h3>
                     <div style={{padding: "10px 0", display: "flex", justifyContent: "flex-end"}}>

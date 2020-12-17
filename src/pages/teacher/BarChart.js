@@ -89,7 +89,7 @@ class BarChart extends Component {
     render() {
         return (
             <div>
-                {this.props.infoBox ? <Redirect to='/dashboard'/> : null}
+                {this.props.infoBox ? <Redirect to='/'/> : null}
                 <h1 style={{color: '#1E90FF'}}>{this.props.sectionSubject[0]} Assessment Marks</h1>
                 <div className="card" style={{padding: '25px'}}>
                     <Chart type="bar" data={this.state.assessmentData} options={this.getOption(this.state.max[0]+1)} />
