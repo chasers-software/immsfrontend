@@ -3,6 +3,7 @@ import "./Login.scss";
 import { connect } from 'react-redux';
 import * as actions from '../store/actions/auth';
 import tulogo from "../images/tulogo.png";
+import { Toast } from 'primereact/toast';
 import 'primeflex/primeflex.css';
 
 class Login extends React.Component{
@@ -16,9 +17,14 @@ class Login extends React.Component{
     let username = document.getElementById('username').value;
     let password = document.getElementById('password').value;
     this.props.onSignIn(username, password);
+    if (this.props.error !== null) {
+      this.toast.show({severity: 'info', summary: 'Login Failed!!', detail: 'Username or Password Incorrect!!!!'});
+      this.props.setError(null);
+    }
   }
   render() {
-      return (
+      return (<div>        
+        <Toast style={{zIndex: 10000}} ref={(el) => this.toast = el} />
         <div className="customgrid">
     <div className="p-col bigText ">
       Internal Marks Management System
@@ -46,7 +52,7 @@ class Login extends React.Component{
     </div>
     
 </div>
-
+</div>
         
       );
   }
@@ -63,7 +69,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-      onSignIn: (username, password) => dispatch(actions.auth(username, password))
+      onSignIn: (username, password) => dispatch(actions.auth(username, password)),
+      setError: (value) => dispatch(actions.authFail(value))
   }
 };
 

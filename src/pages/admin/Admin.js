@@ -16,8 +16,7 @@ class Admin extends Component{
             }
         })
             .then(res => res.json())
-            .then(res => {console.log(res);
-                        this.props.onSetTeachers(res.data)})
+            .then(res => {this.props.onSetTeachers(res.data)})
             .catch(err => console.log("Teacher err", err))
 	}
 	

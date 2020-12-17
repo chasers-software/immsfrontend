@@ -61,14 +61,18 @@ export const auth = (username, password) => {
         })
             .then(res => res.json())
             .then(res => {
-                // const expirationDate = new Date().getTime() + res.expires * 1000;
-                localStorage.setItem('token', res.token);
-                // localStorage.setItem('expirationDate', expirationDate);
-                localStorage.setItem('id', res.data.user.username);
-                localStorage.setItem('role', ['admin','teacher','student'][res.data.user.role]);
-                dispatch(authSuccess(res.token, res.data.user.username, ['admin','teacher','student'][res.data.user.role], res.data.user.fullname));
-                // dispatch(checkAuthTimeout(res.expires));
-                // dispatch(setAuthRedirect()); // TODO: check and set path
+                if (res.status === 'success'){
+                    // const expirationDate = new Date().getTime() + res.expires * 1000;
+                    localStorage.setItem('token', res.token);
+                    // localStorage.setItem('expirationDate', expirationDate);
+                    localStorage.setItem('id', res.data.user.username);
+                    localStorage.setItem('role', ['admin','teacher','student'][res.data.user.role]);
+                    dispatch(authSuccess(res.token, res.data.user.person_id, ['admin','teacher','student'][res.data.user.role], res.data.user.fullname));
+                    // dispatch(checkAuthTimeout(res.expires));
+                    // dispatch(setAuthRedirect()); // TODO: check and set path
+                } else {
+                    // this.toast.show({severity: 'info', summary: 'Login Failed!!', detail: 'Username or Password Incorrect!!!!'})
+                }
             })
             .catch(err => {
                 dispatch(authFail(err));

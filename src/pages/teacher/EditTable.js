@@ -37,9 +37,9 @@ class DataTableEdit extends Component {
             return
         }
         switch (props.field){
-            case "theory_marks": update = (parseInt(value) >=0 && parseInt(value) <= 20);
+            case "theory_marks": update = (parseInt(value) >=0 && parseInt(value) <= this.props.sectionSubject[2]);
                 break;
-            case "practical_marks": update = (parseInt(value) >=0 && parseInt(value) <= 50);
+            case "practical_marks": update = (parseInt(value) >=0 && parseInt(value) <= this.props.sectionSubject[3]);
                 break;
             default: update = false;
         }
@@ -91,12 +91,12 @@ class DataTableEdit extends Component {
                 <Toast ref={(el) => this.toast = el} />
                 {this.props.infoBox ? <Redirect to='/dashboard'/> : null}
                 <div className="card">
-                    <h3>Marks Editing View : Assessment and Practical Marks are Editable</h3>
+                    <h3 style={{color: '#228B22'}}>Marks Editing View : Assessment and Practical Marks are Editable</h3>
                     <div style={{padding: "10px 0", display: "flex", justifyContent: "flex-end"}}>
                         <Button label="Confirm & Submit" onClick={this.onMarksSubmitHandler}/>
                     </div>
-                    <DataTable value={this.state.data} editMode="cell" className="editable-cells-table" header={this.props.activeClass ? "Student Data for Section "+this.props.activeClass.slice(0,6)+" of Subject with Subjcect Code : "+this.props.activeClass.slice(-5,) : null}>
-                        <Column field="username" header="RollNo"></Column>
+                    <DataTable value={this.state.data} editMode="cell" className="editable-cells-table" header={this.props.activeClass ? "Student Data for Section "+this.props.sectionSubject[0]+" of Subject with Subject Code : "+this.props.sectionSubject[1] : null}>
+                        <Column field="username" header="RollNo" sortable></Column>
                         <Column field="full_name" header="Name"></Column>
                         <Column field="theory_marks" header="Assessment" editor={(props) => this.AssessmentEditor('data', props)}></Column>
                         <Column field="practical_marks" header="Practical" editor={(props) => this.PracticalEditor('data', props)}></Column>
@@ -112,6 +112,7 @@ const mapStateToProps = state => {
         infoBox: state.teacher.infoBox,
         classStudentValues: state.teacher.classStudentValues,
         classIndex: state.teacher.activeClassStudentValuesIndex,
+        sectionSubject: state.teacher.activeSectionSubject,
         activeClass: state.teacher.activeClass,
     };
 };

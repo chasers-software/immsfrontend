@@ -15,7 +15,7 @@ class Teacher extends Component{
 	// }
 	componentDidMount(){
         // this.props.resetTeacherState();
-        fetch(uris.FETCH_CLASS_LIST+this.props.username, {
+        fetch(uris.FETCH_CLASS_LIST+'?person_id='+this.props.username, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

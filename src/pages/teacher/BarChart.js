@@ -90,11 +90,11 @@ class BarChart extends Component {
         return (
             <div>
                 {this.props.infoBox ? <Redirect to='/dashboard'/> : null}
-                <h1 style={{color: '#1E90FF'}}>{this.props.activeClass} Assessment Marks</h1>
+                <h1 style={{color: '#1E90FF'}}>{this.props.sectionSubject[0]} Assessment Marks</h1>
                 <div className="card" style={{padding: '25px'}}>
                     <Chart type="bar" data={this.state.assessmentData} options={this.getOption(this.state.max[0]+1)} />
                 </div><hr/>
-                <h1 style={{color: '#1E90FF'}}>{this.props.activeClass} Practical Marks</h1>
+                <h1 style={{color: '#1E90FF'}}>{this.props.sectionSubject[0]} Practical Marks</h1>
                 <div className="card" style={{padding: '25px'}}>
                     <Chart type="bar" data={this.state.practicalData} options={this.getOption(this.state.max[1]+1)} />
                 </div>
@@ -108,6 +108,7 @@ const mapStateToProps = state => {
         activeClass: state.teacher.activeClass,
         classStudentValues: state.teacher.classStudentValues,
         classIndex: state.teacher.activeClassStudentValuesIndex,
+        sectionSubject: state.teacher.activeSectionSubject,
         infoBox: state.teacher.infoBox
     };
 };

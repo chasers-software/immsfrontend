@@ -51,12 +51,12 @@ class DataTableView extends Component {
                         <Toast ref={(el) => this.toast = el} />
                         
                         <div className="card">
-                            <h3>Marks Summary View : Assessment and Practical Marks are NOT Editable</h3>
-                            <DataTable value={recordDatas.data} header={"Student Data for Section "+this.props.activeClass.slice(0,6)+" of Subject with Subjcect Code : "+this.props.activeClass.slice(-5,)}>
-                                <Column field="username" header="RollNo"></Column>
+                            <h3 style={{color: '#B22222'}}>Marks Summary View : Assessment and Practical Marks are NOT Editable</h3>
+                            <DataTable value={recordDatas.data} header={"Student Data for Section "+this.props.sectionSubject[0]+" of Subject with Subject Code : "+this.props.sectionSubject[1]}>
+                                <Column field="username" header="RollNo" sortable></Column>
                                 <Column field="full_name" header="Name"></Column>
-                                <Column field="theory_marks" header="Assessment"></Column>
-                                <Column field="practical_marks" header="Practical"></Column>
+                                <Column field="theory_marks" header="Assessment" sortable></Column>
+                                <Column field="practical_marks" header="Practical" sortable></Column>
                             </DataTable>
                         </div>
                         </div>
@@ -72,6 +72,7 @@ const mapStateToProps = state => {
         activeClass: state.teacher.activeClass,
         classStudentValues: state.teacher.classStudentValues,
         classIndex: state.teacher.activeClassStudentValuesIndex,
+        sectionSubject: state.teacher.activeSectionSubject,
         loading: state.teacher.loading,
         infoBox: state.teacher.infoBox
     };

@@ -3,6 +3,7 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
     infoBox: null,
     activeClass: null,
+    activeSectionSubject: [],
     activeClassStudentValuesIndex: null,
     classes: [],
     classStudentValues: [],
@@ -46,6 +47,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.RESET_TEACHER_DEFAULTS: return {...initialState};
         case actionTypes.SET_TEACHER_ACTIVE_CLASS: return setActiveClass(state, action);
         case actionTypes.SET_TEACHER_CLASS_STUDENT_VALUES: return setClassStudentValues(state, action);
+        case actionTypes.SET_TEACHER_ACTIVE_SECTION_SUBJECT: return {...state, activeSectionSubject: action.value};
         case actionTypes.UPDATE_TEACHER_CLASS_STUDENT_VALUES: return updateClassStudentValues(state, action);
         case actionTypes.SET_TEACHER_ACTIVE_CLASS_STUDENT_VALUE_INDEX: return setActiveClassStudentIndex(state, action);
         default:

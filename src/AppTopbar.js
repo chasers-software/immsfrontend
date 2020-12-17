@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
 import PropTypes from "prop-types";
-import { Dialog } from 'primereact/dialog';
-import { Button } from 'primereact/button';
+// import { Dialog } from 'primereact/dialog';
+// import { Button } from 'primereact/button';
 // import Panel from 'primereact/panel';
 // import pcampuslogo from "./images/pcampus.jpg";
 import "./AppTopbar.css";
@@ -33,7 +33,7 @@ export class AppTopbar extends Component {
             Internal Marks Management System
             </p>
         </div>
-        <div className="layout-topbar-icons">
+        {/* <div className="layout-topbar-icons">
          
           <button className="p-link"  >
             
@@ -41,7 +41,7 @@ export class AppTopbar extends Component {
             <span className="layout-topbar-icon pi pi-fw pi-inbox" />
             <span className="p-badge p-badge-danger">5</span>
           </button>
-        </div>
+        </div> */}
       </div>
     );
   }

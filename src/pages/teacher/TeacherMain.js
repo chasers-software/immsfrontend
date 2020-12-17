@@ -20,7 +20,8 @@ class MainDashTeacher extends React.Component {
   }
 
   onCardSelectHandler(data){
-    this.props.selectCard(data.section_code+'/'+data.subject_code);
+    this.props.selectCard(data.lecture_id);
+    this.props.setSectionSubject([data.section_code, data.subject_code, data.theory_fm, data.practical_fm]);
     this.props.setRedirect();
   }
 
@@ -121,6 +122,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     selectCard: (Class) => dispatch(actions.setActiveClass(Class)),
+    setSectionSubject: (value) => dispatch(actions.setActiveSectionSubject(value)),
     setInfoBoxNULL: () => dispatch( actions.setInfoBox(null) ),
     setRedirect: () => dispatch(setAuthRedirect(<Redirect to='/marksview'/>))
   };

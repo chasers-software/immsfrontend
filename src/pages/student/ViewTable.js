@@ -25,7 +25,7 @@ class DataTableView extends Component {
         if (i === this.props.semSubjectValues.length && this.props.activeSem !== null){
             // let dat = this.props.classes.find((cls) => this.props.activeClass === cls.batch+cls.subCode+cls.group);
             // let sem = ((parseInt(this.props.activeSem[0])-1)*2+parseInt(this.props.activeSem[2])).toString();
-            fetch(uris.FETCH_STUDENT_SEM_MARKS+'?username='+this.props.username+'&semester='+this.props.activeSem.toString(), {
+            fetch(uris.FETCH_STUDENT_SEM_MARKS+'?person_id='+this.props.username+'&semester='+this.props.activeSem.toString(), {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'

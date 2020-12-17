@@ -35,6 +35,13 @@ export const setActiveStudentIndex = (value) => {
     }
 };
 
+export const setActiveSectionSubject = (value) => {
+    return {
+        type: actionTypes.SET_TEACHER_ACTIVE_SECTION_SUBJECT,
+        value: value
+    }
+};
+
 export const setClassStudentValues = (value) => {
     return {
         type: actionTypes.SET_TEACHER_CLASS_STUDENT_VALUES,

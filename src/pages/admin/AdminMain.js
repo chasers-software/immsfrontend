@@ -29,6 +29,7 @@ import './AdminMain.css';
 
 class AdminMain extends Component {
     emptyTeacher = {
+        person_id: '',
         username: '',
         full_name: '',
         email: '',
@@ -42,6 +43,7 @@ class AdminMain extends Component {
         this.state = {
             redirect: null,
             teacherDialog: false,
+            department: [],
             deleteTeacherDialog: false,
             deleteTeachersDialog: false,
             teacher: this.emptyTeacher,
@@ -50,9 +52,9 @@ class AdminMain extends Component {
             globalFilter: null
         };
 
-        this.program_codes = [{program_code: 'Electronics & Computer Engineering'},
-                        {program_code: 'Civil Engineering'},
-                        {program_code: 'Electrical Engineering'}];
+        // this.program_codes = [{program_code: 'Electronics & Computer Engineering'},
+        //                 {program_code: 'Civil Engineering'},
+        //                 {program_code: 'Electrical Engineering'}];
 
         // this.teacherService = new TeacherService();
         this.leftToolbarTemplate = this.leftToolbarTemplate.bind(this);
@@ -69,7 +71,7 @@ class AdminMain extends Component {
         this.exportCSV = this.exportCSV.bind(this);
         this.confirmDeleteSelected = this.confirmDeleteSelected.bind(this);
         this.onInputChange = this.onInputChange.bind(this);
-        this.onCityChange = this.onCityChange.bind(this);
+        this.onProgramChange = this.onProgramChange.bind(this);
         this.hideDeleteTeacherDialog = this.hideDeleteTeacherDialog.bind(this);
         this.hideDeleteTeachersDialog = this.hideDeleteTeachersDialog.bind(this);
     }
@@ -79,6 +81,16 @@ class AdminMain extends Component {
           this.toast.show({severity: 'info', summary: this.props.infoBox.summary, detail: this.props.infoBox.detail})
         }
         this.props.setInfoBoxNULL();// this.teacherService.getTeachers().then(data => this.setState({ teachers: data }));
+        fetch(uris.FETCH_DEPARTMENT_LIST, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': 'Bearer '+this.props.token
+            }
+        })
+            .then(res => res.json())
+            .then(res => {this.setState({department: res.data})})
+            .catch(err => console.log("Teacher err", err))
     }
 
     openNew() {
@@ -106,8 +118,7 @@ class AdminMain extends Component {
 
     saveTeacher() {
         let state = { submitted: true };
-        console.log(this.state.teacher)
-        if (this.state.teacher.full_name && this.state.teacher.email && this.state.teacher.phone_no && this.state.teacher.program_code ) {
+        if (this.state.teacher.full_name && this.state.teacher.email && this.state.teacher.phone_no && this.state.teacher.program_code) {
             // let teachers = [...this.props.teachers];
             // let teacher = {...this.state.teacher};
             let toastMsg = null;
@@ -123,13 +134,21 @@ class AdminMain extends Component {
                 method = 'POST';
                 toastMsg = 'Teacher Created';
             }
-            fetch(uris.FETCH_TEACHER_LIST, {
+            let i;
+            for (i=0; i<this.state.department.length;i++){
+                if (this.state.department[i].dept_name === this.state.teacher.program_code.dept_name) break;
+            }
+            // if (i === this.state.department.length) i = this.state.department.length-1;
+            console.log(i)
+            let temp = {...this.state.teacher, dept_id: this.state.department[i].dept_id};
+            console.log(temp)
+            fetch(uris.ADD_TEACHER+this.state.teacher.person_id, {
                 method: method,
                 headers: {
                     'Content-Type': 'application/json',
                     // 'Authorization': 'Bearer '+this.props.token
                 },
-                body: JSON.stringify(this.state.teacher)
+                body: JSON.stringify(temp)
             })
                 .then(fetch(uris.FETCH_TEACHER_LIST, {
                     method: 'GET',
@@ -139,8 +158,7 @@ class AdminMain extends Component {
                     }
                 })
                     .then(res => res.json())
-                    .then(res => {console.log(res);
-                                this.props.onSetTeachers(res.data)})
+                    .then(res => {console.log(res);this.props.setTeachers(res.data)})
                     .catch(err => console.log("Teacher err", err)))
                 .catch(err => console.log("Teacher err", err))
             this.toast.show({ severity: 'success', summary: 'Successful', detail: toastMsg, life: 3000 });
@@ -156,6 +174,7 @@ class AdminMain extends Component {
     }
 
     editTeacher(teacher) {
+        console.log(teacher);
         this.setState({
             teacher: { ...teacher },
             teacherDialog: true
@@ -163,7 +182,7 @@ class AdminMain extends Component {
     }
 
     teacherClickHandler(rowData){
-        this.props.selectCard(rowData.username);
+        this.props.selectCard(rowData.person_id);
 		this.setState({redirect: <Redirect to='/teachersessions'/>});
     }
 
@@ -231,7 +250,7 @@ class AdminMain extends Component {
         this.setState({ teacher });
     }
 
-    onCityChange(e) { this.setState({teacher: {...this.state.teacher, program_code: e.value.program_code}})}
+    onProgramChange(e) { this.setState({teacher: {...this.state.teacher, program_code: e.value}})}
 
     leftToolbarTemplate() {
         return (
@@ -309,8 +328,8 @@ class AdminMain extends Component {
                     header={header}>
 
                     {/* <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column> */}
-                    <Column field="full_name" header="Full Name" sortable></Column>
                     <Column field="username" header="UserName" sortable></Column>
+                    <Column field="full_name" header="Full Name" sortable></Column>
                     <Column field="email" header="Email" ></Column>
                     <Column field="phone_no" header="Phone No"  ></Column>
                     <Column field="program_code" header="Department" sortable></Column>
@@ -337,7 +356,7 @@ class AdminMain extends Component {
                 </div>
                 <div>
                     <label htmlFor="Department">Department</label>
-                    <Dropdown value={{program_code: this.state.teacher.program_code}} options={this.program_codes} onChange={this.onCityChange} optionLabel="program_code" required placeholder="Select a program_code"/>
+                    <Dropdown value={this.state.teacher.program_code} options={this.state.department} onChange={this.onProgramChange} optionLabel="dept_name" required placeholder="Select a Department"/>
                     {this.state.submitted && !this.state.teacher.program_code && <small className="p-invalid">Department is required.</small>}
                 </div>
 {/*                     
@@ -391,7 +410,7 @@ const mapStateToProps = state => {
     return {
       selectCard: (Class) => dispatch(actions.setActiveTeacherUsername(Class)),
       setInfoBoxNULL: () => dispatch( actions.setInfoBox(null) ),
-      setTeachers: (value) => dispatch(actions.setTeachers(value))
+      setTeachers: (value) => dispatch(actions.setTeachers(value)),
     //   setRedirect: () => dispatch(setAuthRedirect(<Redirect to='/marksview'/>))
     };
   };
