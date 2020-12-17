@@ -61,7 +61,9 @@ class DataTableView extends Component {
                         
                         <div className="card">
                             <h3 style={{color: '#B22222'}}>Marks Summary View : Assessment and Practical Marks are NOT Editable</h3>
-                            <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={this.exportCSV} />
+                            <div className="p-col p-offset-11">
+                                <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={this.exportCSV} />
+                            </div>
                             <DataTable ref={(el) => this.dt = el}  value={recordDatas.data} header={"Student Data for Section "+this.props.sectionSubject[0]+" of Subject with Subject Code : "+this.props.sectionSubject[1]}>
                                 <Column field="username" header="RollNo" sortable></Column>
                                 <Column field="full_name" header="Name"></Column>
