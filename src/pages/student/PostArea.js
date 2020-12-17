@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react';
 import { connect } from 'react-redux';
 import * as uris from '../../store/uris';
-
+import "../../App.css";
 class Post extends React.Component{
          constructor(props){
         super(props);
@@ -21,10 +21,10 @@ class Post extends React.Component{
     }
       render(){
           return( 
-            <div className="postView p-grid  p-ml-2  p-pt-1 p-shadow-2  ">    
+            <div className=" p-grid  p-ml-2  p-pt-1 p-shadow-2  ">    
             {this.state.data.map((dat, index) => {
           return (<Fragment key={index}>
-              <div className="p-col">
+              <div className="p-col-12">
                     <div className="p-row p-p-2 fixPadd">
                             <img src="https://i.imgur.com/hLwNrtw.jpg" alt="" width="20px"/> 
                             {dat.full_name}<div className="fixedSUB">{dat.subject}</div>
