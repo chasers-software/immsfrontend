@@ -15,3 +15,7 @@ element.style {
 .itstyle {
     color: red;
 }
+.postView {
+    display: flex;
+    flex-wrap: nowrap;
+}
