@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Route } from "react-router-dom";
 import MainDashStudent from './StudentMain';
 import DataTableView from './ViewTable';
+import Timeline from './Timeline';
 import * as actions from '../../store/actions/student';
 // import * as uris from '../../store/uris';
 
@@ -45,6 +46,7 @@ class Student extends Component{
 			<div className="layout-main">
             	<Route path="/" exact component={MainDashStudent}/>
             	<Route path="/marksview" exact component={DataTableView}/>
+            	<Route path="/studenttimeline" exact component={Timeline}/>
       		</div>
 		)
 	}

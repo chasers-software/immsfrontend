@@ -7,7 +7,8 @@ const initialState = {
     role: null,
     error: null,
     loading: false,
-    redirect: null
+    redirect: null,
+    email: null
 };
 
 const authStart = ( state, action ) => {
@@ -34,7 +35,8 @@ const authSuccess = (state, action) => {
         token: action.token,
         username: action.username,
         fullname: action.fullname,
-        role: action.role
+        role: action.role,
+        email: action.email
     }
 };
 

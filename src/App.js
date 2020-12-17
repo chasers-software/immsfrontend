@@ -149,6 +149,13 @@ class App extends Component {
     } else if (this.props.role === 'student') {
       this.menu = [
         {
+          label: "Student Timeline",
+          icon: "pi pi-fw pi-globe",
+          command: () => {
+            window.location = "#/studenttimeline";
+          }
+        },
+        {
           label: "Student Dashboard",
           icon: "pi pi-fw pi-home",
           command: () => {
@@ -174,7 +181,7 @@ class App extends Component {
       this.menu = [
         {
           label: "Admin Home",
-          icon: "pi pi-fw pi-home",
+          icon: "pi pi-fw pi-eye",
           command: () => {
             window.location = "#/admindashboard";
           }

@@ -9,12 +9,14 @@ export const authStart = () => {
     };
 };
 
-export const authSuccess = (token, username, role) => {
+export const authSuccess = (token, username, role, fullname, email) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
         token: token,
         username: username,
-        role: role
+        role: role,
+        fullname: fullname,
+        email: email
     };
 };
 
@@ -67,7 +69,7 @@ export const auth = (username, password) => {
                     // localStorage.setItem('expirationDate', expirationDate);
                     localStorage.setItem('id', res.data.user.username);
                     localStorage.setItem('role', ['admin','teacher','student'][res.data.user.role]);
-                    dispatch(authSuccess(res.token, res.data.user.person_id, ['admin','teacher','student'][res.data.user.role], res.data.user.fullname));
+                    dispatch(authSuccess(res.token, res.data.user.person_id, ['admin','teacher','student'][res.data.user.role], res.data.user.full_name, res.data.user.email));
                     // dispatch(checkAuthTimeout(res.expires));
                     // dispatch(setAuthRedirect()); // TODO: check and set path
                 } else {
