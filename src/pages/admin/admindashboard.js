@@ -30,6 +30,7 @@ constructor(props){
     this.confirmRefresh = this.confirmRefresh.bind(this);
     this.hideRefreshDialog = this.hideRefreshDialog.bind(this);
     this.confirmRefreshFlow = this.confirmRefreshFlow.bind(this);
+    this.setDeadline = this.setDeadline.bind(this);
 }
 
 componentDidMount(){
@@ -87,7 +88,27 @@ onSemesterChange(e) {
     }
 
     confirmRefreshFlow() {
+        let postURI = (this.state.refreshDialog === 'year' ? uris.POST_YEAR_REFRESH : uris.POST_SESSION_REFRESH);
+        fetch(postURI, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }})
+            .then(res => res.json())
+            .then(res => {this.setState({data: res.data, loading: false})})
+            .catch(err => console.log(err));
+    }
 
+    setDeadline(value){
+        fetch(uris.POST_DEADLINE, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({deadline: value})
+        })
+            .then(res => res.json())
+            .catch(err => console.log(err));
     }
 
   render() {
@@ -127,7 +148,7 @@ onSemesterChange(e) {
 
                 <div className="cardResult p-offset-2  p-row">
                     
-                    <Button label="New Year Students" className="p-button-rounded p-button-success" onClick={() => this.confirmRefresh('year')}/>
+                    <Button label="Fetch New Year Students" className="p-button-rounded p-button-success" onClick={() => this.confirmRefresh('year')}/>
                 </div>
                 <div className="cardResult p-mt-2 p-offset-2  p-row">
                     
@@ -137,7 +158,7 @@ onSemesterChange(e) {
                     <div className="p-mt-2 p-col-4">
                         <div className="p-field">
                         
-                        <Calendar id="icon" showIcon placeholder="Pick Deakline for Marks Submission" />
+                        <Calendar id="icon" showIcon placeholder="Pick Deadline for Marks Submission" onChange={(e) => this.setDeadline(e.value)}/>
                     </div>
                     </div>
                 </div>
@@ -181,7 +202,9 @@ onSemesterChange(e) {
             <Dialog visible={this.state.refreshDialog} style={{ width: '450px' }} header="Confirm" modal footer={refreshDialogFooter} onHide={this.hideRefreshDialog}>
                 <div className="confirmation-content">
                     <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
-                    {this.state.refreshDialog && <span>Are you sure you want to refresh <b>{this.state.refreshDialog}</b>?</span>}
+                    {<span>Are you sure you want to refresh <b>{this.state.refreshDialog}</b>?</span>}
+                    {this.state.refreshDialog === 'year' ? ' This will Fetch new year Student list!!' : null}
+                    {this.state.refreshDialog === 'session' ? 'This will Recreate new Session !!' : null}
                 </div>
             </Dialog>
     </Fragment>

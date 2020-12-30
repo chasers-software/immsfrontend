@@ -20,6 +20,9 @@ export const REQUEST_STUDENT_MARKS_RECHECK = baseURI+'/api/notification/report/'
 export const FETCH_NOTIFICATIONS = baseURI+'/api/notification/';
 export const FETCH_POSTS = baseURI+'/api/post/';
 export const SUBMIT_POST = baseURI+'/api/post/';
-export const FETCH_STATS = baseURI+'/api/batch/stats';
+export const FETCH_STATS = baseURI+'/api/batch/stats/';
+export const POST_YEAR_REFRESH = baseURI+'/api/batch/newSession/';
+export const POST_SESSION_REFRESH = baseURI+'/api/batch/newSession/';
+export const POST_DEADLINE = baseURI+'/api/batch/newSession/';
 // export const STUDENT_MARKS = baseURI+'/api/marks/';
 // export const FETCH_TEACHER_LIST = baseURI+'/api/users?role=teacher';
