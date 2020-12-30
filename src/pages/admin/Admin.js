@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Route } from "react-router-dom";
 import AdminMain from './AdminMain';
 import TeacherSessions from './TeacherSessions';
-import AdminDashboard from './AdminDashboard';
+import AdminDashboard from './admindashboard';
 import * as actions from '../../store/actions/admin';
 import * as uris from '../../store/uris';
 
