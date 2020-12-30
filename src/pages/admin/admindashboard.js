@@ -69,7 +69,7 @@ onSemesterChange(e) {
                         </div>
                         <hr/>
                            <div className="numberBIG p-row">
-                        50
+                        5
                         </div>
                 </div>             
                 <div className="cardResult p-mt-2 p-offset-2  p-col-4">

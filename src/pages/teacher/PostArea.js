@@ -72,7 +72,7 @@ class Post extends React.Component{
               <div className="p-col">
                     <div className="p-row p-p-2 fixPadd">
                             <img src="https://i.imgur.com/hLwNrtw.jpg" alt="" width="20px"/> 
-                            {dat.full_name}<div className="fixedSUB">DBMS</div>
+                            {dat.full_name}<div className="fixedSUB"></div>
                     </div>
                     <div className="p-row p-p-2">
                         {dat.content}</div>

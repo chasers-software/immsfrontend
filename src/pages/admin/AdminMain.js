@@ -194,12 +194,12 @@ class AdminMain extends Component {
     }
 
     deleteTeacher() {
-        let teachers = this.state.teachers.filter(val => val.id !== this.state.teacher.id);
-        this.setState({
-            teachers,
-            deleteTeacherDialog: false,
-            teacher: this.emptyTeacher
-        });
+        // let teachers = this.state.teachers.filter(val => val.id !== this.state.teacher.id); //TODO: complete delete
+        // this.setState({
+        //     teachers,
+        //     deleteTeacherDialog: false,
+        //     teacher: this.emptyTeacher
+        // });
         this.toast.show({ severity: 'success', summary: 'Successful', detail: 'Teacher Deleted', life: 3000 });
     }
 
