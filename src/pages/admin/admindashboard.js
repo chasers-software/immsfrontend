@@ -9,6 +9,7 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from "primereact/button";
 import { Dropdown } from 'primereact/dropdown';
 import * as uris from '../../store/uris';
+import { Calendar } from 'primereact/calendar';
 
 class AdminDashboard extends React.Component {
 
@@ -99,8 +100,8 @@ onSemesterChange(e) {
     return (<Fragment>        
         <Toast style={{zIndex: 10000}} ref={(el) => this.toast = el} />
         <div className=" p-fluid">
-           <div className="p-mt-2 p-grid p-offset-3">               
-                <div className="cardResult  p-mt-2   p-col-4">
+           <div className="p-mt-2 p-grid ">               
+                <div className="cardResult  p-mt-2   p-col-3">
                         <div className="p-row headerPAPER">
                        <h2>
                             Total Teachers
@@ -111,7 +112,7 @@ onSemesterChange(e) {
                         {this.state.countData.teachers}
                         </div>
                 </div>             
-                <div className="cardResult p-mt-2 p-offset-2  p-col-4">
+                <div className="cardResult p-mt-2 p-offset-2  p-col-3">
                         <div className="p-row headerPAPER">
                         <h2>
                             Total Students
@@ -122,12 +123,23 @@ onSemesterChange(e) {
                         {this.state.countData.students}
                         </div>
                     </div>
+                    <div className="p-col-3">
+
+                <div className="cardResult p-offset-2  p-row">
+                    
+                    <Button label="New Year Students" className="p-button-rounded p-button-success" onClick={() => this.confirmRefresh('year')}/>
                 </div>
-                <div className="cardResult p-mt-2 p-offset-2  p-col-4">
-                    <Button label="Success" className="p-button-rounded p-button-success" onClick={() => this.confirmRefresh('year')}/>
+                <div className="cardResult p-mt-2 p-offset-2  p-row">
+                    
+                    <Button label="Initiate New Session" className="p-button-rounded p-button-info" onClick={() => this.confirmRefresh('session')}/>
                 </div>
-                <div className="cardResult p-mt-2 p-offset-2  p-col-4">
-                    <Button label="Info" className="p-button-rounded p-button-info" onClick={() => this.confirmRefresh('session')}/>
+                    </div>
+                    <div className="p-mt-2 p-col-4">
+                        <div className="p-field">
+                        
+                        <Calendar id="icon" showIcon placeholder="Pick Deakline for Marks Submission" />
+                    </div>
+                    </div>
                 </div>
            <div className="p-fluid card">
                <div className="p-grid p-lg-12 p-mt-2 ">
