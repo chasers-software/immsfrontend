@@ -21,8 +21,8 @@ constructor(props){
              loading: false,
              data: null,
              countData: {teachers: 0, students: 0},
-             refreshDialog: false
-
+             refreshDialog: false,
+             batch_code: ''
     };  
     this.semester = ['1','2','3','4','5','6','7','8'];  
     this.onSemesterChange = this.onSemesterChange.bind(this);
@@ -93,9 +93,27 @@ onSemesterChange(e) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-            }})
+            },
+            body: JSON.stringify({ batch_code: this.state.batch_code})
+        })
             .then(res => res.json())
-            .then(res => {this.setState({data: res.data, loading: false})})
+            .then(res => {
+                if (res.status === 'success') {
+                    this.toast.show({severity: 'info', summary: 'Database Updated', detail: 'Successfully Refreshed '+this.state.refreshDialog});
+                    this.setState({refreshDialog: false});
+                } else {
+                    this.toast.show({severity: 'error', summary: 'Database Update Failed', detail: +res.message});
+                    this.setState({refreshDialog: false});
+                }
+                fetch(uris.FETCH_STATS, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }})
+                .then(res => res.json())
+                .then(res => {this.setState({countData: res.data})})
+                .catch(err => console.log(err))
+            })
             .catch(err => console.log(err));
     }
 
@@ -105,10 +123,18 @@ onSemesterChange(e) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({deadline: value})
+            body: JSON.stringify({deadline: value.toISOString().substring(0, 10)})
         })
             .then(res => res.json())
+            .then(res => {
+                if (res.status === 'success') {
+                    this.toast.show({severity: 'info', summary: 'Deadline Updated', detail: 'Successfully Changed!!'});
+                } else {
+                    this.toast.show({severity: 'error', summary: 'Deadline Update Failed', detail: +res.message});
+                }
+            })
             .catch(err => console.log(err));
+        console.log(value.toISOString().substring(0, 10));
     }
 
   render() {
@@ -147,8 +173,14 @@ onSemesterChange(e) {
                     <div className="p-col-3">
 
                 <div className="cardResult p-offset-2  p-row">
-                    
-                    <Button label="Fetch New Year Students" className="p-button-rounded p-button-success" onClick={() => this.confirmRefresh('year')}/>
+                <div className="p-grid">
+                        <div className="p-col-4">
+                            <InputText type="text" width="50px" value={this.state.batch_code} placeholder="Year" onChange={(e) => this.setState({batch_code: e.target.value})}/>
+                        </div>
+                        <div className="p-col-8">
+                            <Button label="Add Students" className="p-button-rounded p-button-success" onClick={() => this.confirmRefresh('year')}/>
+                        </div>
+                    </div>
                 </div>
                 <div className="cardResult p-mt-2 p-offset-2  p-row">
                     
@@ -199,7 +231,7 @@ onSemesterChange(e) {
                             </DataTable>
                         </div>
                         </div>:null}
-            <Dialog visible={this.state.refreshDialog} style={{ width: '450px' }} header="Confirm" modal footer={refreshDialogFooter} onHide={this.hideRefreshDialog}>
+            <Dialog visible={this.state.refreshDialog !== false} style={{ width: '450px' }} header="Confirm" modal footer={refreshDialogFooter} onHide={this.hideRefreshDialog}>
                 <div className="confirmation-content">
                     <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
                     {<span>Are you sure you want to refresh <b>{this.state.refreshDialog}</b>?</span>}

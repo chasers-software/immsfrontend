@@ -93,6 +93,8 @@ class DataTableEdit extends Component {
             .then(res => {
                 if(res.status === 'success'){
                     this.toast.show({severity: 'info', summary: 'Submission Succeded', detail: 'The Marks has been Successfully Updated!!!'});
+                } else {
+                    this.toast.show({severity: 'error', summary: 'Submission Failed', detail: res.message});
                 }
             })
             .catch(err => console.log(err))
