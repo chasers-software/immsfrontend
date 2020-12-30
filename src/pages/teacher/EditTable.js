@@ -81,7 +81,6 @@ class DataTableEdit extends Component {
                 currClassVals[i].practical_marks = -1;
             }
         }
-        this.props.updateValues(currClassVals);
         fetch(uris.FETCH_CLASS_STUDENT_LIST+this.props.activeClass,{
             method: 'POST',
             headers: {
@@ -92,6 +91,7 @@ class DataTableEdit extends Component {
             .then(res => res.json())
             .then(res => {
                 if(res.status === 'success'){
+                    this.props.updateValues(currClassVals);
                     this.toast.show({severity: 'info', summary: 'Submission Succeded', detail: 'The Marks has been Successfully Updated!!!'});
                 } else {
                     this.toast.show({severity: 'error', summary: 'Submission Failed', detail: res.message});

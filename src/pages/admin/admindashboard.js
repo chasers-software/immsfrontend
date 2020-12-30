@@ -22,7 +22,8 @@ constructor(props){
              data: null,
              countData: {teachers: 0, students: 0},
              refreshDialog: false,
-             batch_code: ''
+             batch_code: '',
+             deadline: ''
     };  
     this.semester = ['1','2','3','4','5','6','7','8'];  
     this.onSemesterChange = this.onSemesterChange.bind(this);
@@ -41,6 +42,14 @@ componentDidMount(){
         }})
     .then(res => res.json())
     .then(res => {this.setState({countData: res.data})})
+    .catch(err => console.log(err))
+    fetch(uris.POST_DEADLINE, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }})
+    .then(res => res.json())
+    .then(res => {this.setState({deadline: res.deadline.substring(0, 10)})})
     .catch(err => console.log(err))
 }
 
@@ -128,6 +137,7 @@ onSemesterChange(e) {
             .then(res => res.json())
             .then(res => {
                 if (res.status === 'success') {
+                    this.setState({deadline: value.toISOString().substring(0, 10)})
                     this.toast.show({severity: 'info', summary: 'Deadline Updated', detail: 'Successfully Changed!!'});
                 } else {
                     this.toast.show({severity: 'error', summary: 'Deadline Update Failed', detail: +res.message});
@@ -192,6 +202,7 @@ onSemesterChange(e) {
                         
                         <Calendar id="icon" showIcon placeholder="Pick Deadline for Marks Submission" onChange={(e) => this.setDeadline(e.value)}/>
                     </div>
+                    <h3>Marks Submission Till : {this.state.deadline}</h3>
                     </div>
                 </div>
            <div className="p-fluid card">
