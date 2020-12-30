@@ -1,6 +1,6 @@
 // const baseURI = 'https://immsnode.herokuapp.com';
 // const baseURI2 = 'http://70877ff89f8d.ngrok.io';
-const baseURI = 'http://6e5c198c7d44.ngrok.io';
+const baseURI = 'https://4e240668eb22.ngrok.io';
 export const LOGIN = baseURI+'/api/user/login';
 // export const ASSIGN_TEACHER = baseURI+'/api/users/assignTeacher';
 export const ADD_TEACHER = baseURI+"/api/user/teacher/";
@@ -10,6 +10,7 @@ export const FETCH_SECTION_LIST = baseURI+'/api/class/section';
 export const FETCH_SUBJECT_LIST = baseURI+'/api/program/subject';
 export const FETCH_CLASS_LIST = baseURI+'/api/class/lecture/';
 export const FETCH_TEACHER_LIST = baseURI+'/api/user/teacher/';
+export const DELETE_TEACHER = baseURI+'/api/user/teacher/';
 export const FETCH_CLASS_STUDENT_LIST = baseURI+'/api/marks/lecture/';
 export const FETCH_DEPARTMENT_LIST = baseURI+'/api/dept/';
 // export const POST_MARKS = baseURI+'/api/record/class/';

@@ -42,6 +42,7 @@ class AdminMain extends Component {
 
         this.state = {
             redirect: null,
+            newTeacher: null,
             teacherDialog: false,
             department: [],
             deleteTeacherDialog: false,
@@ -97,6 +98,7 @@ class AdminMain extends Component {
         this.setState({
             teacher: this.emptyTeacher,
             submitted: false,
+            newTeacher: true,
             teacherDialog: true
         });
     }
@@ -118,12 +120,13 @@ class AdminMain extends Component {
 
     saveTeacher() {
         let state = { submitted: true };
-        if (this.state.teacher.full_name && this.state.teacher.email && this.state.teacher.phone_no && this.state.teacher.program_code) {
+        if (this.state.teacher.username && this.state.teacher.full_name && this.state.teacher.email
+            && this.state.teacher.phone_no && this.state.teacher.program_code) {
             // let teachers = [...this.props.teachers];
             // let teacher = {...this.state.teacher};
             let toastMsg = null;
             let method = null;
-            if (this.state.teacher.username) {
+            if (!this.state.newTeacher) {
                 // const index = this.findIndexByUsername(this.state.teacher.username);
                 method = 'PATCH';
                 // teachers[index] = teacher;
@@ -142,7 +145,7 @@ class AdminMain extends Component {
             console.log(i)
             let temp = {...this.state.teacher, dept_id: this.state.department[i].dept_id};
             console.log(temp)
-            fetch(uris.ADD_TEACHER+this.state.teacher.person_id, {
+            fetch(uris.ADD_TEACHER+this.state.teacher.person_id.toString(), {
                 method: method,
                 headers: {
                     'Content-Type': 'application/json',
@@ -165,6 +168,7 @@ class AdminMain extends Component {
 
             state = {
                 ...state,
+                newTeacher: false,
                 teacherDialog: false,
                 teacher: this.emptyTeacher
             };
@@ -188,18 +192,30 @@ class AdminMain extends Component {
 
     confirmDeleteTeacher(teacher) {
         this.setState({
-            teacher,
+            teacher: { ...teacher},
             deleteTeacherDialog: true
         });
     }
 
     deleteTeacher() {
-        // let teachers = this.state.teachers.filter(val => val.id !== this.state.teacher.id); //TODO: complete delete
-        // this.setState({
-        //     teachers,
-        //     deleteTeacherDialog: false,
-        //     teacher: this.emptyTeacher
-        // });
+        let teachers = this.props.teachers.filter(val => val.person_id !== this.state.teacher.person_id);
+        fetch(uris.DELETE_TEACHER+this.state.teacher.person_id.toString(), {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': 'Bearer '+this.props.token
+            }
+        })
+            .then(res => {
+                console.log(res)
+                this.setState({
+                    deleteTeacherDialog: false,
+                    teacher: this.emptyTeacher
+                });
+                this.props.setTeachers(teachers);
+            })
+            .catch(err => console.log("Teacher err", err))
+        
         this.toast.show({ severity: 'success', summary: 'Successful', detail: 'Teacher Deleted', life: 3000 });
     }
 
@@ -339,6 +355,11 @@ class AdminMain extends Component {
 
             <Dialog visible={this.state.teacherDialog} style={{ width: '450px' }} header="Teacher Details" modal className="p-fluid" footer={teacherDialogFooter} onHide={this.hideDialog}>
                 {/* {this.state.teacher.image && <img src={`showcase/demo/images/teacher/${this.state.teacher.image}`} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={this.state.teacher.image} className="teacher-image" />} */}
+                <div className="p-field">
+                    <label htmlFor="username">UserName</label>
+                    <InputText id="username" value={this.state.teacher.username} onChange={(e) => this.onInputChange(e, 'username')} required autoFocus className={classNames({ 'p-invalid': this.state.submitted && !this.state.teacher.username })} />
+                    {this.state.submitted && !this.state.teacher.username && <small className="p-invalid">UserName is required.</small>}
+                </div>
                 <div className="p-field">
                     <label htmlFor="full_name">Name</label>
                     <InputText id="full_name" value={this.state.teacher.full_name} onChange={(e) => this.onInputChange(e, 'full_name')} required autoFocus className={classNames({ 'p-invalid': this.state.submitted && !this.state.teacher.full_name })} />
