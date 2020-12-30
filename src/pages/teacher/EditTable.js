@@ -5,6 +5,7 @@ import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
 import { Toast } from 'primereact/toast';
 import { connect } from 'react-redux';
+import { Dropdown } from 'primereact/dropdown';
 import * as actions from '../../store/actions/teacher';
 import { Button } from 'primereact/button';
 import './DataTable.css';
@@ -18,6 +19,8 @@ class DataTableEdit extends Component {
         this.state = { data: null}
         this.toast = null;
         this.onMarksSubmitHandler = this.onMarksSubmitHandler.bind(this);
+        this.remarksBodyTemplate = this.remarksBodyTemplate.bind(this);
+        this.onRemarksChange = this.onRemarksChange.bind(this);
     }
 
     componentDidMount(){
@@ -68,7 +71,17 @@ class DataTableEdit extends Component {
         // let temo = {classId:tempData.classId, sem:tempData.sem, datas: tempData.data};
         // this.props.submitMarks(tempData);
         // console.log(tempData)
-        this.props.updateValues(this.state.data);
+        let currClassVals = [...this.state.data];
+        for (let i=0;i<currClassVals.length;i++){
+            if (currClassVals[i].remarks === 'NQ') {
+                currClassVals[i].theory_marks = -2;
+                currClassVals[i].practical_marks = -2;
+            } else if (currClassVals[i].remarks === 'Absent') {
+                currClassVals[i].theory_marks = -1;
+                currClassVals[i].practical_marks = -1;
+            }
+        }
+        this.props.updateValues(currClassVals);
         fetch(uris.FETCH_CLASS_STUDENT_LIST+this.props.activeClass,{
             method: 'POST',
             headers: {
@@ -85,6 +98,27 @@ class DataTableEdit extends Component {
             .catch(err => console.log(err))
     }
 
+    onRemarksChange(rowData, e) {
+        let currClassVals = [...this.state.data];
+        for (let i=0;i<currClassVals.length;i++){
+            if (rowData.username === currClassVals[i].username) {
+                currClassVals[i].remarks = e.value;
+                break;
+            }
+        }
+        // this.props.updateValues(currClassVals);
+        this.setState({data: currClassVals});
+    }
+
+    remarksBodyTemplate(rowData) {
+        return (
+            <React.Fragment>
+                {/* <Button icon="pi pi-pencil" className="p-button-rounded p-button-success p-mr-2" onClick={() => this.editTeacher(rowData)} /> */}
+                <Dropdown value={rowData.remarks} options={['NQ','Absent','Regular']} onChange={(e) => this.onRemarksChange(rowData,e)} required placeholder="Select a Remark"/>
+            </React.Fragment>
+        );
+    }
+
     render() {
         return (
             <div className="datatable-editing">
@@ -95,11 +129,13 @@ class DataTableEdit extends Component {
                     <div style={{padding: "10px 0", display: "flex", justifyContent: "flex-end"}}>
                         <Button label="Confirm & Submit" onClick={this.onMarksSubmitHandler}/>
                     </div>
-                    <DataTable value={this.state.data} editMode="cell" className="editable-cells-table" header={this.props.activeClass ? "Student Data for Section "+this.props.sectionSubject[0]+" of Subject with Subject Code : "+this.props.sectionSubject[1] : null}>
+                    <DataTable value={this.state.data} editMode="cell" className="editable-cells-table" header={this.props.activeClass ? "Student Data for Section "+this.props.sectionSubject[0]+
+                    " of Subject with Subject Code : "+this.props.sectionSubject[1]+" ------ TheoryFM: "+this.props.sectionSubject[2]+' ------ PracticalFM: '+this.props.sectionSubject[3] : null}>
                         <Column field="username" header="RollNo" sortable></Column>
                         <Column field="full_name" header="Name"></Column>
                         <Column field="theory_marks" header="Assessment" editor={(props) => this.AssessmentEditor('data', props)}></Column>
-                        <Column field="practical_marks" header="Practical" editor={(props) => this.PracticalEditor('data', props)}></Column>
+                        <Column field="practical_marks" header="Practical" editor={(props) => this.PracticalEditor('data', props)}></Column>                        
+                        <Column header="Remarks" body={this.remarksBodyTemplate}></Column>
                     </DataTable>
                 </div>
             </div>
@@ -121,7 +157,6 @@ const mapDispatchToProps = dispatch => {
     return {
         setInfoBox: (value) => dispatch( actions.setInfoBox(value) ),
         updateValues: (value) => dispatch(actions.updateClassStudentValues(value)),
-
     };
 };
   

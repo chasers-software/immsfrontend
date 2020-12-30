@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import classNames from "classnames";
 import profile1 from "./../src/images/Profile-6.jpg";
 import { Button} from "primereact/button";
-import { Dialog } from 'primereact/dialog';
+// import { Dialog } from 'primereact/dialog';
 
 
 
@@ -82,7 +82,7 @@ class AppProfile extends Component {
             </button>
           </li>
         </ul>
-         <Dialog className="accounttextleft" header="Account Details" visible={this.state.displayPosition} position={this.state.position} style={{ width: '50vw' }} footer={this.renderFooter('displayPosition')} onHide={() => this.onHide('displayPosition')}>
+         {/* <Dialog className="accounttextleft" header="Account Details" visible={this.state.displayPosition} position={this.state.position} style={{ width: '50vw' }} footer={this.renderFooter('displayPosition')} onHide={() => this.onHide('displayPosition')}>
              
       
               <div className="p-grid p-dir-col">
@@ -97,7 +97,7 @@ class AppProfile extends Component {
                   
                 </div>
     
-          </Dialog>
+          </Dialog> */}
           </div>
          
           

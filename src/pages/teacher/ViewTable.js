@@ -37,7 +37,13 @@ class DataTableView extends Component {
                 }})
                 .then(res => res.json())
                 .then(res => {
-                    this.props.setClassStudentValues({classId:this.props.activeClass, data: res.data}); // TODO: get fullmarks as well
+                    let temp = [...res.data];
+                    for (let i=0; i<temp.length; i++){
+                        if (temp[i].theory_marks === -2 || temp[i].practical_marks === -2 ) temp[i].remarks = 'NQ';
+                        else if (temp[i].theory_marks === -1 || temp[i].practical_marks === -1 ) temp[i].remarks = 'Absent';
+                        else temp[i].remarks = 'Regular';
+                    }
+                    this.props.setClassStudentValues({classId:this.props.activeClass, data: temp}); // TODO: get fullmarks as well
                     this.props.setActiveStudentIndex(this.props.classStudentValues.length-1);
                 })
                 .catch(err => console.log(err));
@@ -64,11 +70,13 @@ class DataTableView extends Component {
                             <div className="p-col p-offset-11">
                                 <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={this.exportCSV} />
                             </div>
-                            <DataTable ref={(el) => this.dt = el}  value={recordDatas.data} header={"Student Data for Section "+this.props.sectionSubject[0]+" of Subject with Subject Code : "+this.props.sectionSubject[1]}>
-                                <Column field="username" header="RollNo" sortable></Column>
-                                <Column field="full_name" header="Name"></Column>
-                                <Column field="theory_marks" header="Assessment" sortable></Column>
-                                <Column field="practical_marks" header="Practical" sortable></Column>
+                            <DataTable ref={(el) => this.dt = el}  value={recordDatas.data} header={"Student Data for Section "+this.props.sectionSubject[0]+
+                                        " of Subject with Subject Code : "+this.props.sectionSubject[1]+" ------ TheoryFM: "+this.props.sectionSubject[2]+' ------ PracticalFM: '+this.props.sectionSubject[3]}>
+                                <Column field="username" style={{width: '150px'}} header="RollNo" sortable></Column>
+                                <Column field="full_name" style={{width: '350'}} header="Name"></Column>
+                                <Column field="theory_marks" style={{width: '150px'}} header="Assessment" sortable></Column>
+                                <Column field="practical_marks" style={{width: '150px'}} header="Practical" sortable></Column>
+                                <Column field="remarks" style={{width: '150px'}} header="Remarks" sortable></Column>
                             </DataTable>
                         </div>
                         </div>

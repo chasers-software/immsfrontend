@@ -10,7 +10,7 @@ export const FETCH_SECTION_LIST = baseURI+'/api/class/section';
 export const FETCH_SUBJECT_LIST = baseURI+'/api/program/subject';
 export const FETCH_CLASS_LIST = baseURI+'/api/class/lecture/';
 export const FETCH_TEACHER_LIST = baseURI+'/api/user/teacher/';
-export const DELETE_TEACHER = baseURI+'/api/user/teacher/';
+export const DELETE_TEACHER = baseURI+'/api/user/teacher/delete/';
 export const FETCH_CLASS_STUDENT_LIST = baseURI+'/api/marks/lecture/';
 export const FETCH_DEPARTMENT_LIST = baseURI+'/api/dept/';
 // export const POST_MARKS = baseURI+'/api/record/class/';
@@ -20,5 +20,6 @@ export const REQUEST_STUDENT_MARKS_RECHECK = baseURI+'/api/notification/report/'
 export const FETCH_NOTIFICATIONS = baseURI+'/api/notification/';
 export const FETCH_POSTS = baseURI+'/api/post/';
 export const SUBMIT_POST = baseURI+'/api/post/';
+export const FETCH_STATS = baseURI+'/api/batch/stats';
 // export const STUDENT_MARKS = baseURI+'/api/marks/';
 // export const FETCH_TEACHER_LIST = baseURI+'/api/users?role=teacher';

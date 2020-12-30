@@ -5,7 +5,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
 import { ProgressSpinner } from 'primereact/progressspinner';
-
+import { Dialog } from 'primereact/dialog';
 import { Button } from "primereact/button";
 import { Dropdown } from 'primereact/dropdown';
 import * as uris from '../../store/uris';
@@ -18,11 +18,28 @@ constructor(props){
              selectedSem: null,
              uniqueRoll: '',
              loading: false,
-             data: null     
+             data: null,
+             countData: {teachers: 0, students: 0},
+             refreshDialog: false
+
     };  
     this.semester = ['1','2','3','4','5','6','7','8'];  
     this.onSemesterChange = this.onSemesterChange.bind(this);
     this.onFetchStudentSemMarks = this.onFetchStudentSemMarks.bind(this);
+    this.confirmRefresh = this.confirmRefresh.bind(this);
+    this.hideRefreshDialog = this.hideRefreshDialog.bind(this);
+    this.confirmRefreshFlow = this.confirmRefreshFlow.bind(this);
+}
+
+componentDidMount(){
+    fetch(uris.FETCH_STATS, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }})
+    .then(res => res.json())
+    .then(res => {this.setState({countData: res.data})})
+    .catch(err => console.log(err))
 }
 
 onSemesterChange(e) {
@@ -56,7 +73,29 @@ onSemesterChange(e) {
         }
     }
 
+    hideRefreshDialog() {
+        this.setState({
+            refreshDialog: false
+        });
+    }
+
+    confirmRefresh(rType) {
+        this.setState({
+            refreshDialog: rType
+        });
+    }
+
+    confirmRefreshFlow() {
+
+    }
+
   render() {
+    const refreshDialogFooter = (
+        <React.Fragment>
+            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={this.hideRefreshDialog} />
+            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={this.confirmRefreshFlow} />
+        </React.Fragment>
+    );
     return (<Fragment>        
         <Toast style={{zIndex: 10000}} ref={(el) => this.toast = el} />
         <div className=" p-fluid">
@@ -69,7 +108,7 @@ onSemesterChange(e) {
                         </div>
                         <hr/>
                            <div className="numberBIG p-row">
-                        5
+                        {this.state.countData.teachers}
                         </div>
                 </div>             
                 <div className="cardResult p-mt-2 p-offset-2  p-col-4">
@@ -80,10 +119,16 @@ onSemesterChange(e) {
                         </div>
                         <hr/>
                            <div className="numberBIG p-row">
-                        2000
+                        {this.state.countData.students}
                         </div>
                     </div>
-                </div>     
+                </div>
+                <div className="cardResult p-mt-2 p-offset-2  p-col-4">
+                    <Button label="Success" className="p-button-rounded p-button-success" onClick={() => this.confirmRefresh('year')}/>
+                </div>
+                <div className="cardResult p-mt-2 p-offset-2  p-col-4">
+                    <Button label="Info" className="p-button-rounded p-button-info" onClick={() => this.confirmRefresh('session')}/>
+                </div>
            <div className="p-fluid card">
                <div className="p-grid p-lg-12 p-mt-2 ">
                      <div className="p-col">
@@ -121,6 +166,12 @@ onSemesterChange(e) {
                             </DataTable>
                         </div>
                         </div>:null}
+            <Dialog visible={this.state.refreshDialog} style={{ width: '450px' }} header="Confirm" modal footer={refreshDialogFooter} onHide={this.hideRefreshDialog}>
+                <div className="confirmation-content">
+                    <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
+                    {this.state.refreshDialog && <span>Are you sure you want to refresh <b>{this.state.refreshDialog}</b>?</span>}
+                </div>
+            </Dialog>
     </Fragment>
         
     );

@@ -89,7 +89,7 @@ class DataTableView extends Component {
                         
                         <div className="card">
                             <h3>Marks Summary View : Assessment and Practical Marks are NOT Editable</h3>
-                            <DataTable value={recordDatas.data} header="Data">
+                            <DataTable value={recordDatas.data} header={"Subject Marks for Semester "+this.props.activeSem}>
                                 <Column field="subject_code" header="Subject Code"></Column>
                                 <Column field="title" header="Subject Name"></Column>
                                 <Column field="theory_marks" header="Assessment"></Column>

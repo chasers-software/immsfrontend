@@ -17,13 +17,13 @@ class Login extends React.Component{
     let username = document.getElementById('username').value;
     let password = document.getElementById('password').value;
     this.props.onSignIn(username, password);
+  }
+  render() {    
     if (this.props.error !== null) {
-      this.toast.show({severity: 'info', summary: 'Login Failed!!', detail: 'Username or Password Incorrect!!!!'});
+      this.toast.show({severity: 'info', summary: 'Login Failed!!', detail: this.props.error});
       this.props.setError(null);
     }
-  }
-  render() {
-      return (<div>        
+      return (<div> 
         <Toast style={{zIndex: 10000}} ref={(el) => this.toast = el} />
         <div className="customgrid">
     <div className="p-col bigText ">

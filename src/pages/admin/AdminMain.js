@@ -7,7 +7,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import classNames from 'classnames';
-import CSVReader from 'react-csv-reader';
+// import CSVReader from 'react-csv-reader';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 // import TeacherService from '../../Service/TeacherService';
@@ -200,7 +200,7 @@ class AdminMain extends Component {
     deleteTeacher() {
         let teachers = this.props.teachers.filter(val => val.person_id !== this.state.teacher.person_id);
         fetch(uris.DELETE_TEACHER+this.state.teacher.person_id.toString(), {
-            method: 'DELETE',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 // 'Authorization': 'Bearer '+this.props.token
@@ -280,7 +280,7 @@ class AdminMain extends Component {
     rightToolbarTemplate() {
         return (
             <React.Fragment>
-                <CSVReader onFileLoaded={(data, fileInfo) => console.log(data[0])} />
+                {/* <CSVReader onFileLoaded={(data, fileInfo) => console.log(data[0])} /> */}
                 <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={this.exportCSV} />
             </React.Fragment>
         )
@@ -401,7 +401,7 @@ class AdminMain extends Component {
             <Dialog visible={this.state.deleteTeacherDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteTeacherDialogFooter} onHide={this.hideDeleteTeacherDialog}>
                 <div className="confirmation-content">
                     <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
-                    {this.state.teacher && <span>Are you sure you want to delete <b>{this.state.teacher.email}</b>?</span>}
+                    {this.state.teacher && <span>Are you sure you want to delete <b>{this.state.teacher.full_name}</b>?</span>}
                 </div>
             </Dialog>
 
