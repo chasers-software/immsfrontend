@@ -28,28 +28,26 @@ class TeacherSessions extends Component {
             submitted: false,
             displayConfirmation: false,
             lectureSel: {
-                batch_is: '',
+                batch_id: '',
                 program_id: '',
                 subject_id: '',
                 section_id: '',
                 semester: ''
             },
-            lecture: this.emptyLecture,
+            lecture: {...this.emptyLecture},
             batchs: ['074'],
             programs: ["BCT","BEX"],
             subjects: [],
-            sections: [],
-            semesters: [1,2,3,4,5,6,7,8]
+            sections: []
         }
         this.addClass = this.addClass.bind(this);
         this.leftToolbarTemplate = this.leftToolbarTemplate.bind(this);
         this.hideDialog = this.hideDialog.bind(this);
-        this.saveTeacher = this.saveTeacher.bind(this);
+        this.addLecture = this.addLecture.bind(this);
         this.onProgramChange = this.onProgramChange.bind(this);
         this.onBatchChange = this.onBatchChange.bind(this);
         this.onSubjectChange = this.onSubjectChange.bind(this);
         this.onGroupChange = this.onGroupChange.bind(this);
-        this.onSemChange = this.onSemChange.bind(this);
         this.onDeleteLecture = this.onDeleteLecture.bind(this);
         this.onClick = this.onClick.bind(this);
         this.onHide = this.onHide.bind(this);
@@ -95,7 +93,7 @@ class TeacherSessions extends Component {
             }
         })
             .then(res => res.json())
-            .then(res => this.setState({batchs: res.data}))
+            .then(res => {this.setState({batchs: res.data})})
             .catch(err => console.log(err));
         
             fetch(uris.FETCH_PROGRAM_LIST, {
@@ -109,7 +107,7 @@ class TeacherSessions extends Component {
             .catch(err => console.log(err));
 
         this.setState({
-            teacher: this.emptyLecture,
+            teacher: {...this.emptyLecture},
             submitted: false,
             lectureDialog: true
         });
@@ -130,9 +128,9 @@ class TeacherSessions extends Component {
         });
     }
 
-    saveTeacher() {
+    addLecture() {
         let state = { submitted: true };
-        if (this.state.lecture.group_code) {
+        if (this.state.lecture.group_code && this.state.lectureSel.subject_id) {
             let data = { person_id: this.props.activeTeacher,
                         section_id: this.state.lectureSel.section_id,
                         subject_id: this.state.lectureSel.subject_id}
@@ -145,26 +143,30 @@ class TeacherSessions extends Component {
             })
                 .then(res => res.json())
                 .then(res => {
-                    this.props.resetTeacherClasses();
-                    fetch(uris.FETCH_CLASS_LIST+'?person_id='+this.props.activeTeacher, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        }
-                    })
-                        .then(res => res.json())
-                        .then(res => {
-                            this.props.setActiveTeacherIndex(this.props.teacherClassValues.length);
-                            this.props.setActiveTeacherClasses({username:this.props.activeTeacher, data: res.data}); // TODO: get fullmarks as well
+                    if (res.status === 'success') {
+                        this.props.resetTeacherClasses();
+                        fetch(uris.FETCH_CLASS_LIST+'?person_id='+this.props.activeTeacher, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            }
                         })
-                        .catch(err => console.log(err));
+                            .then(res => res.json())
+                            .then(res => {
+                                this.props.setActiveTeacherIndex(this.props.teacherClassValues.length);
+                                this.props.setActiveTeacherClasses({username:this.props.activeTeacher, data: res.data});
+                                this.toast.show({ severity: 'success', summary: 'Successful', detail: 'Lecture Added', life: 3000 });                                
+                            })
+                            .catch(err => console.log(err));
+                    } else {
+                        this.toast.show({severity: 'error', summary: 'Lecture Add Failed', detail: res.message});
+                    }
                 })
                 .catch(err => console.log(err))
-            this.toast.show({ severity: 'success', summary: 'Successful', detail: 'Lecture Added', life: 3000 });
             state = {
                 ...state,
                 lectureDialog: false,
-                lecture: this.emptyLecture
+                lecture: {...this.emptyLecture}
             };
         }
 
@@ -172,15 +174,23 @@ class TeacherSessions extends Component {
     }
 
     onBatchChange(e) {
-        let temp = this.state.lecture;
+        let temp = {...this.emptyLecture};
         temp.batch = e.value;
-        this.setState({ lecture: temp, lectureSel: {...this.state.lectureSel, batch_id: e.value.batch_id} });
+        this.setState({ lecture: temp, lectureSel: {...this.state.lectureSel, batch_id: e.value.batch_id,
+            program_id: '',
+            subject_id: '',
+            section_id: '',
+            semester: ''} });
     }
 
     onProgramChange(e) {
-        let temp = this.state.lecture;
+        let temp = {...this.emptyLecture};
         temp.program_code = e.value;
-        this.setState({ lecture: temp, lectureSel: {...this.state.lectureSel, program_id: e.value.program_id} });
+        temp.batch = this.state.lecture.batch;
+        this.setState({ lecture: temp, lectureSel: {...this.state.lectureSel, program_id: e.value.program_id,
+            subject_id: '',
+            section_id: '',
+            semester: ''} });
         fetch(uris.FETCH_SECTION_LIST+'?batch_id='+this.state.lectureSel.batch_id+'&program_id='+e.value.program_id, {
             method: 'GET',
             headers: {
@@ -195,21 +205,25 @@ class TeacherSessions extends Component {
     onGroupChange(e) {
         let temp = this.state.lecture;
         temp.group_code = e.value
-        this.setState({ lecture: temp, lectureSel: {...this.state.lectureSel, section_id: e.value.section_id} });
-    }
+        temp.program_code = this.state.lecture.program_code;
+        temp.batch = this.state.lecture.batch;
 
-    onSemChange(e) {
-        let temp = this.state.lecture;
-        temp.semester = e.value
-        this.setState({ lecture: temp, lectureSel: {...this.state.lectureSel, semester: e.value} });
-        fetch(uris.FETCH_SUBJECT_LIST+'?program_id='+this.state.lectureSel.program_id+'&semester='+e.value, {
+        let i = 0;
+        for (i=0; i<this.state.batchs.length; i++){
+            if (this.state.lectureSel.batch_id === this.state.batchs[i].batch_id) {
+                this.setState({ lecture: temp, lectureSel: {...this.state.lectureSel, section_id: e.value.section_id
+                                , semester: this.state.batchs[i].semester, subject_id: ''} });
+                break;
+            }
+        }
+        fetch(uris.FETCH_SUBJECT_LIST+'?program_id='+this.state.lectureSel.program_id+'&semester='+this.state.batchs[i].semester.toString(), {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             }
         })
             .then(res => res.json())
-            .then(res => {console.log(res);this.setState({subjects: res.data})})
+            .then(res => {this.setState({subjects: res.data})})
             .catch(err => console.log(err));
     }
 
@@ -283,7 +297,7 @@ class TeacherSessions extends Component {
         const lectureDialogFooter = (
             <React.Fragment>
                 <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={this.hideDialog} />
-                <Button label="Add" icon="pi pi-check" className="p-button-text" onClick={this.saveTeacher} />
+                <Button label="Add" icon="pi pi-check" className="p-button-text" onClick={this.addLecture} />
             </React.Fragment>
         );
         return (
@@ -318,11 +332,6 @@ class TeacherSessions extends Component {
                     <label htmlFor="Section">Section</label>
                     <Dropdown value={this.state.lecture.group_code} options={this.state.sections} onChange={this.onGroupChange} optionLabel="section_code" required placeholder="Select a Section"/>
                     {this.state.submitted && !this.state.lecture.group_code && <small className="p-invalid">Section is required.</small>}
-                </div>
-                <div>
-                    <label htmlFor="Semester">Semester</label>
-                    <Dropdown value={this.state.lecture.semester} options={this.state.semesters} onChange={this.onSemChange} required placeholder="Select a Semester"/>
-                    {this.state.submitted && !this.state.lecture.semester && <small className="p-invalid">Semester is required.</small>}
                 </div>
                 <div>
                     <label htmlFor="Subject">Subject</label>

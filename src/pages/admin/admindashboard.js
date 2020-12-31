@@ -8,8 +8,9 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import { Dialog } from 'primereact/dialog';
 import { Button } from "primereact/button";
 import { Dropdown } from 'primereact/dropdown';
-import * as uris from '../../store/uris';
 import { Calendar } from 'primereact/calendar';
+import { CSVDownload } from "react-csv";
+import * as uris from '../../store/uris';
 
 class AdminDashboard extends React.Component {
 
@@ -23,7 +24,8 @@ constructor(props){
              countData: {teachers: 0, students: 0},
              refreshDialog: false,
              batch_code: '',
-             deadline: ''
+             deadline: '',
+             credentials: []
     };  
     this.semester = ['1','2','3','4','5','6','7','8'];  
     this.onSemesterChange = this.onSemesterChange.bind(this);
@@ -62,7 +64,7 @@ componentDidMount(){
         } else {
             this.toast.show({severity: 'error', summary: 'Deadline Fetch Failed', detail: res.message});
         }
-})
+    })
     .catch(err => console.log(err))
 }
 
@@ -125,7 +127,7 @@ onSemesterChange(e) {
             .then(res => {
                 if (res.status === 'success') {
                     this.toast.show({severity: 'info', summary: 'Database Updated', detail: 'Successfully Refreshed '+this.state.refreshDialog});
-                    this.setState({refreshDialog: false});
+                    this.state.refreshDialog === 'year' ? this.setState({credentials: res.credentials, refreshDialog: false}) : this.setState({refreshDialog: false});
                 } else {
                     this.toast.show({severity: 'error', summary: 'Database Update Failed', detail: res.message});
                     this.setState({refreshDialog: false});
@@ -169,8 +171,17 @@ onSemesterChange(e) {
             <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={this.confirmRefreshFlow} />
         </React.Fragment>
     );
+
+    let dwnldData;
+    if (this.state.credentials.length !== 0) {
+        dwnldData = <CSVDownload className="csv-download" target="_self" filename={'credentials.csv'} data={this.state.credentials}/>
+        this.setState({credentials: []})
+    } else {
+        dwnldData = null;
+    }
     return (<Fragment>        
         <Toast style={{zIndex: 10000}} ref={(el) => this.toast = el} />
+        {dwnldData}
         <div className=" p-fluid">
            <div className="p-mt-2 p-grid ">               
                 <div className="cardResult  p-mt-2   p-col-3">
@@ -212,10 +223,10 @@ onSemesterChange(e) {
                     <Button label="Initiate New Session" className="p-button-rounded p-button-info" onClick={() => this.confirmRefresh('session')}/>
                 </div>
                     </div>
-                    <div className="p-mt-2 p-col-4">
+                    <div className="p-mt-2 p-col-3">
                         <div className="p-field">
                         
-                        <Calendar id="icon" showIcon placeholder="Pick Deadline for Marks Submission" onChange={(e) => this.setDeadline(e.value)}/>
+                        <Calendar id="icon" showIcon placeholder="Set Marks Submission Deadline" onChange={(e) => this.setDeadline(e.value)}/>
                     </div>
                     <h3>Marks Submission Till : {this.state.deadline}</h3>
                     </div>

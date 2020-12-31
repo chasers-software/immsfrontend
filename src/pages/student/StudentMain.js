@@ -6,13 +6,15 @@ import { Button } from "primereact/button";
 import { Toast } from 'primereact/toast';
 import * as actions from '../../store/actions/student';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import * as uris from '../../store/uris';
 import "primeflex/primeflex.css";
 
 class MainDashStudent extends React.Component {
   constructor(){
       super();
       this.state = {
-          redirect: null
+          redirect: null,
+          deadline: ''
       }
   }
 
@@ -21,6 +23,21 @@ class MainDashStudent extends React.Component {
       this.toast.show({severity: 'info', summary: this.props.infoBox.summary, detail: this.props.infoBox.detail})
     }
     this.props.setInfoBoxNULL();
+
+    fetch(uris.POST_DEADLINE, {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json'
+      }})
+    .then(res => res.json())
+    .then(res => {
+      if (res.status === 'success') {
+          this.setState({deadline: res.deadline.substring(0, 10)})
+      } else {
+          this.toast.show({severity: 'error', summary: 'Deadline Fetch Failed', detail: res.message});
+      }
+    })
+    .catch(err => console.log(err))
   }
 
   onCardSelectHandler(index){
@@ -30,7 +47,14 @@ class MainDashStudent extends React.Component {
 
   render() {
     return (<>
-        <h3>Choose your subject and see Student details.</h3>
+        <div className='p-grid'>
+          <div className='p-col-9'>
+            <h3>Choose your subject and see Student details.</h3>
+          </div>
+          <div className='p-col-3'>
+          <h3 style={{color: 'red'}}>Marks Submission Till : {this.state.deadline}</h3>
+          </div>
+        </div>
         <Toast style={{zIndex: 10000}} ref={(el) => this.toast = el} />
         {this.props.loading ? <div style={{paddingTop: '50px'}}><ProgressSpinner style={{width: '100%'}}/></div> : 
           <div className="p-lg-12 p-d-flex p-flex-wrap p-flex-column p-flex-lg-row">
