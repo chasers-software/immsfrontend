@@ -21,3 +21,4 @@ export const FETCH_STATS = baseURI+'/api/batch/stats/';
 export const POST_YEAR_REFRESH = baseURI+'/api/batch/';
 export const POST_SESSION_REFRESH = baseURI+'/api/batch/newSession/';
 export const POST_DEADLINE = baseURI+'/api/marks/deadline/';
+export const CHANGE_PASSWORD = baseURI+'/api/user/changePassword/';

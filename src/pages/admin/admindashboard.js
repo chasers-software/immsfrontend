@@ -9,7 +9,7 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from "primereact/button";
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
-import { CSVDownload } from "react-csv";
+import { CSVDownload } from 'react-csv';
 import * as uris from '../../store/uris';
 
 class AdminDashboard extends React.Component {
@@ -174,7 +174,8 @@ onSemesterChange(e) {
 
     let dwnldData;
     if (this.state.credentials.length !== 0) {
-        dwnldData = <CSVDownload className="csv-download" target="_self" filename={'credentials.csv'} data={this.state.credentials}/>
+        dwnldData = <CSVDownload className="csv-download" target="_self" filename='credentials' data={this.state.credentials}/>
+        this.toast.show({severity: 'info', summary: 'Downloaded File Followup', detail: 'Change or Add .csv extension to the Downloaded File!!'});
         this.setState({credentials: []})
     } else {
         dwnldData = null;
@@ -272,8 +273,11 @@ onSemesterChange(e) {
                 <div className="confirmation-content">
                     <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
                     {<span>Are you sure you want to refresh <b>{this.state.refreshDialog}</b>?</span>}
+                    <br/>
                     {this.state.refreshDialog === 'year' ? ' This will Fetch new year Student list!!' : null}
                     {this.state.refreshDialog === 'session' ? 'This will Recreate new Session !!' : null}
+                    <br/>
+                    <b>NOTE: This may take upto several seconds!!</b>
                 </div>
             </Dialog>
     </Fragment>
