@@ -133,11 +133,11 @@ class DataTableEdit extends Component {
                     </div>
                     <DataTable value={this.state.data} editMode="cell" className="editable-cells-table" header={this.props.activeClass ? "Student Data for Section "+this.props.sectionSubject[0]+
                     " of Subject with Subject Code : "+this.props.sectionSubject[1]+" ------ TheoryFM: "+this.props.sectionSubject[2]+' ------ PracticalFM: '+this.props.sectionSubject[3] : null}>
-                        <Column field="username" header="RollNo" sortable></Column>
-                        <Column field="full_name" header="Name"></Column>
-                        <Column field="theory_marks" header="Assessment" editor={(props) => this.AssessmentEditor('data', props)}></Column>
-                        <Column field="practical_marks" header="Practical" editor={(props) => this.PracticalEditor('data', props)}></Column>                        
-                        <Column header="Remarks" body={this.remarksBodyTemplate}></Column>
+                        <Column field="username" style={{width: '150px'}} header="RollNo" sortable></Column>
+                        <Column field="full_name" style={{width: '350px'}} header="Name" sortable></Column>
+                        <Column field="theory_marks" style={{width: '150px'}} header="Assessment" editor={(props) => this.AssessmentEditor('data', props)}></Column>
+                        <Column field="practical_marks" style={{width: '150px'}} header="Practical" editor={(props) => this.PracticalEditor('data', props)}></Column>                        
+                        <Column header="Remarks" style={{width: '150px'}} body={this.remarksBodyTemplate}></Column>
                     </DataTable>
                 </div>
             </div>

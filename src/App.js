@@ -47,11 +47,6 @@ class App extends Component {
     this.onMenuItemClick = this.onMenuItemClick.bind(this);
   }
 
-  componentDidMount(){
-    // this.props.onTryAutoSignup();
-    // console.log("in main page",this.props);
-  }
-
   onWrapperClick(event) {
     if (!this.menuClick) {
       this.setState({

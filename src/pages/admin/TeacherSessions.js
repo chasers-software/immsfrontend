@@ -77,8 +77,12 @@ class TeacherSessions extends Component {
                 })
                     .then(res => res.json())
                     .then(res => {
-                        this.props.setActiveTeacherIndex(this.props.teacherClassValues.length);
-                        this.props.setActiveTeacherClasses({username:this.props.activeTeacher, data: res.data}); // TODO: get fullmarks as well
+                        if (res.status === 'success') {
+                            this.props.setActiveTeacherIndex(this.props.teacherClassValues.length);
+                            this.props.setActiveTeacherClasses({username:this.props.activeTeacher, data: res.data});
+                        } else {
+                            this.toast.show({severity: 'error', summary: 'Class List Fetch Failed', detail: res.message});
+                        }
                     })
                     .catch(err => console.log(err));
             }
@@ -97,7 +101,8 @@ class TeacherSessions extends Component {
             .then(res => res.json())
             .then(res => this.setState({batchs: res.data}))
             .catch(err => console.log(err));
-        fetch(uris.FETCH_PROGRAM_LIST, {
+        
+            fetch(uris.FETCH_PROGRAM_LIST, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -107,6 +112,7 @@ class TeacherSessions extends Component {
             .then(res => res.json())
             .then(res => this.setState({programs: res.data}))
             .catch(err => console.log(err));
+
         this.setState({
             teacher: this.emptyLecture,
             submitted: false,
@@ -136,7 +142,6 @@ class TeacherSessions extends Component {
             let data = { person_id: this.props.activeTeacher,
                         section_id: this.state.lectureSel.section_id,
                         subject_id: this.state.lectureSel.subject_id}
-                        console.log(data)
             fetch(uris.FETCH_CLASS_LIST, {
                 method: 'POST',
                 headers: {
@@ -145,6 +150,7 @@ class TeacherSessions extends Component {
                 },
                 body: JSON.stringify(data)
             })
+                .then(res => res.json())
                 .then(res => {
                     this.props.resetTeacherClasses();
                     fetch(uris.FETCH_CLASS_LIST+'?person_id='+this.props.activeTeacher, {
@@ -161,7 +167,7 @@ class TeacherSessions extends Component {
                         })
                         .catch(err => console.log(err));
                 })
-                .catch(err => console.log("Teacher err", err))
+                .catch(err => console.log(err))
             this.toast.show({ severity: 'success', summary: 'Successful', detail: 'Lecture Added', life: 3000 });
             state = {
                 ...state,
@@ -191,7 +197,7 @@ class TeacherSessions extends Component {
             }
         })
             .then(res => res.json())
-            .then(res => {console.log(res);this.setState({sections: res.data})})
+            .then(res => {this.setState({sections: res.data})})
             .catch(err => console.log(err));
     }
     
@@ -241,8 +247,10 @@ class TeacherSessions extends Component {
                 // 'Authorization': 'Bearer '+this.props.token
             }
         })
+            .then(res => res.json())
             .then(res => {
-                this.props.resetTeacherClasses();
+                if (res.status === 'success') {
+                    this.props.resetTeacherClasses();
                     fetch(uris.FETCH_CLASS_LIST+'?person_id='+this.props.activeTeacher, {
                         method: 'GET',
                         headers: {
@@ -256,6 +264,9 @@ class TeacherSessions extends Component {
                             this.props.setActiveTeacherClasses({username:this.props.activeTeacher, data: res.data}); // TODO: get fullmarks as well
                         })
                         .catch(err => console.log(err));
+                } else {
+                    this.toast.show({severity: 'error', summary: 'Lecture Remove Failed', detail: res.message});
+                }
             })
             .catch(err => console.log(err));
     }

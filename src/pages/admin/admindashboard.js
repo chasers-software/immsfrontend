@@ -41,15 +41,28 @@ componentDidMount(){
             'Content-Type': 'application/json'
         }})
     .then(res => res.json())
-    .then(res => {this.setState({countData: res.data})})
+    .then(res => {
+        if (res.status === 'success') {
+            this.setState({countData: res.data})
+        } else {
+            this.toast.show({severity: 'error', summary: 'Stats Fetch Failed', detail: res.message});
+        }
+    })
     .catch(err => console.log(err))
+
     fetch(uris.POST_DEADLINE, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
         }})
     .then(res => res.json())
-    .then(res => {this.setState({deadline: res.deadline.substring(0, 10)})})
+    .then(res => {
+        if (res.status === 'success') {
+            this.setState({deadline: res.deadline.substring(0, 10)})
+        } else {
+            this.toast.show({severity: 'error', summary: 'Deadline Fetch Failed', detail: res.message});
+        }
+})
     .catch(err => console.log(err))
 }
 
@@ -75,7 +88,13 @@ onSemesterChange(e) {
                         'Content-Type': 'application/json'
                     }})
                     .then(res => res.json())
-                    .then(res => {this.setState({data: res.data, loading: false})})
+                    .then(res => {
+                        if (res.status === 'success') {
+                            this.setState({data: res.data, loading: false})
+                        } else {
+                            this.toast.show({severity: 'error', summary: 'Student Details Fetch Failed', detail: res.message});
+                        }
+                    })
                     .catch(err => console.log(err));
             })
             .catch(err => console.log(err))
@@ -111,7 +130,7 @@ onSemesterChange(e) {
                     this.toast.show({severity: 'info', summary: 'Database Updated', detail: 'Successfully Refreshed '+this.state.refreshDialog});
                     this.setState({refreshDialog: false});
                 } else {
-                    this.toast.show({severity: 'error', summary: 'Database Update Failed', detail: +res.message});
+                    this.toast.show({severity: 'error', summary: 'Database Update Failed', detail: res.message});
                     this.setState({refreshDialog: false});
                 }
                 fetch(uris.FETCH_STATS, {
@@ -140,11 +159,10 @@ onSemesterChange(e) {
                     this.setState({deadline: value.toISOString().substring(0, 10)})
                     this.toast.show({severity: 'info', summary: 'Deadline Updated', detail: 'Successfully Changed!!'});
                 } else {
-                    this.toast.show({severity: 'error', summary: 'Deadline Update Failed', detail: +res.message});
+                    this.toast.show({severity: 'error', summary: 'Deadline Update Failed', detail: res.message});
                 }
             })
             .catch(err => console.log(err));
-        console.log(value.toISOString().substring(0, 10));
     }
 
   render() {

@@ -38,8 +38,12 @@ class DataTableView extends Component {
                 }})
                 .then(res => res.json())
                 .then(res => {
-                    this.props.setSemSubjectValues({sem: this.props.activeSem, data: res.data});
-                    this.props.setActiveSemIndex(this.props.semSubjectValues.length-1);
+                    if (res.status === 'success') {
+                        this.props.setSemSubjectValues({sem: this.props.activeSem, data: res.data});
+                        this.props.setActiveSemIndex(this.props.semSubjectValues.length-1);
+                    } else {
+                        this.toast.show({severity: 'error', summary: 'Student Semester Marks Fetch Failed', detail: res.message});
+                    }
                 })
                 .catch(err => console.log(err));
         }

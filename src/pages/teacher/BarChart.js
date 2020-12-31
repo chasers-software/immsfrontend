@@ -62,7 +62,6 @@ class BarChart extends Component {
     }
 
     getOption(max) {
-        console.log(max)
         return {
             legend: {
                 labels: {

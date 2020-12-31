@@ -21,7 +21,6 @@ class MainDashStudent extends React.Component {
 
   componentDidMount(){
     if (this.props.infoBox) {
-			console.log('here')
       this.toast.show({severity: 'info', summary: this.props.infoBox.summary, detail: this.props.infoBox.detail})
     }
     this.props.setInfoBoxNULL();

@@ -90,8 +90,14 @@ class AdminMain extends Component {
             }
         })
             .then(res => res.json())
-            .then(res => {this.setState({department: res.data})})
-            .catch(err => console.log("Teacher err", err))
+            .then(res => {
+                if (res.status === 'success') {
+                    this.setState({department: res.data})
+                } else {
+                    this.toast.show({severity: 'error', summary: 'Department List Fetch Failed', detail: res.message});
+                }
+            })
+            .catch(err => console.log(err))
     }
 
     openNew() {
@@ -142,9 +148,7 @@ class AdminMain extends Component {
                 if (this.state.department[i].dept_name === this.state.teacher.program_code.dept_name) break;
             }
             // if (i === this.state.department.length) i = this.state.department.length-1;
-            console.log(i)
             let temp = {...this.state.teacher, dept_id: this.state.department[i].dept_id};
-            console.log(temp)
             fetch(uris.ADD_TEACHER+this.state.teacher.person_id.toString(), {
                 method: method,
                 headers: {
@@ -153,17 +157,30 @@ class AdminMain extends Component {
                 },
                 body: JSON.stringify(temp)
             })
-                .then(fetch(uris.FETCH_TEACHER_LIST, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        // 'Authorization': 'Bearer '+this.props.token
+                .then(res => res.json())
+                .then((res) => {
+                    if (res.status === 'success') {
+                        fetch(uris.FETCH_TEACHER_LIST, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                // 'Authorization': 'Bearer '+this.props.token
+                            }
+                        })
+                            .then(res => res.json())
+                            .then(res => {
+                                if (res.status === 'success') {
+                                    this.props.setTeachers(res.data)
+                                } else {
+                                    this.toast.show({severity: 'error', summary: 'Teacher List Fetch Failed', detail: res.message});
+                                }
+                            })
+                            .catch(err => console.log(err))
+                    } else {
+                        this.toast.show({severity: 'error', summary: 'Teacher Update Failed', detail: res.message});
                     }
                 })
-                    .then(res => res.json())
-                    .then(res => {console.log(res);this.props.setTeachers(res.data)})
-                    .catch(err => console.log("Teacher err", err)))
-                .catch(err => console.log("Teacher err", err))
+                .catch(err => console.log(err))
             this.toast.show({ severity: 'success', summary: 'Successful', detail: toastMsg, life: 3000 });
 
             state = {
@@ -178,7 +195,6 @@ class AdminMain extends Component {
     }
 
     editTeacher(teacher) {
-        console.log(teacher);
         this.setState({
             teacher: { ...teacher },
             teacherDialog: true
@@ -206,15 +222,19 @@ class AdminMain extends Component {
                 // 'Authorization': 'Bearer '+this.props.token
             }
         })
+            .then(res => res.json())
             .then(res => {
-                console.log(res)
-                this.setState({
-                    deleteTeacherDialog: false,
-                    teacher: this.emptyTeacher
-                });
-                this.props.setTeachers(teachers);
+                if (res.status === 'success') {
+                    this.setState({
+                        deleteTeacherDialog: false,
+                        teacher: this.emptyTeacher
+                    });
+                    this.props.setTeachers(teachers);
+                } else {
+                    this.toast.show({severity: 'error', summary: 'Teacher Fetch Failed', detail: res.message});
+                }
             })
-            .catch(err => console.log("Teacher err", err))
+            .catch(err => console.log(err))
         
         this.toast.show({ severity: 'success', summary: 'Successful', detail: 'Teacher Deleted', life: 3000 });
     }

@@ -63,7 +63,6 @@ export const auth = (username, password) => {
         })
             .then(res => res.json())
             .then(res => {
-                console.log('login', res)
                 if (res.status === 'success'){
                     // const expirationDate = new Date().getTime() + res.expires * 1000;
                     localStorage.setItem('token', res.token);

@@ -1,6 +1,7 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import { connect } from 'react-redux';
 import { Route } from "react-router-dom";
+import { Toast } from 'primereact/toast';
 import AdminMain from './AdminMain';
 import TeacherSessions from './TeacherSessions';
 import AdminDashboard from './admindashboard';
@@ -17,12 +18,20 @@ class Admin extends Component{
             }
         })
             .then(res => res.json())
-            .then(res => {this.props.onSetTeachers(res.data)})
+            .then(res => {
+                if (res.status === 'success') {
+                    this.props.onSetTeachers(res.data)
+                } else {
+                    this.toast.show({severity: 'error', summary: 'Teacher Fetch Failed', detail: res.message});
+                }
+            })
             .catch(err => console.log("Teacher err", err))
 	}
 	
 	render(){
 		return (
+            <Fragment>
+            <Toast style={{zIndex: 10000}} ref={(el) => this.toast = el} />
 			<div className="layout-main">
             	<Route path="/" exact component={AdminMain}/>
             	<Route path="/teachersessions" exact component={TeacherSessions}/>
@@ -30,6 +39,7 @@ class Admin extends Component{
             	{/* <Route path="/marksview" exact component={DataTableView}/>
             	<Route path="/marksentry" exact component={DataTableEdit}/> */}
       		</div>
+            </Fragment>
 		)
 	}
 }

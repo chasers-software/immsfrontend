@@ -16,7 +16,7 @@ class Post extends React.Component{
                 'Content-Type': 'application/json'
             }})
             .then(res => res.json())
-            .then(res => {console.log(res);this.setState({data: res.data})})
+            .then(res => {this.setState({data: res.data})})
             .catch(err => console.log(err));
     }
       render(){

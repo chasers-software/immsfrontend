@@ -23,8 +23,14 @@ class Teacher extends Component{
             }
         })
             .then(res => res.json())
-            .then(res => this.props.onSetClass(res.data))
-            .catch(err => console.log("Teacher err", err))
+            .then(res => {
+                if (res.status === 'success') {
+                    this.props.onSetClass(res.data)
+                } else {
+                    this.toast.show({severity: 'error', summary: 'Class List Fetch Failed', detail: res.message});
+                }
+            })
+            .catch(err => console.log(err))
 	}
 	
 	render(){

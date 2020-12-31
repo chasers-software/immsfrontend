@@ -1,6 +1,6 @@
 // const baseURI = 'https://immsnode.herokuapp.com';
 // const baseURI2 = 'http://70877ff89f8d.ngrok.io';
-const baseURI = 'https://4e240668eb22.ngrok.io';
+const baseURI = 'https://130c661ee939.ngrok.io';
 export const LOGIN = baseURI+'/api/user/login';
 // export const ASSIGN_TEACHER = baseURI+'/api/users/assignTeacher';
 export const ADD_TEACHER = baseURI+"/api/user/teacher/";
