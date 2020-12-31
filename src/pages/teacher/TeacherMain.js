@@ -9,8 +9,6 @@ import {setAuthRedirect} from '../../store/actions/auth';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import "primeflex/primeflex.css";
 
-// const footer = (<Button style={{width: "100%"}} label="View"/>);
-
 class MainDashTeacher extends React.Component {
   componentDidMount(){
     if (this.props.infoBox) {
@@ -26,30 +24,6 @@ class MainDashTeacher extends React.Component {
   }
 
   render() {
-      // const header = (
-      //   <img
-      //     alt="Card"
-      //     width="10%"
-      //     src="showcase/demo/images/usercard.png"
-      //     onError={(e) =>
-      //       (e.target.src =
-      //         "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png")
-      //     }
-      //   />
-      // );
-      // {
-      //   "batch": "073BCE",
-      //   "subCode": "SH603",
-      //   "group": "AB",
-      //   "subName": "Numerical Methods",
-      //   "sem": "3/1",
-      //   "sems": "III/I"
-      // }
-      // let assignedCourses = [
-      //   { title:"PUC CT652", subTitle:"Database Management System",section:"074BCT"},
-      //   { title:"PUC CT652", subTitle:"Database Management System",section:"074BCT"},
-      //   { title:"PUC CT652", subTitle:"Database Management System",section:"074BCT"},
-      //   { title:"PUC CT652", subTitle:"Database Management System",section:"074BCT"},
       // ]
     return (<>
         <h3>Choose your subject and see Student details.</h3>
@@ -64,45 +38,6 @@ class MainDashTeacher extends React.Component {
                                           <span className="p-tag p-badge-secondary p-tag-rounded">{data.section_code.slice(-2,)}</span>
                                           <p className="p-m-0" style={{ lineHeight: "1.5" }}></p>
                                         </Card>)})}
-          {/* {{{<CourseCard title="PUC CT652" subTitle="Database Management System" section="074BCT"/>
-          <Card
-            title="PUC CT652"
-            subTitle="Database Management System"
-            style={{ width: "20em" }}
-            className="p-mb-2 p-mr-3"
-            footer={footer}
-          >
-
-
-            <span className="p-tag p-badge-secondary p-tag-rounded">074BCT</span>
-          
-            <p className="p-m-0" style={{ lineHeight: "1.5" }}></p>
-          </Card>
-          <Card
-            title="PUC CT652"
-            subTitle="Database Management System"
-            style={{ width: "20em" }}
-            className="p-mb-2 p-mr-3"
-            footer={footer}
-          >
-
-
-            <span className="p-tag p-badge-secondary p-tag-rounded">074BCT</span>
-            <p className="p-m-0" style={{ lineHeight: "1.5" }}></p>
-          </Card>
-          <Card
-            title="PUC CT652"
-            subTitle="Database Management System"
-            style={{ width: "20em" }}
-            className="p-mb-2 p-mr-3"
-            footer={footer}
-          >
-          
-
-            <span className="p-tag p-badge-secondary p-tag-rounded">074BCT</span>
-            <p className="p-m-0" style={{ lineHeight: "1.5" }}></p>
-          </Card>}}} */}
-
         </div>}
       {this.props.redirect}
       </>

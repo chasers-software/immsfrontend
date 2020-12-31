@@ -36,12 +36,6 @@ class Login extends React.Component{
             src={tulogo}
             width="60px" alt="TU Logo"/>
             <h2>IMMS x DBMS</h2>
-            {/* <form class="register-form">
-              <input type="text" placeholder="name" />
-              <input type="password" placeholder="password" />
-              <input type="text" placeholder="email address" />
-              <button>create</button>
-            </form> */}
             <form className="login-form">
               <input id="username" type="text" placeholder="username" />
               <input id="password" type="password" placeholder="password" />
@@ -74,5 +68,4 @@ const mapDispatchToProps = dispatch => {
   }
 };
 
-// export default Login;
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

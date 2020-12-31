@@ -1,5 +1,4 @@
 import * as actionTypes from './actionTypes';
-// import * as uris from '../uris';
 
 export const setClasses = (values) => {
     return {

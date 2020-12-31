@@ -32,9 +32,6 @@ class Post extends React.Component{
                     <div className="p-row p-p-2">
                         {dat.content}</div>
                 </div>
-                {/* <div className="p-col-1">
-                    3min Ago
-                </div> */}
           </Fragment>
           );
       })}

@@ -1,8 +1,6 @@
-// const baseURI = 'https://immsnode.herokuapp.com';
-// const baseURI2 = 'http://70877ff89f8d.ngrok.io';
+
 const baseURI = 'https://130c661ee939.ngrok.io';
 export const LOGIN = baseURI+'/api/user/login';
-// export const ASSIGN_TEACHER = baseURI+'/api/users/assignTeacher';
 export const ADD_TEACHER = baseURI+"/api/user/teacher/";
 export const FETCH_BATCH_LIST = baseURI+'/api/batch/';
 export const FETCH_PROGRAM_LIST = baseURI+'/api/program/';
@@ -13,7 +11,6 @@ export const FETCH_TEACHER_LIST = baseURI+'/api/user/teacher/';
 export const DELETE_TEACHER = baseURI+'/api/user/teacher/delete/';
 export const FETCH_CLASS_STUDENT_LIST = baseURI+'/api/marks/lecture/';
 export const FETCH_DEPARTMENT_LIST = baseURI+'/api/dept/';
-// export const POST_MARKS = baseURI+'/api/record/class/';
 export const FETCH_STUDENT_SEM_MARKS = baseURI+'/api/marks/student/';
 export const FETCH_STUDENT_DETAILS = baseURI+'/api/user/student/';
 export const REQUEST_STUDENT_MARKS_RECHECK = baseURI+'/api/notification/report/';
@@ -24,5 +21,3 @@ export const FETCH_STATS = baseURI+'/api/batch/stats/';
 export const POST_YEAR_REFRESH = baseURI+'/api/batch/';
 export const POST_SESSION_REFRESH = baseURI+'/api/batch/newSession/';
 export const POST_DEADLINE = baseURI+'/api/marks/deadline/';
-// export const STUDENT_MARKS = baseURI+'/api/marks/';
-// export const FETCH_TEACHER_LIST = baseURI+'/api/users?role=teacher';

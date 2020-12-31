@@ -10,15 +10,9 @@ import classNames from 'classnames';
 // import CSVReader from 'react-csv-reader';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-// import TeacherService from '../../Service/TeacherService';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
-//import { FileUpload } from 'primereact/fileupload';
-// import { Rating } from 'primereact/rating';
 import { Toolbar } from 'primereact/toolbar';
-//import { InputTextarea } from 'primereact/inputtextarea';
-// import { RadioButton } from 'primereact/radiobutton';
-// import { InputNumber } from 'primereact/inputnumber';
 import { Dropdown } from 'primereact/dropdown';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
@@ -53,14 +47,8 @@ class AdminMain extends Component {
             globalFilter: null
         };
 
-        // this.program_codes = [{program_code: 'Electronics & Computer Engineering'},
-        //                 {program_code: 'Civil Engineering'},
-        //                 {program_code: 'Electrical Engineering'}];
-
-        // this.teacherService = new TeacherService();
         this.leftToolbarTemplate = this.leftToolbarTemplate.bind(this);
         this.rightToolbarTemplate = this.rightToolbarTemplate.bind(this);
-        // this.statusBodyTemplate = this.statusBodyTemplate.bind(this);
         this.actionBodyTemplate = this.actionBodyTemplate.bind(this);
 
         this.openNew = this.openNew.bind(this);
@@ -81,12 +69,11 @@ class AdminMain extends Component {
         if (this.props.infoBox) {
           this.toast.show({severity: 'info', summary: this.props.infoBox.summary, detail: this.props.infoBox.detail})
         }
-        this.props.setInfoBoxNULL();// this.teacherService.getTeachers().then(data => this.setState({ teachers: data }));
+        this.props.setInfoBoxNULL();
         fetch(uris.FETCH_DEPARTMENT_LIST, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': 'Bearer '+this.props.token
             }
         })
             .then(res => res.json())
@@ -128,18 +115,13 @@ class AdminMain extends Component {
         let state = { submitted: true };
         if (this.state.teacher.username && this.state.teacher.full_name && this.state.teacher.email
             && this.state.teacher.phone_no && this.state.teacher.program_code) {
-            // let teachers = [...this.props.teachers];
-            // let teacher = {...this.state.teacher};
             let toastMsg = null;
             let method = null;
             if (!this.state.newTeacher) {
-                // const index = this.findIndexByUsername(this.state.teacher.username);
                 method = 'PATCH';
-                // teachers[index] = teacher;
                 toastMsg = 'Teacher Updated';
             }
             else {
-                // teachers.push(teacher);
                 method = 'POST';
                 toastMsg = 'Teacher Created';
             }
@@ -147,13 +129,11 @@ class AdminMain extends Component {
             for (i=0; i<this.state.department.length;i++){
                 if (this.state.department[i].dept_name === this.state.teacher.program_code.dept_name) break;
             }
-            // if (i === this.state.department.length) i = this.state.department.length-1;
             let temp = {...this.state.teacher, dept_id: this.state.department[i].dept_id};
             fetch(uris.ADD_TEACHER+this.state.teacher.person_id.toString(), {
                 method: method,
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'Authorization': 'Bearer '+this.props.token
                 },
                 body: JSON.stringify(temp)
             })
@@ -164,7 +144,6 @@ class AdminMain extends Component {
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json',
-                                // 'Authorization': 'Bearer '+this.props.token
                             }
                         })
                             .then(res => res.json())
@@ -219,7 +198,6 @@ class AdminMain extends Component {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': 'Bearer '+this.props.token
             }
         })
             .then(res => res.json())
@@ -268,16 +246,6 @@ class AdminMain extends Component {
         this.setState({ deleteTeachersDialog: true });
     }
 
-    // deleteSelectedTeachers() {
-    //     let teachers = this.state.teachers.filter(val => !this.state.selectedTeachers.includes(val));
-    //     this.setState({
-    //         teachers,
-    //         deleteTeachersDialog: false,
-    //         selectedTeachers: null
-    //     });
-    //     this.toast.show({ severity: 'success', summary: 'Successful', detail: 'Teachers Deleted', life: 3000 });
-    // }
-
     onInputChange(e, name) {
         const val = (e.target && e.target.value) || '';
         let teacher = {...this.state.teacher};
@@ -292,7 +260,6 @@ class AdminMain extends Component {
         return (
             <React.Fragment>
                 <Button label="New" icon="pi pi-plus" className="p-button-success p-mr-2" onClick={this.openNew} />
-                {/* <Button label="Delete" icon="pi pi-trash" className="p-button-danger" onClick={this.confirmDeleteSelected} disabled={!this.state.selectedTeachers || !this.state.selectedTeachers.length} /> */}
             </React.Fragment>
         )
     }
@@ -305,10 +272,6 @@ class AdminMain extends Component {
             </React.Fragment>
         )
     }
-
-    // statusBodyTemplate(rowData) {
-    //     return <span className={`teacher-badge status-${rowData.status.toLowerCase()}`}>{rowData.status}</span>;
-    // }
 
     actionBodyTemplate(rowData) {
         return (
@@ -342,12 +305,6 @@ class AdminMain extends Component {
                 <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={this.deleteTeacher} />
             </React.Fragment>
         );
-        // const deleteTeachersDialogFooter = (
-        //     <React.Fragment>
-        //         <Button label="No" icon="pi pi-times" className="p-button-text" onClick={this.hideDeleteTeachersDialog} />
-        //         <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={this.deleteSelectedTeachers} />
-        //     </React.Fragment>
-        // );
 
         return (<Fragment>
             <Toast style={{zIndex: 10000}} ref={(el) => this.toast = el} />
@@ -355,7 +312,6 @@ class AdminMain extends Component {
             <div className="datatable-crud-demo">
             <div className="card">
                 <Toolbar className="p-mb-4" style={{marginTop: '20px'}} left={this.leftToolbarTemplate} right={this.rightToolbarTemplate}></Toolbar>
-                {/* selection={this.state.selectedTeachers} onSelectionChange={(e) => this.setState({ selectedTeachers: e.value })} */}
                 <DataTable ref={(el) => this.dt = el} value={this.props.teachers}
                     dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -363,7 +319,6 @@ class AdminMain extends Component {
                     globalFilter={this.state.globalFilter}
                     header={header}>
 
-                    {/* <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column> */}
                     <Column field="username" style={{width: '150px'}} header="UserName" sortable></Column>
                     <Column field="full_name" style={{width: '150px'}} header="Full Name" sortable></Column>
                     <Column field="email" style={{width: '350px'}} header="Email" ></Column>
@@ -374,7 +329,6 @@ class AdminMain extends Component {
             </div>
 
             <Dialog visible={this.state.teacherDialog} style={{ width: '450px' }} header="Teacher Details" modal className="p-fluid" footer={teacherDialogFooter} onHide={this.hideDialog}>
-                {/* {this.state.teacher.image && <img src={`showcase/demo/images/teacher/${this.state.teacher.image}`} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={this.state.teacher.image} className="teacher-image" />} */}
                 <div className="p-field">
                     <label htmlFor="username">UserName</label>
                     <InputText id="username" value={this.state.teacher.username} onChange={(e) => this.onInputChange(e, 'username')} required autoFocus className={classNames({ 'p-invalid': this.state.submitted && !this.state.teacher.username })} />
@@ -400,22 +354,6 @@ class AdminMain extends Component {
                     <Dropdown value={this.state.teacher.program_code} options={this.state.department} onChange={this.onProgramChange} optionLabel="dept_name" required placeholder="Select a Department"/>
                     {this.state.submitted && !this.state.teacher.program_code && <small className="p-invalid">Department is required.</small>}
                 </div>
-{/*                     
-                <div className="p-field">
-                    <label className="p-mb-3">Subject</label>
-                    <div className="p-formgrid p-grid">
-                        <div className="p-field-radiobutton p-col-6">
-                            <RadioButton inputId="category1" name="category" value="074BCT" onChange={this.onCategoryChange} checked={this.state.teacher.category === 'Accessories'} />
-                            <label htmlFor="category1">074BCT</label>
-                        </div>
-                         <div className="p-field-radiobutton p-col-6">
-                            <RadioButton inputId="category2" name="category" value="074BCT" onChange={this.onCategoryChange} checked={this.state.teacher.category === 'Accessories'} />
-                            <label htmlFor="category1">074BCE</label>
-                        </div>
-                        
-                    </div>
-                </div> */}
-
             </Dialog>
 
             <Dialog visible={this.state.deleteTeacherDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteTeacherDialogFooter} onHide={this.hideDeleteTeacherDialog}>
@@ -424,13 +362,6 @@ class AdminMain extends Component {
                     {this.state.teacher && <span>Are you sure you want to delete <b>{this.state.teacher.full_name}</b>?</span>}
                 </div>
             </Dialog>
-
-            {/* <Dialog visible={this.state.deleteTeachersDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteTeachersDialogFooter} onHide={this.hideDeleteTeachersDialog}>
-                <div className="confirmation-content">
-                    <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
-                    {this.state.teacher && <span>Are you sure you want to delete the selected teachers?</span>}
-                </div>
-            </Dialog> */}
         </div>}
         {this.state.redirect}
         </Fragment>
@@ -442,7 +373,6 @@ const mapStateToProps = state => {
     return {
       teachers: state.admin.teachers,
       infoBox: state.admin.infoBox,
-    //   redirect: state.auth.redirect,
       loading: state.admin.loading    
     };
   };
@@ -452,7 +382,6 @@ const mapStateToProps = state => {
       selectCard: (Class) => dispatch(actions.setActiveTeacherUsername(Class)),
       setInfoBoxNULL: () => dispatch( actions.setInfoBox(null) ),
       setTeachers: (value) => dispatch(actions.setTeachers(value)),
-    //   setRedirect: () => dispatch(setAuthRedirect(<Redirect to='/marksview'/>))
     };
   };
   

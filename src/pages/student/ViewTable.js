@@ -5,11 +5,9 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
-// import {setAuthRedirect} from '../../store/actions/auth';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import * as uris from '../../store/uris';
 import * as actions from '../../store/actions/student';
-// import './DataTable.css';
 
 class DataTableView extends Component {
     constructor(props){
@@ -19,7 +17,6 @@ class DataTableView extends Component {
     }
     componentDidMount() {
         if (this.props.activeSem === null)  this.props.setInfoBox({summary:"Info Message", detail: 'No Active Semester Selected!!!'});
-        // this.props.setRedirectNULL();
         let i;
         for(i=0;i<this.props.semSubjectValues.length;i++){
             if (this.props.semSubjectValues[i].sem === this.props.activeSem){
@@ -27,10 +24,7 @@ class DataTableView extends Component {
                 break;
             }
         }
-        //fetch(`http://localhost:3000/api/record/class?class=${this.props.tutorClass}&subjectCode=${this.props.subjectCode}&sem=1`)
         if (i === this.props.semSubjectValues.length && this.props.activeSem !== null){
-            // let dat = this.props.classes.find((cls) => this.props.activeClass === cls.batch+cls.subCode+cls.group);
-            // let sem = ((parseInt(this.props.activeSem[0])-1)*2+parseInt(this.props.activeSem[2])).toString();
             fetch(uris.FETCH_STUDENT_SEM_MARKS+'?person_id='+this.props.username+'&semester='+this.props.activeSem.toString(), {
                 method: 'GET',
                 headers: {
@@ -47,13 +41,6 @@ class DataTableView extends Component {
                 })
                 .catch(err => console.log(err));
         }
-        // this.props.setSemSubjectValues([{username: "SH401", name:"Engineering Mathematics", test: "20", practical: "50"},
-        //                                 {username: "CT401", name:"Computer Programming", test: "20", practical: "50"},
-        //                                 {username: "ME401", name:"Engineering Drawing", test: "20", practical: "50"},
-        //                                 {username: "SH402", name:"Engineering Physics", test: "20", practical: "50"},
-        //                                 {username: "CE401", name:"Applied Mechanics", test: "20", practical: "50"},
-        //                                 {username: "EE401", name:"Basic Electrical Engineering", test: "20", practical: "50"}]);
-        // this.props.setActiveSemIndex(0);
     }
 
     onRequestRecheck(rowData){
@@ -122,7 +109,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        // setRedirectNULL: () => dispatch(setAuthRedirect(null)),
         setSemSubjectValues: (values) => dispatch(actions.setSemSubjectValues(values)),
         setActiveSemIndex: (value) => dispatch(actions.setActiveSemIndex(value)),
         setInfoBox: (value) => dispatch( actions.setInfoBox(value) )

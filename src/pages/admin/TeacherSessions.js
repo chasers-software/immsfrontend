@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-// import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { Card } from "primereact/card";
@@ -9,7 +8,6 @@ import { Toolbar } from 'primereact/toolbar';
 import { Toast } from 'primereact/toast';
 import { Dropdown } from 'primereact/dropdown';
 import { Dialog } from 'primereact/dialog';
-// import { InputText } from 'primereact/inputtext';
 import * as uris from '../../store/uris';
 import * as actions from '../../store/actions/admin';
 import './TeacherSessions.css';
@@ -72,7 +70,6 @@ class TeacherSessions extends Component {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        // 'Authorization': 'Bearer '+this.props.token
                     }
                 })
                     .then(res => res.json())
@@ -95,7 +92,6 @@ class TeacherSessions extends Component {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': 'Bearer '+this.props.token
             }
         })
             .then(res => res.json())
@@ -106,7 +102,6 @@ class TeacherSessions extends Component {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': 'Bearer '+this.props.token
             }
         })
             .then(res => res.json())
@@ -124,7 +119,6 @@ class TeacherSessions extends Component {
         return (
             <React.Fragment>
                 <Button label="New" icon="pi pi-plus" className="p-button-success p-mr-2" onClick={this.addClass} />
-                {/* <Button label="Delete" icon="pi pi-trash" className="p-button-danger" onClick={this.confirmDeleteSelected} disabled={!this.state.selectedTeachers || !this.state.selectedTeachers.length} /> */}
             </React.Fragment>
         )
     }
@@ -146,7 +140,6 @@ class TeacherSessions extends Component {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'Authorization': 'Bearer '+this.props.token
                 },
                 body: JSON.stringify(data)
             })
@@ -157,7 +150,6 @@ class TeacherSessions extends Component {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
-                            // 'Authorization': 'Bearer '+this.props.token
                         }
                     })
                         .then(res => res.json())
@@ -193,7 +185,6 @@ class TeacherSessions extends Component {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': 'Bearer '+this.props.token
             }
         })
             .then(res => res.json())
@@ -205,16 +196,6 @@ class TeacherSessions extends Component {
         let temp = this.state.lecture;
         temp.group_code = e.value
         this.setState({ lecture: temp, lectureSel: {...this.state.lectureSel, section_id: e.value.section_id} });
-        // fetch(uris.FETCH_SUBJECT_LIST+'?program_id='+this.state.lectureSel.program_id+'&semester='+e.value.program_id, {
-        //     method: 'GET',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         // 'Authorization': 'Bearer '+this.props.token
-        //     }
-        // })
-        //     .then(res => res.json())
-        //     .then(res => {console.log(res);this.setState({sections: res.data})})
-        //     .catch(err => console.log(err));
     }
 
     onSemChange(e) {
@@ -225,7 +206,6 @@ class TeacherSessions extends Component {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': 'Bearer '+this.props.token
             }
         })
             .then(res => res.json())
@@ -244,7 +224,6 @@ class TeacherSessions extends Component {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': 'Bearer '+this.props.token
             }
         })
             .then(res => res.json())
@@ -255,7 +234,6 @@ class TeacherSessions extends Component {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
-                            // 'Authorization': 'Bearer '+this.props.token
                         }
                     })
                         .then(res => res.json())
@@ -313,18 +291,6 @@ class TeacherSessions extends Component {
                 <Toast ref={(el) => this.toast = el} />
                 {this.props.infoBox ? <Redirect to='/'/> : null}
                 {this.props.loading ? <div style={{paddingTop: '50px'}}><ProgressSpinner style={{width: '100%'}}/></div> : <Fragment>
-            {/* <div className='additionContainer'>
-                <Dropdown value={{department: this.state.teacher.department}} options={this.cities} onChange={this.onCityChange} optionLabel="department" required placeholder="Select a Department"/>
-                <Dropdown value={{department: this.state.teacher.department}} options={this.cities} onChange={this.onCityChange} optionLabel="department" required placeholder="Select a Department"/>
-                <Dropdown value={{department: this.state.teacher.department}} options={this.cities} onChange={this.onCityChange} optionLabel="department" required placeholder="Select a Department"/>
-            </div> */}
-            {/* <Card key={index} title={data.subCode} subTitle={data.subName} style={{ width: "20em" }}
-                                            className="p-shadow-8 p-mb-2 p-mr-3" footer={<Button style={{width: "100%"}} label="Remove"
-                                            onClick={() => this.onCardSelectHandler(data)}/>}>
-                                          <span style={{margin: "0 1em 0 0"}} className="p-tag p-badge-secondary p-tag-rounded">{data.batch}</span>
-                                          <span className="p-tag p-badge-secondary p-tag-rounded">{data.group}</span>
-                                          <p className="p-m-0" style={{ lineHeight: "1.5" }}></p>
-                                        </Card> */}
                 {this.props.teacherClassValues.length>this.props.teacherIndex ? <Fragment>
                     <Toolbar style={{marginTop: '20px'}} className="p-mb-4" left={this.leftToolbarTemplate}></Toolbar>
                 <div className="p-lg-12 p-d-flex p-flex-wrap p-flex-column p-flex-lg-row">
@@ -338,7 +304,6 @@ class TeacherSessions extends Component {
                                         </Card>)})}
                 </div>
                 <Dialog visible={this.state.lectureDialog} style={{ width: '450px' }} header="Lecture Details" modal className="p-fluid" footer={lectureDialogFooter} onHide={this.hideDialog}>
-                {/* {this.state.teacher.image && <img src={`showcase/demo/images/teacher/${this.state.teacher.image}`} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={this.state.teacher.image} className="teacher-image" />} */}
                 <div>
                     <label htmlFor="Batch">Batch</label>
                     <Dropdown value={this.state.lecture.batch} options={this.state.batchs} onChange={this.onBatchChange} optionLabel="batch_code" required placeholder="Select a Batch"/>
@@ -390,7 +355,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        // setRedirectNULL: () => dispatch(setAuthRedirect(null)),
         setActiveTeacherClasses: (value) => dispatch(actions.setActiveTeacherClasses(value)),
         setActiveTeacherUsername: (value) => dispatch(actions.setActiveTeacherUsername(value)),
         setActiveTeacherIndex: (value) => dispatch(actions.setActiveTeacherIndex(value)),

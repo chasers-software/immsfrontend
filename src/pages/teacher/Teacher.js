@@ -10,16 +10,11 @@ import * as actions from '../../store/actions/teacher';
 import * as uris from '../../store/uris';
 
 class Teacher extends Component{
-	// constructor(){
-	// 	super();
-	// }
 	componentDidMount(){
-        // this.props.resetTeacherState();
         fetch(uris.FETCH_CLASS_LIST+'?person_id='+this.props.username, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': 'Bearer '+this.props.token
             }
         })
             .then(res => res.json())
@@ -56,7 +51,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onSetClass: (values) => dispatch(actions.setClasses(values)),
-        // resetTeacherState: () => dispatch(actions.resetTeacherState())
     }
 };
 

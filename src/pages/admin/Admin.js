@@ -14,7 +14,6 @@ class Admin extends Component{
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': 'Bearer '+this.props.token
             }
         })
             .then(res => res.json())
@@ -36,8 +35,6 @@ class Admin extends Component{
             	<Route path="/" exact component={AdminMain}/>
             	<Route path="/teachersessions" exact component={TeacherSessions}/>
             	<Route path="/admindashboard" exact component={AdminDashboard}/>
-            	{/* <Route path="/marksview" exact component={DataTableView}/>
-            	<Route path="/marksentry" exact component={DataTableEdit}/> */}
       		</div>
             </Fragment>
 		)

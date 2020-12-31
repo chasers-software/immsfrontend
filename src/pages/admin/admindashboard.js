@@ -69,9 +69,6 @@ componentDidMount(){
 onSemesterChange(e) {
     this.setState({ selectedSem: e.value });
 }
- /* 
- https://primefaces.org/primereact/showcase/#/datatable/filter further code. for filter.
- */
     onFetchStudentSemMarks(){
         if (this.state.uniqueRoll !== '' && this.state.selectedSem !== null) {
             this.setState({loading: true})

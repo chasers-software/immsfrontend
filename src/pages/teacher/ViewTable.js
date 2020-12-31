@@ -26,11 +26,8 @@ class DataTableView extends Component {
                 break;
             }
         }
-        //fetch(`http://localhost:3000/api/record/class?class=${this.props.tutorClass}&subjectCode=${this.props.subjectCode}&sem=1`)
         if (i === this.props.classStudentValues.length && this.props.activeClass !== null){
-            // let dat = this.props.classes.find((cls) => this.props.activeClass === cls.batch+cls.subCode+cls.group);
-            // let sem = ((parseInt(this.props.activeSem[0])-1)*2+parseInt(this.props.activeSem[2])).toString();
-            fetch(uris.FETCH_CLASS_STUDENT_LIST+this.props.activeClass, { // TODO: change the hardcoded student list fetch, this.props.activeClass
+            fetch(uris.FETCH_CLASS_STUDENT_LIST+this.props.activeClass, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'

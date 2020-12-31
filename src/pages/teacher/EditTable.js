@@ -66,11 +66,6 @@ class DataTableEdit extends Component {
 
     onMarksSubmitHandler(event){
         event.preventDefault();
-        // let tempData = {...this.props.classStudentValues[this.props.classIndex]};
-        // tempData.sem = (parseInt(this.props.activeSem[0])-1)*2+parseInt(this.props.activeSem[2]);
-        // let temo = {classId:tempData.classId, sem:tempData.sem, datas: tempData.data};
-        // this.props.submitMarks(tempData);
-        // console.log(tempData)
         let currClassVals = [...this.state.data];
         for (let i=0;i<currClassVals.length;i++){
             if (currClassVals[i].remarks === 'NQ') {
@@ -108,14 +103,12 @@ class DataTableEdit extends Component {
                 break;
             }
         }
-        // this.props.updateValues(currClassVals);
         this.setState({data: currClassVals});
     }
 
     remarksBodyTemplate(rowData) {
         return (
             <React.Fragment>
-                {/* <Button icon="pi pi-pencil" className="p-button-rounded p-button-success p-mr-2" onClick={() => this.editTeacher(rowData)} /> */}
                 <Dropdown value={rowData.remarks} options={['NQ','Absent','Regular']} onChange={(e) => this.onRemarksChange(rowData,e)} required placeholder="Select a Remark"/>
             </React.Fragment>
         );

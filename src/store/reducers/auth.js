@@ -16,20 +16,6 @@ const authStart = ( state, action ) => {
 };
 
 const authSuccess = (state, action) => {
-    // return updateObject( state, { 
-    //     token: action.token,
-    //     id: action.id,
-    //     role: action.role,
-    //     error: null,
-    //     loading: false
-    //  } );
-    // TODO: remove below hardcodes
-    // let username = null;
-    // if (action.username === '073BCE001A') {
-    //     username = '074BCT001';
-    // } else if (action.role === 'teacher') {
-    //     username = 'teacher';
-    // }
     return {
         ...state,
         token: action.token,

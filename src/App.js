@@ -1,18 +1,13 @@
 import React, { Component } from "react";
 import classNames from "classnames";
 import { connect } from 'react-redux';
-// import * as actions from './store/actions/auth';
 import { AppTopbar } from "./AppTopbar";
 import { Route, Redirect } from "react-router-dom";
-// import { AppFooter } from "./AppFooter";
 import { AppMenu } from "./AppMenu";
 import AppProfile from "./AppProfile";
 import Teacher from './pages/teacher/Teacher';
 import Student from './pages/student/Student';
 import Admin from './pages/admin/Admin';
-// import { Students } from "./Components/Students";
-// import { DataTableEdit } from "./pages/teacher/EditTable";
-//import 'primereact/resources/themes/nova-light/theme.css';
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
@@ -26,8 +21,6 @@ import pcampus from "./images/pcampus.jpg";
 import "primereact/resources/themes/saga-green/theme.css";
 import "./Layout/layout.scss"
 import PrimeReact from 'primereact/utils';
-
-
 class App extends Component {
  
   constructor() {
@@ -234,7 +227,6 @@ class App extends Component {
   }
 
   render() {
-    // return <Login/>;
     if (!this.props.isAuthenticated){
       return <Login/>
     }
@@ -295,11 +287,4 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-      // onTryAutoSignup: () => dispatch( actions.authCheckState() )
-  };
-};
-
-export default connect( mapStateToProps, mapDispatchToProps )( App );
-// export default App;
+export default connect( mapStateToProps, null )( App );

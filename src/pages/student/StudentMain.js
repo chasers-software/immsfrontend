@@ -5,11 +5,8 @@ import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 import { Toast } from 'primereact/toast';
 import * as actions from '../../store/actions/student';
-// import {setAuthRedirect} from '../../store/actions/auth';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import "primeflex/primeflex.css";
-
-// const footer = (<Button style={{width: "100%"}} label="View"/>);
 
 class MainDashStudent extends React.Component {
   constructor(){
@@ -29,7 +26,6 @@ class MainDashStudent extends React.Component {
   onCardSelectHandler(index){
 		this.props.selectCard(index);
 		this.setState({redirect: <Redirect to='/marksview'/>});
-    // this.props.setRedirect();
   }
 
   render() {
@@ -43,7 +39,6 @@ class MainDashStudent extends React.Component {
                                             className="p-shadow-8 p-mb-3 p-mr-3" footer={<Button style={{width: "100%"}} label="View"
                                             onClick={() => this.onCardSelectHandler(index+1)}/>}>
                                           <span style={{margin: "0 1em 0 0"}} className="p-tag p-badge-secondary p-tag-rounded">{data.value}</span>
-                                          {/* <span className="p-tag p-badge-secondary p-tag-rounded">{data.group}</span> */}
                                           <p className="p-m-0" style={{ lineHeight: "1.5" }}></p>
                                         </Card>)})}
         </div>}
@@ -57,7 +52,6 @@ const mapStateToProps = state => {
   return {
     sems: state.student.sems,
     infoBox: state.student.infoBox,
-    // redirect: state.auth.redirect,
     loading: state.student.loading    
   };
 };
@@ -66,7 +60,6 @@ const mapDispatchToProps = dispatch => {
   return {
     selectCard: (sem) => dispatch(actions.setActiveSem(sem)),
     setInfoBoxNULL: () => dispatch( actions.setInfoBox(null) ),
-    // setRedirect: () => dispatch(setAuthRedirect(<Redirect to='/marksview'/>))
   };
 };
 
