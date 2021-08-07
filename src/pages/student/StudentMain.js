@@ -49,7 +49,7 @@ class MainDashStudent extends React.Component {
     return (<>
         <div className='p-grid'>
           <div className='p-col-9'>
-            <h3>Choose your subject and see Student details.</h3>
+            <h3>Choose your semester card and see your internal marks.</h3>
           </div>
           <div className='p-col-3'>
           <h3 style={{color: 'red'}}>Marks Submission Till : {this.state.deadline}</h3>

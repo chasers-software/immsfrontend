@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from 'react';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { DataTable } from 'primereact/datatable';
@@ -10,11 +12,21 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import * as uris from '../../store/uris';
 import * as actions from '../../store/actions/teacher';
 import './DataTable.css';
+import { GridIcon } from 'evergreen-ui';
 
 class DataTableView extends Component {
     constructor(props){
         super(props);
         this.exportCSV = this.exportCSV.bind(this);
+        this.exportPdf = this.exportPdf.bind(this);
+        this.cols = [
+            {field:"username", style:{width: '150px'}, header:"RollNo"},
+            {field:"full_name", style:{width: '350px'}, header:"Name"},
+            {field:"theory_marks", style:{width: '150px'}, header:"Assessment"},
+            {field:"practical_marks", style:{width: '150px'}, header:"Practical"},
+            {field:"remarks", style:{width: '150px'}, header:"Remarks"}
+        ];
+        this.exportColumns = this.cols.map(col => ({ title: col.header, dataKey: col.field }));
     }
     componentDidMount() {
         if (!this.props.activeClass) this.props.setInfoBox({summary:"Info Message", detail: 'No Active Class Selected!!!'});
@@ -54,9 +66,28 @@ class DataTableView extends Component {
     exportCSV() {
         this.dt.exportCSV();
     }
+  
+    exportPdf(){
+        const doc = new jsPDF();
+        doc.setFontSize(12);
+        doc.text("TRIBHUVAN UNIVERSITY\rINSTITUTE OF ENGINEERING\rPulchowk Campus\rDepartment of Electronics and Computer Engineering\r",110,10,{align:'center'});
+        doc.text("Group " + this.props.sectionSubject[0].substring(6),100,35,{algin: 'center'} );
+        doc.text("Assesment FM: " + this.props.sectionSubject[2],15,40,{algin: 'center'} );
+        doc.text("Practical FM: " + this.props.sectionSubject[3],15,45,{algin: 'center'} );
+        let recordDatas = this.props.classStudentValues[this.props.classIndex];
+        console.log(recordDatas);
+        doc.autoTable(this.exportColumns, recordDatas.data, {
+            theme: 'grid',
+            styles: {halign:'center', fontSize: 10, fillColor:[255,255,255] , textColor: [0,0,0], tableLineWidth: 4, tableLineColor:[0,0,0]},
+            showHead: 'firstPage',
+            startY: 50,
+        });
+        doc.save('internal-marks.pdf');
+    }
 
     render() {
         let recordDatas = this.props.classStudentValues[this.props.classIndex];
+        console.log(this.props.sectionSubject);
         return (
             <Fragment>
                 {this.props.infoBox ? <Redirect to='/'/> : null}
@@ -68,16 +99,14 @@ class DataTableView extends Component {
                         
                         <div className="card">
                             <h3 style={{color: '#B22222'}}>Marks Summary View : Assessment and Practical Marks are NOT Editable</h3>
-                            <div className="p-col p-offset-11">
-                                <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={this.exportCSV} />
+                            <div className="p-col p-offset-8">
+                                <Button label="Export CSV" icon="pi pi-upload" className="p-button-help" onClick={this.exportCSV} />
+                                <Button label="Export PDF" icon="pi pi-upload" className="p-button-help" onClick={this.exportPdf} />
                             </div>
+                
                             <DataTable ref={(el) => this.dt = el}  value={recordDatas.data} header={"Student Data for Section "+this.props.sectionSubject[0]+
                                         " of Subject with Subject Code : "+this.props.sectionSubject[1]+" ------ TheoryFM: "+this.props.sectionSubject[2]+' ------ PracticalFM: '+this.props.sectionSubject[3]}>
-                                <Column field="username" style={{width: '150px'}} header="RollNo" sortable></Column>
-                                <Column field="full_name" style={{width: '350'}} header="Name" sortable></Column>
-                                <Column field="theory_marks" style={{width: '150px'}} header="Assessment" sortable></Column>
-                                <Column field="practical_marks" style={{width: '150px'}} header="Practical" sortable></Column>
-                                <Column field="remarks" style={{width: '150px'}} header="Remarks" sortable></Column>
+                                {this.cols.map((col, index) => <Column key={index} field={col.field} style={col.style} header={col.header} sortable/>)}
                             </DataTable>
                         </div>
                         </div>

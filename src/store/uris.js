@@ -1,5 +1,5 @@
 
-const baseURI = 'https://130c661ee939.ngrok.io';
+const baseURI = 'http://localhost:8000';
 export const LOGIN = baseURI+'/api/user/login';
 export const ADD_TEACHER = baseURI+"/api/user/teacher/";
 export const FETCH_BATCH_LIST = baseURI+'/api/batch/';
