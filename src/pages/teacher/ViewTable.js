@@ -1,6 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { DataTable } from 'primereact/datatable';
@@ -11,8 +9,11 @@ import {setAuthRedirect} from '../../store/actions/auth';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import * as uris from '../../store/uris';
 import * as actions from '../../store/actions/teacher';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import './DataTable.css';
-import { GridIcon } from 'evergreen-ui';
+const numberToText = require('number-to-text')
+require('number-to-text/converters/en-us');
 
 class DataTableView extends Component {
     constructor(props){
@@ -22,8 +23,8 @@ class DataTableView extends Component {
         this.cols = [
             {field:"username", style:{width: '150px'}, header:"RollNo"},
             {field:"full_name", style:{width: '350px'}, header:"Name"},
-            {field:"theory_marks", style:{width: '150px'}, header:"Assessment"},
-            {field:"practical_marks", style:{width: '150px'}, header:"Practical"},
+            {field:"theory_marks", style:{width: '150px'}, header:"Assessment\rIn Figure"},
+            {field:"theorymarks_inwords", style:{width: '150px'}, header:"Assesment\rIn Words"},
             {field:"remarks", style:{width: '150px'}, header:"Remarks"}
         ];
         this.exportColumns = this.cols.map(col => ({ title: col.header, dataKey: col.field }));
@@ -52,6 +53,9 @@ class DataTableView extends Component {
                             if (temp[i].theory_marks === -2 || temp[i].practical_marks === -2 ) temp[i].remarks = 'NQ';
                             else if (temp[i].theory_marks === -1 || temp[i].practical_marks === -1 ) temp[i].remarks = 'Absent';
                             else temp[i].remarks = 'Regular';
+                            console.log(numberToText.convertToText(temp[i].theory_marks));
+                            let pair={'theorymarks_inwords': numberToText.convertToText(temp[i].theory_marks)};
+                            temp[i]={...temp[i],...pair};
                         }
                         this.props.setClassStudentValues({classId:this.props.activeClass, data: temp});
                         this.props.setActiveStudentIndex(this.props.classStudentValues.length-1);
