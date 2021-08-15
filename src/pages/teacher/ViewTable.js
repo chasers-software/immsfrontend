@@ -12,6 +12,7 @@ import * as actions from '../../store/actions/teacher';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import './DataTable.css';
+import { rangeContainsMarker } from '@fullcalendar/core';
 const numberToText = require('number-to-text')
 require('number-to-text/converters/en-us');
 
@@ -20,6 +21,7 @@ class DataTableView extends Component {
         super(props);
         this.exportCSV = this.exportCSV.bind(this);
         this.exportPdf = this.exportPdf.bind(this);
+        this.findSubject = this.findSubject.bind(this);
         this.cols = [
             {field:"username", style:{width: '150px'}, header:"RollNo"},
             {field:"full_name", style:{width: '350px'}, header:"Name"},
@@ -50,10 +52,9 @@ class DataTableView extends Component {
                     if (res.status === 'success') {
                         let temp = [...res.data];
                         for (let i=0; i<temp.length; i++){
-                            if (temp[i].theory_marks === -2 || temp[i].practical_marks === -2 ) temp[i].remarks = 'NQ';
-                            else if (temp[i].theory_marks === -1 || temp[i].practical_marks === -1 ) temp[i].remarks = 'Absent';
-                            else temp[i].remarks = 'Regular';
-                            console.log(numberToText.convertToText(temp[i].theory_marks));
+                            if (temp[i].theory_marks < 8 ) temp[i].remarks = 'NQ';
+                            else temp[i].remarks="Regular";
+                            
                             let pair={'theorymarks_inwords': numberToText.convertToText(temp[i].theory_marks)};
                             temp[i]={...temp[i],...pair};
                         }
@@ -70,28 +71,53 @@ class DataTableView extends Component {
     exportCSV() {
         this.dt.exportCSV();
     }
-  
+    findSubject(shortForm){
+        switch(shortForm){
+            case "BCT":
+                return "Computer Enginnering";
+            case "BEX":
+                return "Electronics and Computer Engineering";
+            case  "BEL":
+                return "Electrical Engineering";
+            case "BCE":
+                return "Civil Engineering";
+            case "BME":
+                return "Mechanical Engineering";
+            case "BAE":
+                return "Architectural Engineering";
+            default:
+                return "Engineering";
+        }
+    }
+    
     exportPdf(){
-        const doc = new jsPDF();
+        const doc = new jsPDF({lineHeight:1.5});
         doc.setFontSize(12);
-        doc.text("TRIBHUVAN UNIVERSITY\rINSTITUTE OF ENGINEERING\rPulchowk Campus\rDepartment of Electronics and Computer Engineering\r",110,10,{align:'center'});
-        doc.text("Group " + this.props.sectionSubject[0].substring(6),100,35,{algin: 'center'} );
-        doc.text("Assesment FM: " + this.props.sectionSubject[2],15,40,{algin: 'center'} );
-        doc.text("Practical FM: " + this.props.sectionSubject[3],15,45,{algin: 'center'} );
+        doc.text("TRIBHUVAN UNIVERSITY\rINSTITUTE OF ENGINEERING\rPulchowk Campus\rBachelors in "+ this.findSubject(this.props.sectionSubject[0].substring(3,6)),105,10,{align:'center'});
+        doc.text("Group " + this.props.sectionSubject[0].substring(6),82,38,{align: 'center'});
+        doc.text("Batch 2" + this.props.sectionSubject[0].substring(0,3),130,38,{align: 'center'});
+        doc.text("FM: " + this.props.sectionSubject[2],20,42,{align: 'center'});
+        doc.text("Code: " + this.props.sectionSubject[1],190,42,{align:'right'});
+        doc.text("PM: " + 0.4*this.props.sectionSubject[2],19,47,{align: 'center'});
+        doc.text("Subject: "+this.props.sectionSubject[4],73,47,{algin:'center'});
         let recordDatas = this.props.classStudentValues[this.props.classIndex];
         console.log(recordDatas);
         doc.autoTable(this.exportColumns, recordDatas.data, {
             theme: 'grid',
             styles: {halign:'center', fontSize: 10, fillColor:[255,255,255] , textColor: [0,0,0], tableLineWidth: 4, tableLineColor:[0,0,0]},
             showHead: 'firstPage',
-            startY: 50,
+            startY: 52,
         });
+        let finalY=doc.lastAutoTable.finalY;
+        console.log(finalY);
+        doc.text("Date:",20,finalY+10);
+        doc.text("Name of Examiner:",75,finalY+10);
+        doc.text("Signature:",145,finalY+10 )
         doc.save('internal-marks.pdf');
     }
 
     render() {
         let recordDatas = this.props.classStudentValues[this.props.classIndex];
-        console.log(this.props.sectionSubject);
         return (
             <Fragment>
                 {this.props.infoBox ? <Redirect to='/'/> : null}
@@ -109,7 +135,7 @@ class DataTableView extends Component {
                             </div>
                 
                             <DataTable ref={(el) => this.dt = el}  value={recordDatas.data} header={"Student Data for Section "+this.props.sectionSubject[0]+
-                                        " of Subject with Subject Code : "+this.props.sectionSubject[1]+" ------ TheoryFM: "+this.props.sectionSubject[2]+' ------ PracticalFM: '+this.props.sectionSubject[3]}>
+                                        " of Subject with Subject Code : "+this.props.sectionSubject[1]+" ------ TheoryFM: "+this.props.sectionSubject[2]}>
                                 {this.cols.map((col, index) => <Column key={index} field={col.field} style={col.style} header={col.header} sortable/>)}
                             </DataTable>
                         </div>

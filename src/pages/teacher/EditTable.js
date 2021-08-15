@@ -11,6 +11,8 @@ import { Button } from 'primereact/button';
 import './DataTable.css';
 import * as uris from '../../store/uris';
 import { isInt } from '@fullcalendar/core';
+const numberToText = require('number-to-text')
+require('number-to-text/converters/en-us');
 
 class DataTableEdit extends Component {
 
@@ -33,14 +35,20 @@ class DataTableEdit extends Component {
 
     onEditorValueChange(stateItem, props, value) {
         let updatedProducts = [...props.value];
+        console.log(updatedProducts);
         let update = false;
         if (!isInt(parseInt(value))){
-            updatedProducts[props.rowIndex][props.field] = 0;
-            this.setState({ [`${stateItem}`]: updatedProducts });
-            return
+            value=0;
         }
         switch (props.field){
-            case "theory_marks": update = (parseInt(value) >=0 && parseInt(value) <= this.props.sectionSubject[2]);
+            case "theory_marks": 
+                update = (parseInt(value) >=0 && parseInt(value) <= this.props.sectionSubject[2]);
+                if (update)
+                { 
+                    updatedProducts[props.rowIndex].theorymarks_inwords=numberToText.convertToText(parseInt(value));
+                    if (parseInt(value) < 8 ) updatedProducts[props.rowIndex].remarks = 'NQ';
+                    else if(parseInt(value)>=8) updatedProducts[props.rowIndex].remarks= "Regular"
+                }
                 break;
             case "practical_marks": update = (parseInt(value) >=0 && parseInt(value) <= this.props.sectionSubject[3]);
                 break;
@@ -67,15 +75,7 @@ class DataTableEdit extends Component {
     onMarksSubmitHandler(event){
         event.preventDefault();
         let currClassVals = [...this.state.data];
-        for (let i=0;i<currClassVals.length;i++){
-            if (currClassVals[i].remarks === 'NQ') {
-                currClassVals[i].theory_marks = -2;
-                currClassVals[i].practical_marks = -2;
-            } else if (currClassVals[i].remarks === 'Absent') {
-                currClassVals[i].theory_marks = -1;
-                currClassVals[i].practical_marks = -1;
-            }
-        }
+
         fetch(uris.FETCH_CLASS_STUDENT_LIST+this.props.activeClass,{
             method: 'POST',
             headers: {
@@ -97,9 +97,13 @@ class DataTableEdit extends Component {
 
     onRemarksChange(rowData, e) {
         let currClassVals = [...this.state.data];
+        console.log("curr class vals",currClassVals);
+        console.log("rowdata", rowData, "e", e);
         for (let i=0;i<currClassVals.length;i++){
             if (rowData.username === currClassVals[i].username) {
                 currClassVals[i].remarks = e.value;
+                if (e.value==="Absent"||e.value==="NQ")
+                    currClassVals[i].theory_marks=0;
                 break;
             }
         }
@@ -125,11 +129,10 @@ class DataTableEdit extends Component {
                         <Button label="Confirm & Submit" onClick={this.onMarksSubmitHandler}/>
                     </div>
                     <DataTable value={this.state.data} editMode="cell" className="editable-cells-table" header={this.props.activeClass ? "Student Data for Section "+this.props.sectionSubject[0]+
-                    " of Subject with Subject Code : "+this.props.sectionSubject[1]+" ------ TheoryFM: "+this.props.sectionSubject[2]+' ------ PracticalFM: '+this.props.sectionSubject[3] : null}>
+                    " of Subject with Subject Code : "+this.props.sectionSubject[1]+" ------ TheoryFM: "+this.props.sectionSubject[2] : null}>
                         <Column field="username" style={{width: '150px'}} header="RollNo" sortable></Column>
                         <Column field="full_name" style={{width: '350px'}} header="Name" sortable></Column>
-                        <Column field="theory_marks" style={{width: '150px'}} header="Assessment" editor={(props) => this.AssessmentEditor('data', props)}></Column>
-                        <Column field="practical_marks" style={{width: '150px'}} header="Practical" editor={(props) => this.PracticalEditor('data', props)}></Column>                        
+                        <Column field="theory_marks" style={{width: '150px'}} header="Assessment" editor={(props) => this.AssessmentEditor('data', props)}></Column>                      
                         <Column header="Remarks" style={{width: '150px'}} body={this.remarksBodyTemplate}></Column>
                     </DataTable>
                 </div>

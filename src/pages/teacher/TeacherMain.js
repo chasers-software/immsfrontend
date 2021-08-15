@@ -40,14 +40,16 @@ class MainDashTeacher extends React.Component {
 
   onCardSelectHandler(data){
     this.props.selectCard(data.lecture_id);
-    this.props.setSectionSubject([data.section_code, data.subject_code, data.theory_fm, data.practical_fm]);
+    this.props.setSectionSubject([data.section_code, data.subject_code, data.theory_fm, data.practical_fm,data.title]);
     this.props.setRedirect();
   }
 
   render() {
-      // ]
     return (<>
-           <div className='p-grid'>
+        {(Date.now()>(new Date(this.state.deadline)).getTime()) && 
+        this.toast.show({severity: 'warn', summary: 'Deadline Exceeded', detail: `Deadline exceeded by ${parseInt((Date.now()-new Date(this.state.deadline).getTime())/86400000)} days.`})
+        }
+        <div className='p-grid'>
           <div className='p-col-9'>
             <h3>Choose your subject and see Student details.</h3>
           </div>
