@@ -21,6 +21,7 @@ class DataTableView extends Component {
         super(props);
         this.exportCSV = this.exportCSV.bind(this);
         this.exportPdf = this.exportPdf.bind(this);
+        this.exportPdfGroups = this.exportPdfGroups.bind(this);
         this.findSubject = this.findSubject.bind(this);
         this.cols = [
             {field:"username", style:{width: '150px'}, header:"RollNo"},
@@ -90,19 +91,27 @@ class DataTableView extends Component {
         }
     }
     
-    exportPdf(){
-        const doc = new jsPDF({lineHeight:1.5});
+    exportPdf(doc,isSecond){
+        let group='';
+        let recordDatas = this.props.classStudentValues[this.props.classIndex];
         doc.setFontSize(12);
         doc.text("TRIBHUVAN UNIVERSITY\rINSTITUTE OF ENGINEERING\rPulchowk Campus\rBachelors in "+ this.findSubject(this.props.sectionSubject[0].substring(3,6)),105,10,{align:'center'});
-        doc.text("Group " + this.props.sectionSubject[0].substring(6),82,38,{align: 'center'});
+        if (isSecond){
+            group=this.props.sectionSubject[0][7];
+            recordDatas=recordDatas.data.slice(24);
+        }
+        else{
+           group=this.props.sectionSubject[0][6];
+           recordDatas=recordDatas.data.slice(0,24);
+        }
+        doc.text("Group " + group,82,38,{align: 'center'});
         doc.text("Batch 2" + this.props.sectionSubject[0].substring(0,3),130,38,{align: 'center'});
         doc.text("FM: " + this.props.sectionSubject[2],20,42,{align: 'center'});
         doc.text("Code: " + this.props.sectionSubject[1],190,42,{align:'right'});
         doc.text("PM: " + 0.4*this.props.sectionSubject[2],19,47,{align: 'center'});
         doc.text("Subject: "+this.props.sectionSubject[4],73,47,{algin:'center'});
-        let recordDatas = this.props.classStudentValues[this.props.classIndex];
-        console.log(recordDatas);
-        doc.autoTable(this.exportColumns, recordDatas.data, {
+       
+        doc.autoTable(this.exportColumns, recordDatas, {
             theme: 'grid',
             styles: {halign:'center', fontSize: 10, fillColor:[255,255,255] , textColor: [0,0,0], tableLineWidth: 4, tableLineColor:[0,0,0]},
             showHead: 'firstPage',
@@ -113,11 +122,23 @@ class DataTableView extends Component {
         doc.text("Date:",20,finalY+10);
         doc.text("Name of Examiner:",75,finalY+10);
         doc.text("Signature:",145,finalY+10 )
-        doc.save('internal-marks.pdf');
+        doc.save(`Group-${group}-internalMarks.pdf`);
     }
+
+    exportPdfGroups()
+    {
+        const group1 = new jsPDF({lineHeight:1.5});
+        let isSecond=false
+        this.exportPdf(group1,isSecond);
+        const group2 = new jsPDF({lineHeight:1.5});
+        isSecond=true;
+        this.exportPdf(group2,isSecond);
+    }
+
 
     render() {
         let recordDatas = this.props.classStudentValues[this.props.classIndex];
+        console.log(recordDatas);
         return (
             <Fragment>
                 {this.props.infoBox ? <Redirect to='/'/> : null}
@@ -131,7 +152,7 @@ class DataTableView extends Component {
                             <h3 style={{color: '#B22222'}}>Marks Summary View : Assessment and Practical Marks are NOT Editable</h3>
                             <div className="p-col p-offset-8">
                                 <Button label="Export CSV" icon="pi pi-upload" className="p-button-help" onClick={this.exportCSV} />
-                                <Button label="Export PDF" icon="pi pi-upload" className="p-button-help" onClick={this.exportPdf} />
+                                <Button label="Export PDF" icon="pi pi-upload" className="p-button-help" onClick={this.exportPdfGroups} />
                             </div>
                 
                             <DataTable ref={(el) => this.dt = el}  value={recordDatas.data} header={"Student Data for Section "+this.props.sectionSubject[0]+
